@@ -40,13 +40,16 @@ const CONFIG = { // 主配置对象，包含网站所有配置项
         // 首页标题
         title: "太华山", // 首页主标题文字
         // 首页副标题
-        subtitle: "剑出太华，山河破晓，一梦太华，为我独尊", // 首页副标题描述文字
+        subtitle: "", // 首页副标题描述文字
+
         // 首页背景
-        background: { // 首页背景媒体配置对象
-            url: "https://coss.yupoo.com/upchat/2025-10-10/1760099170771.mp4", // 背景媒体文件URL地址
-            type: "auto", // 媒体类型检测方式（auto自动检测/video视频/image图片）
-            fallback: "https://gitee.com/tx-feng/FengHuaWuQue/raw/Vue/Static/background/background1.avif" // 备用图片地址（当主媒体加载失败时使用）
-        },
+       background: {
+  url: (/MicroMessenger/i.test(navigator.userAgent))
+    ? "https://s3plus.meituan.net/opapisdk/op_ticket_885190757_1760443318888_qdqqd_peo927.jpg"
+    : "https://coss.yupoo.com/upchat/2025-10-10/1760099170771.mp4",
+  type: (/MicroMessenger/i.test(navigator.userAgent)) ? "image" : "auto",
+  fallback: "https://s3plus.meituan.net/opapisdk/op_ticket_885190757_1760443318888_qdqqd_peo927.jpg"
+},
         // 首页遮罩层
         overlay: "none", // 首页背景遮罩层渐变效果，rgba最后一位数是透明度，前三位数是颜色数据，具体看gitee常用命令上方的基础颜色
         // 首页按钮配置
@@ -80,7 +83,7 @@ const CONFIG = { // 主配置对象，包含网站所有配置项
         },
         // 视频区域手机端内容配置（手机端会出现）
         content: { // 视频区域内容元素配置
-            logo: "https://www.yysls.cn/pc/gw/20220815175950/img/logo3_e2ad630.png", // 视频区域LOGO图片URL
+            logo: "https://www.yysls.cn/pc/fab/20250723194326/img/logo_a9b36efe.png?image_process=format,png", // 视频区域LOGO图片URL
             title: "太华山", // 视频区域标题文字
             subtitle: "剑出太华，山河破晓，一梦太华，为我独尊" // 视频区域副标题文字
         },
@@ -138,7 +141,7 @@ const CONFIG = { // 主配置对象，包含网站所有配置项
         background: "linear-gradient(135deg, rgba(154, 103, 211, 0.2) 10%, rgba(0, 0, 0, 0.8) 100%)", // 角色区域背景渐变色，rgba最后一位数是透明度，前三位数是颜色数据，具体看gitee常用命令上方的基础颜色
         // 分页配置
         pagination: { // 角色列表分页配置
-            charactersPerPage: 24, // 每页显示的角色数量
+            charactersPerPage: 21, // 每页显示的角色数量
             prevButton: "https://www.yysls.cn/pc/fab/20250723194326/img/feature_prev_d3634779.png?image_process=format,png", // 上一页按钮图片URL
             nextButton: "https://www.yysls.cn/pc/fab/20250723194326/img/feature_next_6f404b40.png?image_process=format,png" // 下一页按钮图片URL
         },
@@ -164,7 +167,7 @@ const CONFIG = { // 主配置对象，包含网站所有配置项
                     textAlign: "left" // 角色职位文字对齐方式
                 },
                 description: { // 角色描述样式配置
-                    fontSize: "1.8rem", // 角色描述字体大小
+                    fontSize: "1.2rem", // 角色描述字体大小
                     color: "#CBD5E0", // 角色描述文字颜色，修改颜色的话具体看gitee常用命令上方的基础颜色
                     textAlign: "left" // 角色描述文字对齐方式
                 }

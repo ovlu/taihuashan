@@ -50,6 +50,71 @@
   margin-top: 30px; /* 整个区块往下 */
 }
 
+/* 桌面端样式 */
+  @media (min-width: 768px) {
+    #characterGallery {
+      min-height: 85vh;
+      overflow: hidden;
+    }
+ 
+    .character-showcase__info {
+      max-height: 420px;
+      padding: 20px 40px;
+    }
+    .character-showcase__sidebar {
+      margin-top: -200px;
+    }
+  }
+
+
+/* 手机端样式 */
+@media (max-width: 767px) {
+  #characterGallery {
+    min-height: auto;
+    padding: 10px;
+  }
+
+  .character-showcase {
+    display: flex;
+    flex-direction: column; /* 竖着排 */
+    align-items: center;
+    gap: 10px;
+  }
+
+  /* ✅ 照片（主展示）放在上面 */
+  .character-showcase__main {
+    order: 1 !important; /* 照片在上 */
+    margin-top: -20px !important; /* 往上拉一点 */
+  }
+
+  /* ✅ 人物选择放下面 */
+  .character-showcase__sidebar {
+    order: 2 !important; /* 选择在下 */
+    margin-top: 10px !important; /* 往下留点空间 */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .character-showcase__sidebar img {
+    width: 50px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+/* 调整角色画廊分页按钮位置 */
+.character-gallery__pagination,
+.character-showcase__pagination {
+  overflow: visible !important;
+  position: relative;
+  top: 110px !important; /* 数字越大越往下 */
+
+
+}
+
+}
+
 </style>
 </head>
 <body>
@@ -95,7 +160,7 @@
             <p id="heroSectionSubtitle" class="hero-section__subtitle"></p>
             <div class="hero-section__actions">
                 <button class="btn btn--secondary" onclick="scrollToSection('videoShowcase')">
-                    查看百业混剪
+                    查看百业视频
                 </button>
                 <button class="btn btn--primary" onclick="scrollToSection('organizationActivities')">
                     探索百业活动
@@ -234,12 +299,12 @@
             </div>
             <div class="character-showcase__main">
                 <div id="characterInfoPanel" class="character-showcase__info">
-                    <h1 id="characterDisplayName" class="character-showcase__name">峰伈</h1>
+                    <h1 id="characterDisplayName" class="character-showcase__name">名福禄</h1>
                     <p id="characterDisplayTitle" class="character-showcase__role">社长</p>
                     <div id="characterDisplayTags" class="character-showcase__tags">
-                        <span class="character-showcase__tag">虹虹玩家</span>
-                        <span class="character-showcase__tag">紫色韵味</span>
-                        <span class="character-showcase__tag">开服玩家</span>
+                        <span class="character-showcase__tag">照顾萌新</span>
+                        <span class="character-showcase__tag">仁心若水</span>
+                        <span class="character-showcase__tag">一帮之主</span>
                     </div>
                     <p id="characterDisplayDescription" class="character-showcase__description">为人仁厚，重情重义。</p>
                 </div>
@@ -247,13 +312,8 @@
                     <div id="characterArtworkContainer" class="character-showcase__artwork-container" onclick="nextCharacterArt()">
                         <div class="character-showcase__artwork-faces">
                             <div class="character-showcase__artwork-face character-showcase__artwork-face--front">
-                                <img id="characterArtworkImage" src="https://s3plus.meituan.net/opapisdk/op_ticket_885190757_1757398092558_qdqqd_fqwyyr.avif" alt="峰伈">
+                                <img id="characterArtworkImage" src="https://s3plus.meituan.net/opapisdk/op_ticket_885190757_1760188962521_qdqqd_jkible.webp" alt="太华山">
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </section>
 
     <!-- 关于我们区域 -->

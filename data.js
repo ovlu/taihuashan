@@ -120,7 +120,7 @@ const characterData = [
     
     name: "顾熙",
     title: "天玄",
-    desc: "标题",
+    desc: "顾太华破敌阵，熙星映剑证无名。",
     tags: ["破军战神", "沉浸肝游", "威而不怒"],
     avatar: "https://s3plus.meituan.net/opapisdk/op_ticket_885190757_1760268233751_qdqqd_j9nrg3.jpg",
     art: [
@@ -133,7 +133,7 @@ const characterData = [
     
     name: "殁凉",
     title: "天玄",
-    desc: "苦酒折柳今相离，无风无月也无你",
+    desc: "殁问江湖痴情客，凉州月满渡佳人。",
     tags: ["风华绝代", "权倾太华", "威而不怒"],
     avatar: "https://s3plus.meituan.net/opapisdk/op_ticket_885190757_1760278597553_qdqqd_553w2u.jpg",
     art: [

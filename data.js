@@ -105,7 +105,7 @@ const characterData = [
   },
  {
     
-    name: "希阿容博",
+    name: "希阿荣博",
     title: "神一道天",
     desc: "我顾及的事情太多，身体也不太好，胳膊肘和膝盖火辣辣的疼。",
     tags: ["腰缠万贯", "聚沙成塔", "金光灿灿"],
@@ -120,7 +120,7 @@ const characterData = [
     
     name: "顾熙",
     title: "天玄",
-    desc: "顾太华破敌阵，熙星映剑证无名。",
+    desc: "顾守太华破敌阵，熙星映剑证无名。",
     tags: ["破军战神", "沉浸肝游", "威而不怒"],
     avatar: "https://s3plus.meituan.net/opapisdk/op_ticket_885190757_1760268233751_qdqqd_j9nrg3.jpg",
     art: [
@@ -134,7 +134,7 @@ const characterData = [
     name: "殁凉",
     title: "天玄",
     desc: "殁问江湖痴情客，凉州月满渡佳人。",
-    tags: ["风华绝代", "权倾太华", "威而不怒"],
+    tags: ["太华太华", "太华太华", "太华太华"],
     avatar: "https://s3plus.meituan.net/opapisdk/op_ticket_885190757_1760278597553_qdqqd_553w2u.jpg",
     art: [
       "https://s3plus.meituan.net/opapisdk/op_ticket_885190757_1760278377998_qdqqd_ighqfm.png",
@@ -158,9 +158,9 @@ const characterData = [
 {
     
     name: "哥舒大炮",
-    title: "天玄",
+    title: "北洛石门",
     desc: "别人笑我太疯癫，我笑他人看不穿。",
-    tags: ["风华绝代", "权倾太华", "威而不怒"],
+    tags: ["陆地神炮", "人间大炮", "想要摸鱼"],
     avatar: "https://s3plus.meituan.net/opapisdk/op_ticket_885190757_1760278455914_qdqqd_2c037v.jpg",
     art: [
       "https://s3plus.meituan.net/opapisdk/op_ticket_885190757_1760278215517_qdqqd_1og0ik.png",
@@ -313,8 +313,8 @@ const characterData = [
     
     name: "苏樾黎",
     title: "天玄",
-    desc: "标题",
-    tags: ["风华绝代", "权倾太华", "威而不怒"],
+    desc: "瀚雪金戈风入阵，为伊独赴黄泉会",
+    tags: ["玉雕宗师", "横刀修罗", "夜鸮"],
     avatar: "https://s3plus.meituan.net/opapisdk/op_ticket_885190757_1760441469366_qdqqd_1uime0.avif",
     art: [
       "https://s3plus.meituan.net/opapisdk/op_ticket_885190757_1760441211490_qdqqd_c0jp61.avif",

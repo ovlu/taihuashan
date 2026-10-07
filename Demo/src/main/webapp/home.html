@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>燕云十六声 · 宣传站</title>
+    <title>燕云十六声 · 太华山</title>
     <style>
         * {
             margin: 0;
@@ -14,7 +14,7 @@
 
         html, body {
             height: 100%;
-            background: #0a0c0f;
+            background: #0a0806;
         }
 
         body {
@@ -22,6 +22,178 @@
             flex-direction: column;
             min-height: 100vh;
             overflow-x: hidden;
+            position: relative;
+        }
+
+        /* ============================================
+           ★★★ 武侠水墨风背景 ★★★
+           ============================================ */
+        .bg-scene {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+            pointer-events: none;
+            background: 
+                radial-gradient(ellipse at 50% 0%, rgba(60, 40, 20, 0.6) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 100%, rgba(40, 30, 20, 0.5) 0%, transparent 50%),
+                linear-gradient(180deg, #1a1410 0%, #0f0b08 50%, #0a0806 100%);
+        }
+
+        /* 1. 宣纸纹理 */
+        .bg-paper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.15;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(200, 170, 120, 0.15) 0%, transparent 30%),
+                radial-gradient(circle at 80% 70%, rgba(180, 150, 100, 0.12) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(150, 120, 80, 0.08) 0%, transparent 50%);
+            mix-blend-mode: overlay;
+        }
+
+        /* 2. 远山层 - 水墨山水 */
+        .bg-mountains {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60%;
+            opacity: 0.35;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 600' preserveAspectRatio='none'><path d='M0,600 L0,400 Q100,320 200,380 Q300,280 400,350 Q500,250 600,340 Q700,260 800,330 Q900,240 1000,320 Q1100,270 1200,350 Q1300,290 1400,370 Q1500,310 1600,380 L1600,600 Z' fill='%232a1f15' opacity='0.7'/><path d='M0,600 L0,480 Q150,400 300,460 Q450,380 600,450 Q750,370 900,440 Q1050,380 1200,460 Q1350,400 1500,470 Q1550,440 1600,460 L1600,600 Z' fill='%231a1208' opacity='0.8'/><path d='M0,600 L0,540 Q200,480 400,530 Q600,470 800,520 Q1000,460 1200,530 Q1400,490 1600,540 L1600,600 Z' fill='%230f0a05'/></svg>");
+            background-size: cover;
+            background-position: bottom center;
+            animation: mountainsFade 20s ease-in-out infinite;
+        }
+
+        @keyframes mountainsFade {
+            0%, 100% { opacity: 0.35; }
+            50% { opacity: 0.5; }
+        }
+
+        /* 3. 水墨云雾 */
+        .bg-mist {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(ellipse at 20% 40%, rgba(220, 200, 170, 0.06) 0%, transparent 40%),
+                radial-gradient(ellipse at 80% 60%, rgba(220, 200, 170, 0.05) 0%, transparent 40%),
+                radial-gradient(ellipse at 50% 80%, rgba(200, 180, 150, 0.04) 0%, transparent 50%);
+            animation: mistDrift 30s ease-in-out infinite;
+        }
+
+        @keyframes mistDrift {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(30px); }
+        }
+
+        /* 4. 竹林剪影 - 左侧 */
+        .bg-bamboo-left {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 18%;
+            height: 100%;
+            opacity: 0.18;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 800' preserveAspectRatio='none'><g stroke='%232a1f15' stroke-width='8' fill='none'><path d='M30,800 L40,600 L35,400 L45,200 L40,0'/><path d='M80,800 L75,650 L85,450 L78,250 L82,0'/><path d='M120,800 L130,600 L122,400 L135,200 L125,0'/><path d='M160,800 L155,650 L165,450 L158,250 L162,0'/></g><g stroke='%233a2a1a' stroke-width='4' fill='none'><path d='M40,500 Q60,480 80,500'/><path d='M80,400 Q100,380 120,400'/><path d='M130,550 Q150,530 170,550'/><path d='M35,300 Q55,280 75,300'/></g></svg>");
+            background-size: cover;
+            background-position: left center;
+            animation: bambooSway 8s ease-in-out infinite;
+            transform-origin: bottom left;
+        }
+
+        @keyframes bambooSway {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(0.8deg); }
+        }
+
+        /* 5. 竹林剪影 - 右侧 */
+        .bg-bamboo-right {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 18%;
+            height: 100%;
+            opacity: 0.18;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 800' preserveAspectRatio='none'><g stroke='%232a1f15' stroke-width='8' fill='none'><path d='M30,800 L40,600 L35,400 L45,200 L40,0'/><path d='M80,800 L75,650 L85,450 L78,250 L82,0'/><path d='M120,800 L130,600 L122,400 L135,200 L125,0'/><path d='M160,800 L155,650 L165,450 L158,250 L162,0'/></g><g stroke='%233a2a1a' stroke-width='4' fill='none'><path d='M40,500 Q60,480 80,500'/><path d='M80,400 Q100,380 120,400'/><path d='M130,550 Q150,530 170,550'/><path d='M35,300 Q55,280 75,300'/></g></svg>");
+            background-size: cover;
+            background-position: right center;
+            transform: scaleX(-1);
+            animation: bambooSwayRight 9s ease-in-out infinite;
+            transform-origin: bottom right;
+        }
+
+        @keyframes bambooSwayRight {
+            0%, 100% { transform: scaleX(-1) rotate(0deg); }
+            50% { transform: scaleX(-1) rotate(0.8deg); }
+        }
+
+        /* 6. 飘落花瓣 */
+        .petals-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .petal {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: radial-gradient(circle, rgba(220, 150, 150, 0.6) 0%, rgba(180, 90, 90, 0.4) 60%, transparent 100%);
+            border-radius: 50% 0 50% 0;
+            animation: petalFall linear infinite;
+            opacity: 0.7;
+            box-shadow: 0 0 4px rgba(200, 120, 120, 0.4);
+        }
+
+        @keyframes petalFall {
+            0% {
+                transform: translateY(-10vh) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.8; }
+            100% {
+                transform: translateY(110vh) translateX(100px) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* 7. 顶部暗色渐变 */
+        .bg-top-fade {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(180deg, rgba(10, 8, 6, 0.9) 0%, transparent 100%);
+        }
+
+        /* 8. 底部暗色渐变 */
+        .bg-bottom-fade {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(0deg, rgba(10, 8, 6, 0.9) 0%, transparent 100%);
+        }
+
+        .navbar, .main-content {
+            position: relative;
+            z-index: 1;
         }
 
         /* ========== 顶部菜单栏 ========== */
@@ -30,13 +202,15 @@
             justify-content: space-between;
             align-items: center;
             padding: 12px 32px;
-            background: rgba(10, 12, 15, 0.9);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(255, 215, 140, 0.2);
+            background: rgba(15, 11, 8, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(200, 170, 100, 0.25);
             z-index: 100;
             flex-shrink: 0;
             position: sticky;
             top: 0;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
         }
 
         .logo {
@@ -75,6 +249,7 @@
             letter-spacing: 2px;
             backdrop-filter: blur(4px);
             white-space: nowrap;
+            font-family: "STKaiti", "KaiTi", "楷体", serif;
         }
 
         .nav-btn:hover {
@@ -107,33 +282,75 @@
             flex-shrink: 0;
         }
 
-        /* ===== 太华山 Logo 区域 ===== */
+        /* ============================================
+           太华山 Logo + 左右双龙
+           ============================================ */
         .taihua-logo {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 20px;
+            gap: 16px;
             margin-bottom: 24px;
             position: relative;
             padding: 10px 0;
         }
 
-        .taihua-logo::before {
-            content: '';
+        .dragon-left,
+        .dragon-right {
+            position: relative;
+            height: 100px;
             flex: 1;
-            max-width: 180px;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(200, 170, 100, 0.7), rgba(230, 215, 184, 0.9));
-            box-shadow: 0 0 12px rgba(200, 170, 100, 0.5);
+            max-width: 320px;
+            min-width: 0;
+            pointer-events: none;
+            filter: drop-shadow(0 0 20px rgba(200, 170, 100, 0.6));
         }
 
-        .taihua-logo::after {
-            content: '';
-            flex: 1;
-            max-width: 180px;
-            height: 1px;
-            background: linear-gradient(90deg, rgba(230, 215, 184, 0.9), rgba(200, 170, 100, 0.7), transparent);
-            box-shadow: 0 0 12px rgba(200, 170, 100, 0.5);
+        .dragon-left svg,
+        .dragon-right svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+            overflow: visible;
+        }
+
+        .dragon-left {
+            animation: dragonLeftFloat 5s ease-in-out infinite;
+        }
+
+        @keyframes dragonLeftFloat {
+            0%, 100% { transform: translateX(0) translateY(0); }
+            50% { transform: translateX(8px) translateY(-4px); }
+        }
+
+        .dragon-right {
+            animation: dragonRightFloat 5s ease-in-out infinite;
+        }
+
+        @keyframes dragonRightFloat {
+            0%, 100% { transform: translateX(0) translateY(0); }
+            50% { transform: translateX(-8px) translateY(-4px); }
+        }
+
+        .dragon-path {
+            animation: dragonGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes dragonGlow {
+            0%, 100% { 
+                filter: drop-shadow(0 0 4px rgba(200, 170, 100, 0.8))
+                        drop-shadow(0 0 10px rgba(200, 170, 100, 0.5));
+                opacity: 0.9;
+            }
+            50% { 
+                filter: drop-shadow(0 0 8px rgba(255, 220, 150, 1))
+                        drop-shadow(0 0 20px rgba(200, 170, 100, 0.8));
+                opacity: 1;
+            }
+        }
+
+        .dragon-right svg {
+            transform: scaleX(-1);
         }
 
         .taihua-logo-inner {
@@ -141,7 +358,8 @@
             align-items: center;
             gap: 16px;
             padding: 10px 36px;
-            background: linear-gradient(145deg, rgba(22, 26, 32, 0.9), rgba(13, 16, 20, 0.95));
+            background: linear-gradient(145deg, rgba(26, 20, 14, 0.9), rgba(15, 11, 8, 0.95));
+            backdrop-filter: blur(12px);
             border: 1px solid rgba(200, 170, 100, 0.4);
             border-radius: 60px;
             box-shadow: 
@@ -151,6 +369,7 @@
             position: relative;
             overflow: hidden;
             animation: logoGlow 4s ease-in-out infinite;
+            flex-shrink: 0;
         }
 
         @keyframes logoGlow {
@@ -250,7 +469,7 @@
             align-items: flex-start;
         }
 
-        /* ===== 视频包装（抖音iframe容器） ===== */
+        /* ===== 视频包装 ===== */
         .video-wrapper {
             position: relative;
             width: 100%;
@@ -258,18 +477,17 @@
             overflow: hidden;
             box-shadow: 
                 0 0 0 1px rgba(230, 215, 184, 0.2),
-                0 0 40px rgba(200, 170, 100, 0.25),
-                0 20px 60px rgba(0, 0, 0, 0.8);
+                0 0 60px rgba(200, 170, 100, 0.3),
+                0 20px 60px rgba(0, 0, 0, 0.9);
             background: #000;
         }
 
         .video-wrapper::before {
             content: '';
             display: block;
-            padding-top: 56.25%;  /* 16:9 比例 */
+            padding-top: 56.25%;
         }
 
-        /* 抖音 iframe 样式：绝对定位填充容器 */
         .video-wrapper iframe {
             position: absolute;
             top: 0;
@@ -289,7 +507,7 @@
             align-items: center;
             gap: 8px;
             padding: 6px 14px;
-            background: rgba(10, 12, 15, 0.7);
+            background: rgba(15, 11, 8, 0.75);
             backdrop-filter: blur(8px);
             border: 1px solid rgba(200, 170, 100, 0.4);
             border-radius: 20px;
@@ -297,6 +515,7 @@
             font-size: 13px;
             letter-spacing: 2px;
             pointer-events: none;
+            font-family: "STKaiti", "KaiTi", "楷体", serif;
         }
 
         .video-badge::before {
@@ -335,15 +554,15 @@
             margin-top: 8px;
         }
 
-        /* ========== 轮播照片区块 ========== */
+        /* ========== 轮播照片区块（背景已去除） ========== */
         .carousel-section {
             flex: 1;
             position: relative;
-            background: radial-gradient(circle at center, #14181d 0%, #07090b 100%);
+            background: transparent;
             margin-top: 20px;
             padding: 60px 0 80px;
             overflow: hidden;
-            min-height: 500px;
+            min-height: 560px;
         }
 
         .section-label {
@@ -351,28 +570,29 @@
             top: 24px;
             left: 50%;
             transform: translateX(-50%);
-            color: rgba(230, 215, 184, 0.6);
+            color: rgba(230, 215, 184, 0.7);
             font-size: 15px;
             letter-spacing: 8px;
             z-index: 10;
             pointer-events: none;
-            text-shadow: 0 0 12px rgba(0, 0, 0, 0.8);
+            text-shadow: 0 0 12px rgba(0, 0, 0, 0.9);
+            font-family: "STKaiti", "KaiTi", "楷体", serif;
         }
 
         .section-label::before,
         .section-label::after {
             content: '—';
             margin: 0 14px;
-            color: rgba(200, 170, 100, 0.4);
+            color: rgba(200, 170, 100, 0.5);
         }
 
         .carousel-container {
             position: relative;
             width: 100%;
-            max-width: 1200px;
+            max-width: 1500px;
             margin: 0 auto;
-            padding: 0 80px;
-            height: 380px;
+            padding: 0 100px;
+            height: 460px;
         }
 
         .carousel-viewport {
@@ -439,14 +659,14 @@
             bottom: 0;
             left: 0;
             right: 0;
-            padding: 40px 30px 20px;
+            padding: 50px 40px 24px;
             background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.85) 100%);
             color: #e6d7b8;
             pointer-events: none;
         }
 
         .carousel-item-overlay h3 {
-            font-size: 20px;
+            font-size: 24px;
             letter-spacing: 4px;
             font-weight: 500;
             font-family: "STKaiti", "KaiTi", "楷体", serif;
@@ -455,7 +675,7 @@
         }
 
         .carousel-item-overlay p {
-            font-size: 12px;
+            font-size: 13px;
             letter-spacing: 3px;
             color: rgba(230, 215, 184, 0.6);
         }
@@ -464,14 +684,14 @@
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            width: 56px;
-            height: 56px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
-            background: rgba(10, 12, 15, 0.7);
+            background: rgba(15, 11, 8, 0.75);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(200, 170, 100, 0.4);
             color: #e6d7b8;
-            font-size: 24px;
+            font-size: 26px;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -490,11 +710,11 @@
         }
 
         .carousel-btn.prev {
-            left: 10px;
+            left: 14px;
         }
 
         .carousel-btn.next {
-            right: 10px;
+            right: 14px;
         }
 
         .carousel-dots {
@@ -615,7 +835,7 @@
         }
 
         .join-modal-content {
-            background: linear-gradient(145deg, #161a20, #0d1014);
+            background: linear-gradient(145deg, #1a1410, #0d0906);
             border: 1px solid rgba(200, 170, 100, 0.45);
             border-radius: 20px;
             padding: 40px 50px;
@@ -651,7 +871,7 @@
             letter-spacing: 6px;
             font-weight: 500;
             margin-bottom: 8px;
-            font-family: "Times New Roman", "宋体", serif;
+            font-family: "STKaiti", "KaiTi", "楷体", serif;
             text-shadow: 0 0 18px rgba(200, 170, 100, 0.6);
         }
 
@@ -719,7 +939,7 @@
             letter-spacing: 4px;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-family: inherit;
+            font-family: "STKaiti", "KaiTi", "楷体", serif;
         }
 
         .join-modal-close:hover {
@@ -730,6 +950,18 @@
         }
 
         /* ========== 响应式 ========== */
+        @media (max-width: 1024px) {
+            .carousel-container {
+                padding: 0 60px;
+                height: 380px;
+            }
+            .dragon-left,
+            .dragon-right {
+                max-width: 180px;
+                height: 80px;
+            }
+        }
+
         @media (max-width: 768px) {
             .navbar {
                 padding: 10px 14px;
@@ -757,12 +989,13 @@
                 padding: 0 12px;
             }
             .taihua-logo {
-                gap: 10px;
+                gap: 8px;
                 margin-bottom: 16px;
             }
-            .taihua-logo::before,
-            .taihua-logo::after {
-                max-width: 40px;
+            .dragon-left,
+            .dragon-right {
+                max-width: 80px;
+                height: 50px;
             }
             .taihua-logo-inner {
                 padding: 8px 22px;
@@ -853,6 +1086,10 @@
             .join-item .value {
                 font-size: 15px;
             }
+            .bg-bamboo-left,
+            .bg-bamboo-right {
+                opacity: 0.1;
+            }
         }
 
         @media (max-width: 420px) {
@@ -867,9 +1104,10 @@
             .taihua-logo-inner {
                 padding: 6px 16px;
             }
-            .taihua-logo::before,
-            .taihua-logo::after {
-                max-width: 20px;
+            .dragon-left,
+            .dragon-right {
+                max-width: 40px;
+                height: 32px;
             }
             .carousel-section {
                 min-height: 340px;
@@ -888,12 +1126,34 @@
 </head>
 <body>
 
+    <!-- ============================================
+         ★★★ 武侠水墨风背景 ★★★
+         ============================================ -->
+    <div class="bg-scene">
+        <!-- 宣纸纹理 -->
+        <div class="bg-paper"></div>
+        <!-- 远山水墨 -->
+        <div class="bg-mountains"></div>
+        <!-- 云雾 -->
+        <div class="bg-mist"></div>
+        <!-- 左侧竹林 -->
+        <div class="bg-bamboo-left"></div>
+        <!-- 右侧竹林 -->
+        <div class="bg-bamboo-right"></div>
+        <!-- 飘落花瓣 -->
+        <div class="petals-container" id="petalsContainer"></div>
+        <!-- 顶部暗色渐变 -->
+        <div class="bg-top-fade"></div>
+        <!-- 底部暗色渐变 -->
+        <div class="bg-bottom-fade"></div>
+    </div>
+
     <!-- ========== 顶部菜单 ========== -->
     <div class="navbar">
         <div class="logo">燕云十六声</div>
         <div class="nav-center"></div>
         <div class="nav-right">
-            <button class="nav-btn" id="albumBtn">相册视频</button>
+            <button class="nav-btn" id="albumBtn">花名册</button>
             <button class="nav-btn" id="joinBtn">加入</button>
         </div>
     </div>
@@ -904,12 +1164,87 @@
         <!-- 视频播放器区域 -->
         <div class="video-section">
 
-            <!-- 太华山 Logo -->
+            <!-- 太华山 Logo + 左右双龙 -->
             <div class="taihua-logo">
+
+                <!-- 左侧龙 -->
+                <div class="dragon-left">
+                    <svg viewBox="0 0 400 100" preserveAspectRatio="xMidYMid meet">
+                        <defs>
+                            <linearGradient id="dragonGold1" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" stop-color="rgba(200, 170, 100, 0.1)"/>
+                                <stop offset="50%" stop-color="rgba(230, 215, 184, 0.9)"/>
+                                <stop offset="100%" stop-color="rgba(255, 240, 200, 1)"/>
+                            </linearGradient>
+                            <filter id="dragonBlur1">
+                                <feGaussianBlur stdDeviation="1"/>
+                            </filter>
+                        </defs>
+                        <path class="dragon-path" 
+                            d="M 0,50 
+                               Q 30,20 60,45 
+                               T 120,40 
+                               Q 150,25 180,50 
+                               T 240,45 
+                               Q 270,30 300,50 
+                               T 360,48 
+                               L 400,48"
+                            fill="none" 
+                            stroke="url(#dragonGold1)" 
+                            stroke-width="3"
+                            stroke-linecap="round"
+                            filter="url(#dragonBlur1)"/>
+                        <path class="dragon-path"
+                            d="M 30,45 Q 45,35 60,45 
+                               M 90,42 Q 105,32 120,42 
+                               M 150,45 Q 165,35 180,45 
+                               M 210,42 Q 225,32 240,42 
+                               M 270,45 Q 285,35 300,45 
+                               M 330,42 Q 345,32 360,42"
+                            fill="none"
+                            stroke="rgba(230, 215, 184, 0.6)"
+                            stroke-width="1.5"
+                            stroke-linecap="round"/>
+                        <path d="M 60,45 Q 50,20 70,15" 
+                            fill="none" 
+                            stroke="rgba(230, 215, 184, 0.7)" 
+                            stroke-width="1.5"/>
+                        <path d="M 180,50 Q 170,25 190,18" 
+                            fill="none" 
+                            stroke="rgba(230, 215, 184, 0.7)" 
+                            stroke-width="1.5"/>
+                        <path d="M 300,50 Q 290,28 310,20" 
+                            fill="none" 
+                            stroke="rgba(230, 215, 184, 0.7)" 
+                            stroke-width="1.5"/>
+                        <circle cx="60" cy="45" r="2.5" fill="rgba(255, 240, 200, 1)">
+                            <animate attributeName="opacity" values="1;0.3;1" dur="2s" repeatCount="indefinite"/>
+                        </circle>
+                        <circle cx="180" cy="50" r="2.5" fill="rgba(255, 240, 200, 1)">
+                            <animate attributeName="opacity" values="1;0.3;1" dur="2s" begin="0.5s" repeatCount="indefinite"/>
+                        </circle>
+                        <circle cx="300" cy="50" r="2.5" fill="rgba(255, 240, 200, 1)">
+                            <animate attributeName="opacity" values="1;0.3;1" dur="2s" begin="1s" repeatCount="indefinite"/>
+                        </circle>
+                        <g transform="translate(370, 48)">
+                            <path d="M 0,0 Q 15,-8 25,-2 Q 30,5 20,10 Q 10,12 0,5 Z" 
+                                fill="rgba(230, 215, 184, 0.9)"
+                                stroke="rgba(255, 240, 200, 1)"
+                                stroke-width="1"/>
+                            <circle cx="15" cy="0" r="2" fill="rgba(255, 50, 50, 0.9)">
+                                <animate attributeName="opacity" values="1;0.4;1" dur="1.5s" repeatCount="indefinite"/>
+                            </circle>
+                            <path d="M 8,-5 Q 5,-15 12,-18" fill="none" stroke="rgba(255, 240, 200, 1)" stroke-width="2"/>
+                            <path d="M 15,-6 Q 15,-18 22,-20" fill="none" stroke="rgba(255, 240, 200, 1)" stroke-width="2"/>
+                        </g>
+                    </svg>
+                </div>
+
+                <!-- 中央 Logo -->
                 <div class="taihua-logo-inner">
                     <img 
                         class="yanyun-logo-img" 
-                        src="https://picsum.photos/id/1015/200/200" 
+                        src="carousel/logo.webp/1015/200/200" 
                         alt="燕云十六声"
                         onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22><rect width=%22200%22 height=%22200%22 fill=%22%231a1e24%22/><text x=%22100%22 y=%22115%22 font-size=%2260%22 fill=%22%23c9a45c%22 text-anchor=%22middle%22 font-family=%22serif%22>燕云</text></svg>'"
                     >
@@ -918,19 +1253,87 @@
                         <span class="taihua-sub">TAIHUA MOUNTAIN</span>
                     </div>
                 </div>
+
+                <!-- 右侧龙 -->
+                <div class="dragon-right">
+                    <svg viewBox="0 0 400 100" preserveAspectRatio="xMidYMid meet">
+                        <defs>
+                            <linearGradient id="dragonGold2" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" stop-color="rgba(200, 170, 100, 0.1)"/>
+                                <stop offset="50%" stop-color="rgba(230, 215, 184, 0.9)"/>
+                                <stop offset="100%" stop-color="rgba(255, 240, 200, 1)"/>
+                            </linearGradient>
+                            <filter id="dragonBlur2">
+                                <feGaussianBlur stdDeviation="1"/>
+                            </filter>
+                        </defs>
+                        <path class="dragon-path" 
+                            d="M 0,50 
+                               Q 30,20 60,45 
+                               T 120,40 
+                               Q 150,25 180,50 
+                               T 240,45 
+                               Q 270,30 300,50 
+                               T 360,48 
+                               L 400,48"
+                            fill="none" 
+                            stroke="url(#dragonGold2)" 
+                            stroke-width="3"
+                            stroke-linecap="round"
+                            filter="url(#dragonBlur2)"/>
+                        <path class="dragon-path"
+                            d="M 30,45 Q 45,35 60,45 
+                               M 90,42 Q 105,32 120,42 
+                               M 150,45 Q 165,35 180,45 
+                               M 210,42 Q 225,32 240,42 
+                               M 270,45 Q 285,35 300,45 
+                               M 330,42 Q 345,32 360,42"
+                            fill="none"
+                            stroke="rgba(230, 215, 184, 0.6)"
+                            stroke-width="1.5"
+                            stroke-linecap="round"/>
+                        <path d="M 60,45 Q 50,20 70,15" 
+                            fill="none" 
+                            stroke="rgba(230, 215, 184, 0.7)" 
+                            stroke-width="1.5"/>
+                        <path d="M 180,50 Q 170,25 190,18" 
+                            fill="none" 
+                            stroke="rgba(230, 215, 184, 0.7)" 
+                            stroke-width="1.5"/>
+                        <path d="M 300,50 Q 290,28 310,20" 
+                            fill="none" 
+                            stroke="rgba(230, 215, 184, 0.7)" 
+                            stroke-width="1.5"/>
+                        <circle cx="60" cy="45" r="2.5" fill="rgba(255, 240, 200, 1)">
+                            <animate attributeName="opacity" values="1;0.3;1" dur="2s" repeatCount="indefinite"/>
+                        </circle>
+                        <circle cx="180" cy="50" r="2.5" fill="rgba(255, 240, 200, 1)">
+                            <animate attributeName="opacity" values="1;0.3;1" dur="2s" begin="0.5s" repeatCount="indefinite"/>
+                        </circle>
+                        <circle cx="300" cy="50" r="2.5" fill="rgba(255, 240, 200, 1)">
+                            <animate attributeName="opacity" values="1;0.3;1" dur="2s" begin="1s" repeatCount="indefinite"/>
+                        </circle>
+                        <g transform="translate(370, 48)">
+                            <path d="M 0,0 Q 15,-8 25,-2 Q 30,5 20,10 Q 10,12 0,5 Z" 
+                                fill="rgba(230, 215, 184, 0.9)"
+                                stroke="rgba(255, 240, 200, 1)"
+                                stroke-width="1"/>
+                            <circle cx="15" cy="0" r="2" fill="rgba(255, 50, 50, 0.9)">
+                                <animate attributeName="opacity" values="1;0.4;1" dur="1.5s" repeatCount="indefinite"/>
+                            </circle>
+                            <path d="M 8,-5 Q 5,-15 12,-18" fill="none" stroke="rgba(255, 240, 200, 1)" stroke-width="2"/>
+                            <path d="M 15,-6 Q 15,-18 22,-20" fill="none" stroke="rgba(255, 240, 200, 1)" stroke-width="2"/>
+                        </g>
+                    </svg>
+                </div>
             </div>
 
-            <!-- ===== 抖音视频 iframe 嵌入 ===== -->
+            <!-- 抖音视频 iframe 嵌入 -->
             <div class="video-wrapper">
-                <div class="video-badge">最新预告</div>
+                <div class="video-badge">百业宣传</div>
 
-                <!-- 
-                    ★★★ 替换下方 iframe 的 src ★★★
-                    把 vid= 后面的数字换成你自己的抖音视频ID
-                    例如：vid=7146408143612
-                -->
                 <iframe 
-                    src="https://open.douyin.com/player/video?vid=7146408143612&autoplay=0"
+                    src="https://open.douyin.com/player/video?vid=7559060766079520052&autoplay=0"
                     frameborder="0"
                     referrerpolicy="unsafe-url"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -944,7 +1347,7 @@
             </div>
         </div>
 
-        <!-- 轮播照片区域 -->
+        <!-- 轮播照片区域（背景已去除） -->
         <div class="carousel-section">
             <div class="section-label">江湖相册</div>
 
@@ -976,97 +1379,74 @@
 
             <div class="join-item">
                 <span class="label">百业名称</span>
-                <span class="value highlight">燕云十六声</span>
+                <span class="value highlight">太华山</span>
             </div>
 
             <div class="join-item">
                 <span class="label">微信</span>
-                <span class="value highlight">YanYun16</span>
+                <span class="value highlight">cool86161</span>
             </div>
 
             <button class="join-modal-close" id="joinModalClose">关 闭</button>
         </div>
     </div>
 
-    <!-- ========== 脚本 ========== -->
+    <!-- ============================================
+         花瓣飘落脚本
+         ============================================ -->
     <script>
-        // =========================================
-        // ★★★ 轮播图片配置 ★★★
-        // 把下面的路径替换成你自己的本地图片
-        // =========================================
+        (function() {
+            const container = document.getElementById('petalsContainer');
+            if (!container) return;
+            
+            const PETAL_COUNT = 25;
+            
+            function createPetal() {
+                const petal = document.createElement('div');
+                petal.className = 'petal';
+                
+                // 随机水平位置
+                petal.style.left = Math.random() * 100 + '%';
+                // 随机动画时长 12~22 秒
+                const duration = 12 + Math.random() * 10;
+                petal.style.animationDuration = duration + 's';
+                // 随机延迟 0~15 秒
+                petal.style.animationDelay = Math.random() * 15 + 's';
+                // 随机大小
+                const size = 6 + Math.random() * 8;
+                petal.style.width = size + 'px';
+                petal.style.height = size + 'px';
+                // 随机旋转方向
+                petal.style.transform = `rotate(${Math.random() * 360}deg)`;
+                
+                container.appendChild(petal);
+            }
+            
+            // 初始创建
+            for (let i = 0; i < PETAL_COUNT; i++) {
+                createPetal();
+            }
+            
+            // 定期补充新的花瓣，避免动画结束后消失
+            setInterval(() => {
+                if (container.children.length < PETAL_COUNT) {
+                    createPetal();
+                }
+            }, 5000);
+        })();
+    </script>
+
+    <!-- ========== 业务脚本 ========== -->
+    <script>
         const images = [
-            { url: "images/photo1.jpg",  title: "云梦泽",   subtitle: "CLOUD DREAM" },
-            { url: "images/photo2.jpg",  title: "燕云关",   subtitle: "YANYUN PASS" },
-            { url: "images/photo3.jpg",  title: "太华剑",   subtitle: "TAIHUA SWORD" },
-            { url: "images/photo4.jpg",  title: "苍梧山",   subtitle: "CANGWU MOUNTAIN" },
-            { url: "images/photo5.jpg",  title: "明月楼",   subtitle: "MOON TOWER" },
-            { url: "images/photo6.jpg",  title: "落雁坡",   subtitle: "FALLING GOOSE" },
-            { url: "images/photo7.jpg",  title: "破阵图",   subtitle: "BATTLE FORMATION" },
-            { url: "images/photo8.jpg",  title: "寒江雪",   subtitle: "COLD RIVER SNOW" },
-            { url: "images/photo9.jpg",  title: "长安道",   subtitle: "CHANGAN ROAD" },
-            { url: "images/photo10.jpg", title: "烽火台",   subtitle: "BEACON TOWER" },
-            { url: "images/photo11.jpg", title: "望舒阁",   subtitle: "WANGSHU PAVILION" },
-            { url: "images/photo12.jpg", title: "剑门关",   subtitle: "SWORD GATE" }
+            { url: "carousel/z1.jpg",  title: "云梦泽",   subtitle: "CLOUD DREAM" },
+            { url: "carousel/z2.jpg",  title: "燕云关",   subtitle: "YANYUN PASS" },
+            { url: "carousel/z3.jpg",  title: "太华剑",   subtitle: "TAIHUA SWORD" },
+            { url: "carousel/z4.jpg",  title: "苍梧山",   subtitle: "CANGWU MOUNTAIN" },
+            { url: "carousel/z5.jpg",  title: "明月楼",   subtitle: "MOON TOWER" },
+            { url: "carousel/z6.jpg",  title: "落雁坡",   subtitle: "FALLING GOOSE" }
         ];
 
-        // =========================================
-        // 图片压缩函数（强制压缩到指定尺寸）
-        // =========================================
-        function compressImage(url, maxSize = 1200, quality = 0.85) {
-            return new Promise((resolve) => {
-                const img = new Image();
-                img.crossOrigin = 'anonymous';
-                
-                img.onload = () => {
-                    let srcW = img.naturalWidth;
-                    let srcH = img.naturalHeight;
-                    
-                    let dstW = srcW, dstH = srcH;
-                    if (srcW >= srcH && srcW > maxSize) {
-                        dstW = maxSize;
-                        dstH = Math.round((srcH * maxSize) / srcW);
-                    } else if (srcH > srcW && srcH > maxSize) {
-                        dstH = maxSize;
-                        dstW = Math.round((srcW * maxSize) / srcH);
-                    }
-                    
-                    const canvas = document.createElement('canvas');
-                    canvas.width = dstW;
-                    canvas.height = dstH;
-                    const ctx = canvas.getContext('2d');
-                    ctx.imageSmoothingEnabled = true;
-                    ctx.imageSmoothingQuality = 'high';
-                    ctx.drawImage(img, 0, 0, srcW, srcH, 0, 0, dstW, dstH);
-                    
-                    resolve(canvas.toDataURL('image/jpeg', quality));
-                };
-                
-                img.onerror = () => {
-                    // 加载失败，返回占位图
-                    const canvas = document.createElement('canvas');
-                    canvas.width = 800;
-                    canvas.height = 500;
-                    const ctx = canvas.getContext('2d');
-                    const grad = ctx.createLinearGradient(0, 0, 800, 500);
-                    grad.addColorStop(0, '#1a1e24');
-                    grad.addColorStop(1, '#0d1014');
-                    ctx.fillStyle = grad;
-                    ctx.fillRect(0, 0, 800, 500);
-                    ctx.fillStyle = '#c9a45c';
-                    ctx.font = 'bold 40px serif';
-                    ctx.textAlign = 'center';
-                    ctx.textBaseline = 'middle';
-                    ctx.fillText('图片加载失败', 400, 250);
-                    resolve(canvas.toDataURL('image/jpeg', 0.85));
-                };
-                
-                img.src = url;
-            });
-        }
-
-        // =========================================
-        // 轮播初始化
-        // =========================================
         const carouselTrack = document.getElementById('carouselTrack');
         const carouselDots = document.getElementById('carouselDots');
         const prevBtn = document.getElementById('carouselPrev');
@@ -1074,30 +1454,37 @@
 
         let currentIndex = 0;
         let autoPlayTimer = null;
-        const AUTO_PLAY_INTERVAL = 4000; // 自动播放间隔（毫秒）
+        const AUTO_PLAY_INTERVAL = 4000;
 
         function buildCarousel() {
-            carouselTrack.innerHTML = '';
-            carouselDots.innerHTML = '';
+            while (carouselTrack.firstChild) {
+                carouselTrack.removeChild(carouselTrack.firstChild);
+            }
+            while (carouselDots.firstChild) {
+                carouselDots.removeChild(carouselDots.firstChild);
+            }
 
             images.forEach((item, index) => {
                 const slide = document.createElement('div');
                 slide.className = 'carousel-item';
-                
+
                 const inner = document.createElement('div');
                 inner.className = 'carousel-item-inner';
-                inner.dataset.index = index;
-                inner.dataset.url = item.url;
 
                 const img = document.createElement('img');
                 img.alt = item.title;
-                img.src = item.url;
-                // 异步压缩替换
-                compressImage(item.url, 1200, 0.85).then(compressedUrl => {
-                    img.src = compressedUrl;
-                });
-                
-                // 点击放大
+                img.loading = 'lazy';
+                img.decoding = 'async';
+
+                img.addEventListener('error', function() {
+                    console.warn('图片加载失败:', item.url);
+                    this.style.background = 'linear-gradient(135deg, #1a1410, #0d0906)';
+                    this.style.display = 'block';
+                    this.removeAttribute('src');
+                }, { once: true });
+
+                img.setAttribute('src', item.url);
+
                 inner.addEventListener('click', () => {
                     const lightbox = document.getElementById('lightbox');
                     const lightboxImg = document.getElementById('lightboxImg');
@@ -1110,10 +1497,15 @@
 
                 const overlay = document.createElement('div');
                 overlay.className = 'carousel-item-overlay';
-                overlay.innerHTML = `
-                    <h3>${item.title}</h3>
-                    <p>${item.subtitle}</p>
-                `;
+
+                const h3 = document.createElement('h3');
+                h3.textContent = item.title;
+
+                const p = document.createElement('p');
+                p.textContent = item.subtitle;
+
+                overlay.appendChild(h3);
+                overlay.appendChild(p);
                 inner.appendChild(overlay);
 
                 slide.appendChild(inner);
@@ -1121,7 +1513,6 @@
 
                 const dot = document.createElement('div');
                 dot.className = 'carousel-dot' + (index === 0 ? ' active' : '');
-                dot.dataset.index = index;
                 dot.addEventListener('click', () => {
                     goToSlide(index);
                     restartAutoPlay();
@@ -1134,7 +1525,6 @@
 
         function updateCarousel() {
             carouselTrack.style.transform = `translateX(-${currentIndex * 100}%)`;
-            
             const dots = carouselDots.querySelectorAll('.carousel-dot');
             dots.forEach((dot, i) => {
                 dot.classList.toggle('active', i === currentIndex);
@@ -1148,19 +1538,12 @@
             updateCarousel();
         }
 
-        function prevSlide() {
-            goToSlide(currentIndex - 1);
-        }
-
-        function nextSlide() {
-            goToSlide(currentIndex + 1);
-        }
+        function prevSlide() { goToSlide(currentIndex - 1); }
+        function nextSlide() { goToSlide(currentIndex + 1); }
 
         function startAutoPlay() {
             stopAutoPlay();
-            autoPlayTimer = setInterval(() => {
-                nextSlide();
-            }, AUTO_PLAY_INTERVAL);
+            autoPlayTimer = setInterval(nextSlide, AUTO_PLAY_INTERVAL);
         }
 
         function stopAutoPlay() {
@@ -1175,66 +1558,39 @@
             startAutoPlay();
         }
 
-        prevBtn.addEventListener('click', () => {
-            prevSlide();
-            restartAutoPlay();
-        });
-
-        nextBtn.addEventListener('click', () => {
-            nextSlide();
-            restartAutoPlay();
-        });
+        prevBtn.addEventListener('click', () => { prevSlide(); restartAutoPlay(); });
+        nextBtn.addEventListener('click', () => { nextSlide(); restartAutoPlay(); });
 
         const carouselContainer = document.querySelector('.carousel-container');
         carouselContainer.addEventListener('mouseenter', stopAutoPlay);
         carouselContainer.addEventListener('mouseleave', startAutoPlay);
 
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowLeft') {
-                prevSlide();
-                restartAutoPlay();
-            } else if (e.key === 'ArrowRight') {
-                nextSlide();
-                restartAutoPlay();
-            }
+            if (e.key === 'ArrowLeft') { prevSlide(); restartAutoPlay(); }
+            else if (e.key === 'ArrowRight') { nextSlide(); restartAutoPlay(); }
         });
 
-        // 触摸滑动
         let touchStartX = 0;
-        let touchEndX = 0;
         const viewport = document.querySelector('.carousel-viewport');
-        
         viewport.addEventListener('touchstart', (e) => {
             touchStartX = e.changedTouches[0].screenX;
             stopAutoPlay();
         }, { passive: true });
-
         viewport.addEventListener('touchend', (e) => {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
+            const diff = touchStartX - e.changedTouches[0].screenX;
+            if (Math.abs(diff) > 50) {
+                if (diff > 0) nextSlide();
+                else prevSlide();
+            }
             startAutoPlay();
         }, { passive: true });
-
-        function handleSwipe() {
-            const diff = touchStartX - touchEndX;
-            if (Math.abs(diff) > 50) {
-                if (diff > 0) {
-                    nextSlide();
-                } else {
-                    prevSlide();
-                }
-            }
-        }
 
         buildCarousel();
         startAutoPlay();
 
-        // =========================================
-        // 放大查看
-        // =========================================
         const lightbox = document.getElementById('lightbox');
         const lightboxClose = document.getElementById('lightboxClose');
-        
+
         const closeLightbox = () => {
             lightbox.classList.remove('show');
             startAutoPlay();
@@ -1245,19 +1601,14 @@
             if (e.target === lightbox) closeLightbox();
         });
 
-        // =========================================
-        // 相册视频按钮
-        // =========================================
         document.getElementById('albumBtn').addEventListener('click', () => {
-            document.querySelector('.carousel-section').scrollIntoView({ 
-                behavior: 'smooth', 
-                block: 'start' 
-            });
+            // 方式1：当前窗口跳转
+            window.location.href = 'album.html';
+            
+            // 方式2：新标签页跳转（推荐，不影响当前页面）
+            // window.open('album.html', '_blank');
         });
 
-        // =========================================
-        // 加入弹窗
-        // =========================================
         const joinModal = document.getElementById('joinModal');
         const joinBtn = document.getElementById('joinBtn');
         const joinModalClose = document.getElementById('joinModalClose');
@@ -1277,7 +1628,6 @@
             if (e.target === joinModal) closeJoinModal();
         });
 
-        // ESC 关闭所有弹窗
         window.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 if (lightbox.classList.contains('show')) closeLightbox();

@@ -184,7 +184,6 @@
             50%, 100% { left: 100%; }
         }
 
-        /* 燕云十六声图片 Logo */
         .yanyun-logo-img {
             width: 64px;
             height: 64px;
@@ -251,6 +250,7 @@
             align-items: flex-start;
         }
 
+        /* ===== 视频包装（抖音iframe容器） ===== */
         .video-wrapper {
             position: relative;
             width: 100%;
@@ -266,16 +266,17 @@
         .video-wrapper::before {
             content: '';
             display: block;
-            padding-top: 56.25%;
+            padding-top: 56.25%;  /* 16:9 比例 */
         }
 
-        .video-wrapper video {
+        /* 抖音 iframe 样式：绝对定位填充容器 */
+        .video-wrapper iframe {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            border: 0;
             display: block;
         }
 
@@ -334,14 +335,15 @@
             margin-top: 8px;
         }
 
-        /* ========== 3D 圆形相册区块（大尺寸） ========== */
-        .sphere-section {
+        /* ========== 轮播照片区块 ========== */
+        .carousel-section {
             flex: 1;
-            min-height: 620px;
             position: relative;
             background: radial-gradient(circle at center, #14181d 0%, #07090b 100%);
             margin-top: 20px;
+            padding: 60px 0 80px;
             overflow: hidden;
+            min-height: 500px;
         }
 
         .section-label {
@@ -364,10 +366,165 @@
             color: rgba(200, 170, 100, 0.4);
         }
 
-        #canvas-container {
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 80px;
+            height: 380px;
+        }
+
+        .carousel-viewport {
+            position: relative;
             width: 100%;
             height: 100%;
+            overflow: hidden;
+            border-radius: 16px;
+        }
+
+        .carousel-track {
+            display: flex;
+            height: 100%;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: transform;
+        }
+
+        .carousel-item {
+            flex: 0 0 100%;
+            width: 100%;
+            height: 100%;
+            position: relative;
+            padding: 0 10px;
+            box-sizing: border-box;
+        }
+
+        .carousel-item-inner {
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
             cursor: pointer;
+            box-shadow: 
+                0 0 0 1px rgba(230, 215, 184, 0.15),
+                0 10px 40px rgba(0, 0, 0, 0.7),
+                0 0 30px rgba(200, 170, 100, 0.15);
+            transition: all 0.4s ease;
+            background: #1a1e24;
+        }
+
+        .carousel-item-inner:hover {
+            box-shadow: 
+                0 0 0 1px rgba(200, 170, 100, 0.5),
+                0 15px 50px rgba(0, 0, 0, 0.8),
+                0 0 50px rgba(200, 170, 100, 0.35);
+            transform: translateY(-4px);
+        }
+
+        .carousel-item-inner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.6s ease;
+        }
+
+        .carousel-item-inner:hover img {
+            transform: scale(1.05);
+        }
+
+        .carousel-item-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 40px 30px 20px;
+            background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.85) 100%);
+            color: #e6d7b8;
+            pointer-events: none;
+        }
+
+        .carousel-item-overlay h3 {
+            font-size: 20px;
+            letter-spacing: 4px;
+            font-weight: 500;
+            font-family: "STKaiti", "KaiTi", "楷体", serif;
+            text-shadow: 0 0 15px rgba(200, 170, 100, 0.6);
+            margin-bottom: 4px;
+        }
+
+        .carousel-item-overlay p {
+            font-size: 12px;
+            letter-spacing: 3px;
+            color: rgba(230, 215, 184, 0.6);
+        }
+
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: rgba(10, 12, 15, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(200, 170, 100, 0.4);
+            color: #e6d7b8;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 20;
+            user-select: none;
+        }
+
+        .carousel-btn:hover {
+            background: rgba(200, 170, 100, 0.25);
+            border-color: #c9a45c;
+            color: #fff3d6;
+            box-shadow: 0 0 25px rgba(200, 170, 100, 0.5);
+            transform: translateY(-50%) scale(1.08);
+        }
+
+        .carousel-btn.prev {
+            left: 10px;
+        }
+
+        .carousel-btn.next {
+            right: 10px;
+        }
+
+        .carousel-dots {
+            position: absolute;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 20;
+        }
+
+        .carousel-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(230, 215, 184, 0.25);
+            border: 1px solid rgba(200, 170, 100, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .carousel-dot.active {
+            background: #c9a45c;
+            box-shadow: 0 0 12px rgba(200, 170, 100, 0.9);
+            transform: scale(1.25);
+        }
+
+        .carousel-dot:hover {
+            background: rgba(200, 170, 100, 0.6);
         }
 
         /* ========== 放大查看遮罩层 ========== */
@@ -633,12 +790,47 @@
                 font-size: 11px;
                 letter-spacing: 2px;
             }
-            .sphere-section {
-                min-height: 420px;
+            .carousel-section {
+                min-height: 400px;
+                padding: 50px 0 60px;
             }
             .section-label {
                 font-size: 12px;
                 letter-spacing: 4px;
+            }
+            .carousel-container {
+                padding: 0 50px;
+                height: 280px;
+            }
+            .carousel-btn {
+                width: 42px;
+                height: 42px;
+                font-size: 18px;
+            }
+            .carousel-btn.prev {
+                left: 2px;
+            }
+            .carousel-btn.next {
+                right: 2px;
+            }
+            .carousel-item-overlay {
+                padding: 30px 20px 14px;
+            }
+            .carousel-item-overlay h3 {
+                font-size: 16px;
+                letter-spacing: 2px;
+            }
+            .carousel-item-overlay p {
+                font-size: 10px;
+                letter-spacing: 2px;
+            }
+            .carousel-dots {
+                bottom: 16px;
+                gap: 8px;
+            }
+            .carousel-dot {
+                width: 8px;
+                height: 8px;
             }
             .lightbox-close {
                 top: 16px;
@@ -679,8 +871,17 @@
             .taihua-logo::after {
                 max-width: 20px;
             }
-            .sphere-section {
-                min-height: 360px;
+            .carousel-section {
+                min-height: 340px;
+            }
+            .carousel-container {
+                padding: 0 42px;
+                height: 230px;
+            }
+            .carousel-btn {
+                width: 36px;
+                height: 36px;
+                font-size: 16px;
             }
         }
     </style>
@@ -719,30 +920,44 @@
                 </div>
             </div>
 
+            <!-- ===== 抖音视频 iframe 嵌入 ===== -->
             <div class="video-wrapper">
                 <div class="video-badge">最新预告</div>
-                <video 
-                    id="promoVideo"
-                    controls 
-                    playsinline
-                    poster="https://picsum.photos/id/1015/1280/720"
-                    preload="metadata"
-                >
-                    <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
-                    <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4">
-                    您的浏览器不支持视频播放。
-                </video>
+
+                <!-- 
+                    ★★★ 替换下方 iframe 的 src ★★★
+                    把 vid= 后面的数字换成你自己的抖音视频ID
+                    例如：vid=7146408143612
+                -->
+                <iframe 
+                    src="https://open.douyin.com/player/video?vid=7146408143612&autoplay=0"
+                    frameborder="0"
+                    referrerpolicy="unsafe-url"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen>
+                </iframe>
             </div>
+
             <div class="video-title">
                 <h1>燕云十六声</h1>
                 <p>乱世风云 · 侠客行</p>
             </div>
         </div>
 
-        <!-- 3D 圆形相册区域 -->
-        <div class="sphere-section">
+        <!-- 轮播照片区域 -->
+        <div class="carousel-section">
             <div class="section-label">江湖相册</div>
-            <div id="canvas-container"></div>
+
+            <div class="carousel-container">
+                <button class="carousel-btn prev" id="carouselPrev">‹</button>
+                <button class="carousel-btn next" id="carouselNext">›</button>
+
+                <div class="carousel-viewport">
+                    <div class="carousel-track" id="carouselTrack"></div>
+                </div>
+
+                <div class="carousel-dots" id="carouselDots"></div>
+            </div>
         </div>
     </div>
 
@@ -773,257 +988,288 @@
         </div>
     </div>
 
-    <!-- ========== Three.js ========== -->
-    <script type="importmap">
-        {
-            "imports": {
-                "three": "https://unpkg.com/three@0.128.0/build/three.module.js"
+    <!-- ========== 脚本 ========== -->
+    <script>
+        // =========================================
+        // ★★★ 轮播图片配置 ★★★
+        // 把下面的路径替换成你自己的本地图片
+        // =========================================
+        const images = [
+            { url: "images/photo1.jpg",  title: "云梦泽",   subtitle: "CLOUD DREAM" },
+            { url: "images/photo2.jpg",  title: "燕云关",   subtitle: "YANYUN PASS" },
+            { url: "images/photo3.jpg",  title: "太华剑",   subtitle: "TAIHUA SWORD" },
+            { url: "images/photo4.jpg",  title: "苍梧山",   subtitle: "CANGWU MOUNTAIN" },
+            { url: "images/photo5.jpg",  title: "明月楼",   subtitle: "MOON TOWER" },
+            { url: "images/photo6.jpg",  title: "落雁坡",   subtitle: "FALLING GOOSE" },
+            { url: "images/photo7.jpg",  title: "破阵图",   subtitle: "BATTLE FORMATION" },
+            { url: "images/photo8.jpg",  title: "寒江雪",   subtitle: "COLD RIVER SNOW" },
+            { url: "images/photo9.jpg",  title: "长安道",   subtitle: "CHANGAN ROAD" },
+            { url: "images/photo10.jpg", title: "烽火台",   subtitle: "BEACON TOWER" },
+            { url: "images/photo11.jpg", title: "望舒阁",   subtitle: "WANGSHU PAVILION" },
+            { url: "images/photo12.jpg", title: "剑门关",   subtitle: "SWORD GATE" }
+        ];
+
+        // =========================================
+        // 图片压缩函数（强制压缩到指定尺寸）
+        // =========================================
+        function compressImage(url, maxSize = 1200, quality = 0.85) {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.crossOrigin = 'anonymous';
+                
+                img.onload = () => {
+                    let srcW = img.naturalWidth;
+                    let srcH = img.naturalHeight;
+                    
+                    let dstW = srcW, dstH = srcH;
+                    if (srcW >= srcH && srcW > maxSize) {
+                        dstW = maxSize;
+                        dstH = Math.round((srcH * maxSize) / srcW);
+                    } else if (srcH > srcW && srcH > maxSize) {
+                        dstH = maxSize;
+                        dstW = Math.round((srcW * maxSize) / srcH);
+                    }
+                    
+                    const canvas = document.createElement('canvas');
+                    canvas.width = dstW;
+                    canvas.height = dstH;
+                    const ctx = canvas.getContext('2d');
+                    ctx.imageSmoothingEnabled = true;
+                    ctx.imageSmoothingQuality = 'high';
+                    ctx.drawImage(img, 0, 0, srcW, srcH, 0, 0, dstW, dstH);
+                    
+                    resolve(canvas.toDataURL('image/jpeg', quality));
+                };
+                
+                img.onerror = () => {
+                    // 加载失败，返回占位图
+                    const canvas = document.createElement('canvas');
+                    canvas.width = 800;
+                    canvas.height = 500;
+                    const ctx = canvas.getContext('2d');
+                    const grad = ctx.createLinearGradient(0, 0, 800, 500);
+                    grad.addColorStop(0, '#1a1e24');
+                    grad.addColorStop(1, '#0d1014');
+                    ctx.fillStyle = grad;
+                    ctx.fillRect(0, 0, 800, 500);
+                    ctx.fillStyle = '#c9a45c';
+                    ctx.font = 'bold 40px serif';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText('图片加载失败', 400, 250);
+                    resolve(canvas.toDataURL('image/jpeg', 0.85));
+                };
+                
+                img.src = url;
+            });
+        }
+
+        // =========================================
+        // 轮播初始化
+        // =========================================
+        const carouselTrack = document.getElementById('carouselTrack');
+        const carouselDots = document.getElementById('carouselDots');
+        const prevBtn = document.getElementById('carouselPrev');
+        const nextBtn = document.getElementById('carouselNext');
+
+        let currentIndex = 0;
+        let autoPlayTimer = null;
+        const AUTO_PLAY_INTERVAL = 4000; // 自动播放间隔（毫秒）
+
+        function buildCarousel() {
+            carouselTrack.innerHTML = '';
+            carouselDots.innerHTML = '';
+
+            images.forEach((item, index) => {
+                const slide = document.createElement('div');
+                slide.className = 'carousel-item';
+                
+                const inner = document.createElement('div');
+                inner.className = 'carousel-item-inner';
+                inner.dataset.index = index;
+                inner.dataset.url = item.url;
+
+                const img = document.createElement('img');
+                img.alt = item.title;
+                img.src = item.url;
+                // 异步压缩替换
+                compressImage(item.url, 1200, 0.85).then(compressedUrl => {
+                    img.src = compressedUrl;
+                });
+                
+                // 点击放大
+                inner.addEventListener('click', () => {
+                    const lightbox = document.getElementById('lightbox');
+                    const lightboxImg = document.getElementById('lightboxImg');
+                    lightboxImg.src = item.url;
+                    lightbox.classList.add('show');
+                    stopAutoPlay();
+                });
+
+                inner.appendChild(img);
+
+                const overlay = document.createElement('div');
+                overlay.className = 'carousel-item-overlay';
+                overlay.innerHTML = `
+                    <h3>${item.title}</h3>
+                    <p>${item.subtitle}</p>
+                `;
+                inner.appendChild(overlay);
+
+                slide.appendChild(inner);
+                carouselTrack.appendChild(slide);
+
+                const dot = document.createElement('div');
+                dot.className = 'carousel-dot' + (index === 0 ? ' active' : '');
+                dot.dataset.index = index;
+                dot.addEventListener('click', () => {
+                    goToSlide(index);
+                    restartAutoPlay();
+                });
+                carouselDots.appendChild(dot);
+            });
+
+            updateCarousel();
+        }
+
+        function updateCarousel() {
+            carouselTrack.style.transform = `translateX(-${currentIndex * 100}%)`;
+            
+            const dots = carouselDots.querySelectorAll('.carousel-dot');
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === currentIndex);
+            });
+        }
+
+        function goToSlide(index) {
+            currentIndex = index;
+            if (currentIndex < 0) currentIndex = images.length - 1;
+            if (currentIndex >= images.length) currentIndex = 0;
+            updateCarousel();
+        }
+
+        function prevSlide() {
+            goToSlide(currentIndex - 1);
+        }
+
+        function nextSlide() {
+            goToSlide(currentIndex + 1);
+        }
+
+        function startAutoPlay() {
+            stopAutoPlay();
+            autoPlayTimer = setInterval(() => {
+                nextSlide();
+            }, AUTO_PLAY_INTERVAL);
+        }
+
+        function stopAutoPlay() {
+            if (autoPlayTimer) {
+                clearInterval(autoPlayTimer);
+                autoPlayTimer = null;
             }
         }
-    </script>
 
-    <script type="module">
-        import * as THREE from 'three';
+        function restartAutoPlay() {
+            stopAutoPlay();
+            startAutoPlay();
+        }
 
-        // ===== 初始化场景 =====
-        const container = document.getElementById('canvas-container');
+        prevBtn.addEventListener('click', () => {
+            prevSlide();
+            restartAutoPlay();
+        });
+
+        nextBtn.addEventListener('click', () => {
+            nextSlide();
+            restartAutoPlay();
+        });
+
+        const carouselContainer = document.querySelector('.carousel-container');
+        carouselContainer.addEventListener('mouseenter', stopAutoPlay);
+        carouselContainer.addEventListener('mouseleave', startAutoPlay);
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+                prevSlide();
+                restartAutoPlay();
+            } else if (e.key === 'ArrowRight') {
+                nextSlide();
+                restartAutoPlay();
+            }
+        });
+
+        // 触摸滑动
+        let touchStartX = 0;
+        let touchEndX = 0;
+        const viewport = document.querySelector('.carousel-viewport');
         
-        function init3D() {
-            const width = container.clientWidth;
-            const height = container.clientHeight;
-            
-            if (width === 0 || height === 0) {
-                setTimeout(init3D, 100);
-                return;
-            }
+        viewport.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+            stopAutoPlay();
+        }, { passive: true });
 
-            const scene = new THREE.Scene();
-            
-            const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
-            camera.position.set(0, 0, 20);
-            camera.lookAt(0, 0, 0);
+        viewport.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+            startAutoPlay();
+        }, { passive: true });
 
-            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-            renderer.setSize(width, height);
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-            container.appendChild(renderer.domElement);
-
-            // ===== 灯光 =====
-            const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
-            scene.add(ambientLight);
-
-            const light1 = new THREE.PointLight(0xffffff, 0.8);
-            light1.position.set(10, 10, 10);
-            scene.add(light1);
-            
-            const light2 = new THREE.PointLight(0xccaa77, 0.6);
-            light2.position.set(-10, -5, 10);
-            scene.add(light2);
-
-            // ===== 创建正圆形球体相册 =====
-            const sphereRadius = 7.5;
-            
-            const sphereGroup = new THREE.Group();
-            scene.add(sphereGroup);
-
-            const rows = 4;
-            const cols = 8;
-
-            const imageIds = [
-                1011, 1015, 1016, 1018, 1020, 1024, 1025, 1027,
-                1035, 1036, 1039, 1040, 1041, 1043, 1044, 1045,
-                1047, 1049, 1050, 1052, 1053, 1055, 1057, 1059
-            ];
-
-            const imageMeshes = [];
-
-            for (let row = 0; row < rows; row++) {
-                const lat = (row / (rows - 1)) * 120 - 60;
-                const phiRad = THREE.MathUtils.degToRad(lat);
-                
-                const cosPhi = Math.cos(phiRad);
-                const sinPhi = Math.sin(phiRad);
-                
-                const y = sphereRadius * sinPhi;
-                const horizontalRadius = sphereRadius * cosPhi;
-
-                for (let col = 0; col < cols; col++) {
-                    const theta = (col / cols) * Math.PI * 2;
-                    const cosTheta = Math.cos(theta);
-                    const sinTheta = Math.sin(theta);
-                    
-                    const x = horizontalRadius * cosTheta;
-                    const z = horizontalRadius * sinTheta;
-
-                    const idx = row * cols + col;
-                    if (idx >= imageIds.length) continue;
-
-                    const imgId = imageIds[idx % imageIds.length];
-                    const imgUrl = `https://picsum.photos/id/${imgId}/400/400`;
-
-                    const textureLoader = new THREE.TextureLoader();
-                    const texture = textureLoader.load(imgUrl);
-
-                    const avgRadius = horizontalRadius;
-                    let baseSize;
-                    if (avgRadius > 0.1) {
-                        const circumference = 2 * Math.PI * avgRadius;
-                        baseSize = (circumference / cols) * 0.8;
-                    } else {
-                        baseSize = 1.2;
-                    }
-                    baseSize = Math.max(1.0, Math.min(2.8, baseSize));
-                    
-                    const width2 = baseSize * 1.1;
-                    const height2 = baseSize * 1.1;
-
-                    const geometry = new THREE.PlaneGeometry(width2, height2);
-                    const material = new THREE.MeshStandardMaterial({
-                        map: texture,
-                        side: THREE.DoubleSide,
-                        emissive: new THREE.Color(0x222222),
-                        roughness: 0.4,
-                        metalness: 0.1,
-                        emissiveIntensity: 0.2
-                    });
-
-                    const mesh = new THREE.Mesh(geometry, material);
-                    mesh.position.set(x, y, z);
-                    
-                    const normalDir = new THREE.Vector3(x, y, z).normalize();
-                    const lookTarget = new THREE.Vector3(x, y, z).add(normalDir);
-                    mesh.lookAt(lookTarget);
-
-                    mesh.userData = {
-                        url: imgUrl,
-                        isImageMesh: true
-                    };
-
-                    sphereGroup.add(mesh);
-                    imageMeshes.push(mesh);
-                }
-            }
-
-            // 线框球
-            const wireframeSphere = new THREE.Mesh(
-                new THREE.SphereGeometry(sphereRadius * 1.02, 32, 16),
-                new THREE.MeshBasicMaterial({
-                    wireframe: true,
-                    color: 0xc9a45c,
-                    transparent: true,
-                    opacity: 0.08
-                })
-            );
-            sphereGroup.add(wireframeSphere);
-
-            // ===== 动画循环：自由旋转（X轴+Y轴同时转动） =====
-            function animate() {
-                requestAnimationFrame(animate);
-                
-                // 自由旋转：同时绕X轴和Y轴缓慢转动
-                // 这样球体各个角度都能展示，每张图片都能被看到
-                sphereGroup.rotation.y += 0.004;   // Y轴旋转
-                sphereGroup.rotation.x += 0.0015;  // X轴轻微旋转
-                
-                renderer.render(scene, camera);
-            }
-            animate();
-
-            // ===== 射线检测（点击放大） =====
-            const raycaster = new THREE.Raycaster();
-            const mouse = new THREE.Vector2();
-            let hoveredMesh = null;
-
-            container.addEventListener('mousemove', (event) => {
-                const rect = container.getBoundingClientRect();
-                mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-                mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
-
-                raycaster.setFromCamera(mouse, camera);
-                const intersects = raycaster.intersectObjects(imageMeshes);
-
-                if (intersects.length > 0) {
-                    if (hoveredMesh !== intersects[0].object) {
-                        if (hoveredMesh) hoveredMesh.scale.set(1, 1, 1);
-                        hoveredMesh = intersects[0].object;
-                        hoveredMesh.scale.set(1.08, 1.08, 1.08);
-                    }
-                    container.style.cursor = 'pointer';
+        function handleSwipe() {
+            const diff = touchStartX - touchEndX;
+            if (Math.abs(diff) > 50) {
+                if (diff > 0) {
+                    nextSlide();
                 } else {
-                    if (hoveredMesh) {
-                        hoveredMesh.scale.set(1, 1, 1);
-                        hoveredMesh = null;
-                    }
-                    container.style.cursor = 'default';
+                    prevSlide();
                 }
-            });
-
-            container.addEventListener('click', (event) => {
-                const rect = container.getBoundingClientRect();
-                mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-                mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
-
-                raycaster.setFromCamera(mouse, camera);
-                const intersects = raycaster.intersectObjects(imageMeshes);
-
-                if (intersects.length > 0) {
-                    const hit = intersects[0].object;
-                    if (hit.userData.isImageMesh) {
-                        const lightbox = document.getElementById('lightbox');
-                        const lightboxImg = document.getElementById('lightboxImg');
-                        lightboxImg.src = hit.userData.url;
-                        lightbox.classList.add('show');
-                    }
-                }
-            });
-
-            // ===== 放大遮罩关闭 =====
-            const lightbox = document.getElementById('lightbox');
-            const lightboxClose = document.getElementById('lightboxClose');
-            
-            const closeLightbox = () => {
-                lightbox.classList.remove('show');
-            };
-
-            lightboxClose.addEventListener('click', closeLightbox);
-            lightbox.addEventListener('click', (e) => {
-                if (e.target === lightbox) closeLightbox();
-            });
-
-            // ===== 窗口自适应 =====
-            window.addEventListener('resize', () => {
-                const w = container.clientWidth;
-                const h = container.clientHeight;
-                if (w === 0 || h === 0) return;
-                
-                renderer.setSize(w, h);
-                camera.aspect = w / h;
-                camera.updateProjectionMatrix();
-            });
+            }
         }
 
-        // 启动3D初始化
-        init3D();
+        buildCarousel();
+        startAutoPlay();
 
-        // ===== 相册视频按钮 =====
+        // =========================================
+        // 放大查看
+        // =========================================
+        const lightbox = document.getElementById('lightbox');
+        const lightboxClose = document.getElementById('lightboxClose');
+        
+        const closeLightbox = () => {
+            lightbox.classList.remove('show');
+            startAutoPlay();
+        };
+
+        lightboxClose.addEventListener('click', closeLightbox);
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) closeLightbox();
+        });
+
+        // =========================================
+        // 相册视频按钮
+        // =========================================
         document.getElementById('albumBtn').addEventListener('click', () => {
-            document.querySelector('.sphere-section').scrollIntoView({ 
+            document.querySelector('.carousel-section').scrollIntoView({ 
                 behavior: 'smooth', 
                 block: 'start' 
             });
         });
 
-        // ===== 加入按钮：弹出弹窗 =====
+        // =========================================
+        // 加入弹窗
+        // =========================================
         const joinModal = document.getElementById('joinModal');
         const joinBtn = document.getElementById('joinBtn');
         const joinModalClose = document.getElementById('joinModalClose');
 
         joinBtn.addEventListener('click', () => {
             joinModal.classList.add('show');
+            stopAutoPlay();
         });
 
         const closeJoinModal = () => {
             joinModal.classList.remove('show');
+            startAutoPlay();
         };
 
         joinModalClose.addEventListener('click', closeJoinModal);

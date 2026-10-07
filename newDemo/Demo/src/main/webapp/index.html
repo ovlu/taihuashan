@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>燕云十六声 · 执剑江湖</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #0a0c0e;
+            overflow: hidden;
+            font-family: 'STKaiti', 'KaiTi', '华文楷体', 'Microsoft YaHei', serif;
+            color: #e8dcc8;
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            cursor: pointer;
+            transition: opacity 0.6s ease;
+        }
+
+        /* 点击跳转提示 */
+        .enter-hint {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.9rem;
+            color: #c4b49a;
+            letter-spacing: 0.5em;
+            text-indent: 0.5em;
+            z-index: 20;
+            font-family: 'STKaiti', 'KaiTi', serif;
+            opacity: 0.7;
+            pointer-events: none;
+            animation: hintPulse 2.5s ease-in-out infinite;
+            white-space: nowrap;
+            text-shadow: 0 0 15px rgba(180, 140, 80, 0.5);
+        }
+
+        @keyframes hintPulse {
+            0%, 100% { opacity: 0.4; letter-spacing: 0.5em; }
+            50% { opacity: 1; letter-spacing: 0.7em; }
+        }
+
+        /* 点击涟漪效果 */
+        .ripple {
+            position: fixed;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(200, 180, 140, 0.3) 0%, rgba(200, 180, 140, 0) 70%);
+            transform: translate(-50%, -50%) scale(0);
+            animation: rippleExpand 0.8s ease-out forwards;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        @keyframes rippleExpand {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(4); opacity: 0; }
+        }
+
+        /* 水墨背景画布 */
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        /* 主标题区域 */
+        .hero {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 2rem;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 印章风格装饰 */
+        .seal {
+            position: absolute;
+            top: -30px;
+            right: -40px;
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            border: 3px solid #b83b2d;
+            color: #b83b2d;
+            font-size: 15px;
+            line-height: 1.3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            transform: rotate(-15deg);
+            opacity: 0.85;
+            font-weight: bold;
+            letter-spacing: 2px;
+            background: rgba(184, 59, 45, 0.08);
+            backdrop-filter: blur(1px);
+            animation: sealGlow 4s ease-in-out infinite alternate;
+            font-family: 'STKaiti', 'KaiTi', serif;
+            pointer-events: none;
+        }
+
+        @keyframes sealGlow {
+            0% { opacity: 0.6; box-shadow: 0 0 10px rgba(184, 59, 45, 0.2); }
+            100% { opacity: 1; box-shadow: 0 0 25px rgba(184, 59, 45, 0.5); }
+        }
+
+        /* 横排主标题（燕云十六声） */
+        .title-main {
+            display: flex;
+            flex-direction: row;
+            align-items: baseline;
+            justify-content: center;
+            gap: 0.15em;
+            margin-bottom: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .title-main .char {
+            font-size: clamp(2.8rem, 9vw, 5.5rem);
+            font-weight: 900;
+            color: #e8dcc8;
+            text-shadow: 
+                0 0 15px rgba(200, 180, 140, 0.5),
+                0 0 30px rgba(180, 140, 80, 0.3),
+                0 4px 8px rgba(0, 0, 0, 0.8);
+            letter-spacing: 0.02em;
+            line-height: 1.2;
+            transform: scaleY(1.1);
+            font-family: 'STKaiti', 'KaiTi', '华文楷体', serif;
+            animation: charFade 3s ease-in-out infinite alternate;
+        }
+
+        .title-main .char:nth-child(2) {
+            margin-right: 0.3em;
+        }
+        
+        .title-main .char:nth-child(3),
+        .title-main .char:nth-child(4),
+        .title-main .char:nth-child(5),
+        .title-main .char:nth-child(6) {
+            font-size: clamp(2.2rem, 7.5vw, 4.5rem);
+            color: #d4c5a8;
+        }
+
+        .title-main .char:nth-child(1) { animation-delay: 0s; }
+        .title-main .char:nth-child(2) { animation-delay: 0.2s; }
+        .title-main .char:nth-child(3) { animation-delay: 0.4s; }
+        .title-main .char:nth-child(4) { animation-delay: 0.6s; }
+        .title-main .char:nth-child(5) { animation-delay: 0.8s; }
+        .title-main .char:nth-child(6) { animation-delay: 1.0s; }
+
+        @keyframes charFade {
+            0% { opacity: 0.7; text-shadow: 0 0 10px rgba(200, 180, 140, 0.3); }
+            100% { opacity: 1; text-shadow: 0 0 30px rgba(200, 180, 140, 0.7), 0 0 60px rgba(180, 140, 80, 0.4); }
+        }
+
+        /* 副标题 */
+        .subtitle {
+            font-size: clamp(1rem, 3vw, 1.6rem);
+            color: #c4b49a;
+            letter-spacing: 0.5em;
+            text-indent: 0.5em;
+            margin-top: 0.8rem;
+            text-shadow: 0 0 15px rgba(180, 140, 80, 0.4);
+            opacity: 0.9;
+            animation: subPulse 5s ease-in-out infinite;
+            font-family: 'STKaiti', 'KaiTi', serif;
+            padding-right: 0.5em;
+        }
+
+        @keyframes subPulse {
+            0%, 100% { opacity: 0.6; letter-spacing: 0.5em; }
+            50% { opacity: 1; letter-spacing: 0.65em; }
+        }
+
+        /* 横批小字 */
+        .horizontal-note {
+            font-size: 0.95rem;
+            color: #9a8a70;
+            letter-spacing: 0.4em;
+            text-indent: 0.4em;
+            margin-top: 1.2rem;
+            opacity: 0.7;
+            font-style: italic;
+            font-family: 'STKaiti', 'KaiTi', serif;
+        }
+
+        /* 右下角诗词 */
+        .poem {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            writing-mode: vertical-rl;
+            text-orientation: upright;
+            font-size: 1rem;
+            color: #8a7a60;
+            letter-spacing: 0.3em;
+            line-height: 2.2;
+            z-index: 10;
+            font-family: 'STKaiti', 'KaiTi', serif;
+            opacity: 0.65;
+            pointer-events: none;
+            text-shadow: 0 0 10px rgba(0,0,0,0.8);
+            animation: poemGlow 6s ease-in-out infinite;
+        }
+
+        @keyframes poemGlow {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 0.8; }
+        }
+
+        /* 左上角小字 */
+        .corner-text {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            font-size: 0.9rem;
+            color: #8a7a60;
+            letter-spacing: 0.2em;
+            z-index: 10;
+            font-family: 'STKaiti', 'KaiTi', serif;
+            opacity: 0.6;
+            border-left: 2px solid #b83b2d;
+            padding-left: 12px;
+            line-height: 1.8;
+            pointer-events: none;
+        }
+
+        /* 竹叶飘落容器 */
+        #leaves-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 5;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        /* 加载提示 */
+        #loading {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(200, 180, 140, 0.4);
+            font-size: 12px;
+            letter-spacing: 3px;
+            z-index: 20;
+            font-family: 'STKaiti', serif;
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 600px) {
+            .seal {
+                width: 65px;
+                height: 65px;
+                font-size: 12px;
+                top: -20px;
+                right: -20px;
+            }
+            .poem {
+                font-size: 0.75rem;
+                bottom: 15px;
+                right: 15px;
+            }
+            .corner-text {
+                font-size: 0.75rem;
+                top: 15px;
+                left: 15px;
+            }
+            .title-main {
+                gap: 0.08em;
+            }
+            .enter-hint {
+                bottom: 50px;
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 水墨背景画布 -->
+    <div id="canvas-container"></div>
+
+    <!-- 竹叶飘落 -->
+    <div id="leaves-container"></div>
+
+    <!-- 主视觉区域 -->
+    <div class="hero">
+        <div style="position: relative; display: inline-block;">
+            <!-- 印章 -->
+            <div class="seal">燕<br>云<br>十<br>六<br>声</div>
+            <!-- 横排主标题 -->
+            <div class="title-main">
+                <span class="char">燕</span>
+                <span class="char">云</span>
+                <span class="char">十</span>
+                <span class="char">六</span>
+                <span class="char">声</span>
+            </div>
+        </div>
+        <div class="subtitle">太 华 山</div>
+        <div class="horizontal-note">— 仗剑天涯 · 快意恩仇 —</div>
+    </div>
+
+    <!-- 右下角诗词 -->
+    <div class="poem">
+        十步杀一人<br>
+        千里不留行<br>
+        事了拂衣去<br>
+        深藏身与名
+    </div>
+
+    <!-- 左上角小字 -->
+    <div class="corner-text">
+        燕云十六声
+    </div>
+
+    <!-- 点击进入提示 -->
+    <div class="enter-hint">轻 触 入 江 湖</div>
+
+    <div id="loading">· 加载中 ·</div>
+
+    <!-- 使用 Three.js 生成水墨风格背景 -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.128.0/build/three.module.js"
+            }
+        }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+
+        // ============================================================
+        // 配置跳转目标 URL —— 请在此处修改为您想跳转的页面地址
+        // ============================================================
+        const TARGET_URL = 'index2.html'; // ← 替换成您的目标网址
+
+        // --- 初始化场景 ---
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x0a0c0e); // 深墨色
+        
+        // 添加雾效，让远处模糊，产生水墨晕染感
+        scene.fog = new THREE.FogExp2(0x0a0c0e, 0.008);
+
+        const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(0, 2, 18);
+        camera.lookAt(0, 2, 0);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+        // --- 创建水墨质感的粒子纹理 ---
+        function createInkTexture() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 128;
+            canvas.height = 128;
+            const ctx = canvas.getContext('2d');
+            
+            const gradient = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
+            gradient.addColorStop(0, 'rgba(240, 235, 220, 1)');
+            gradient.addColorStop(0.3, 'rgba(180, 165, 140, 0.8)');
+            gradient.addColorStop(0.6, 'rgba(100, 90, 75, 0.4)');
+            gradient.addColorStop(0.85, 'rgba(50, 45, 40, 0.1)');
+            gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+            
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 128, 128);
+            
+            for (let i = 0; i < 60; i++) {
+                const x = Math.random() * 128;
+                const y = Math.random() * 128;
+                const r = Math.random() * 8 + 2;
+                const alpha = Math.random() * 0.3;
+                ctx.beginPath();
+                ctx.arc(x, y, r, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(180, 170, 150, ${alpha})`;
+                ctx.fill();
+            }
+            
+            return new THREE.CanvasTexture(canvas);
+        }
+
+        const inkTexture = createInkTexture();
+
+        // --- 创建远山轮廓粒子群 ---
+        function createMountainLayer(zPos, color, size, count, opacity, yOffset, spread) {
+            const geometry = new THREE.BufferGeometry();
+            const positions = new Float32Array(count * 3);
+            const colors = new Float32Array(count * 3);
+            
+            for (let i = 0; i < count; i++) {
+                const x = (Math.random() - 0.5) * spread * 2;
+                const distFromCenter = Math.abs(x) / spread;
+                const baseY = Math.sin(x * 0.5) * 2 + Math.cos(x * 0.8) * 1.5 + Math.sin(x * 1.2) * 1;
+                const y = baseY + yOffset + (Math.random() - 0.5) * 1.5 - distFromCenter * 2;
+                const z = zPos + (Math.random() - 0.5) * 2;
+                
+                positions[i*3] = x;
+                positions[i*3+1] = y;
+                positions[i*3+2] = z;
+                
+                const gray = 0.3 + Math.random() * 0.4;
+                colors[i*3] = gray * 0.9;
+                colors[i*3+1] = gray * 0.85;
+                colors[i*3+2] = gray * 0.75;
+            }
+            
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+            
+            const material = new THREE.PointsMaterial({
+                size: size,
+                map: inkTexture,
+                vertexColors: true,
+                transparent: true,
+                blending: THREE.NormalBlending,
+                depthWrite: false,
+                sizeAttenuation: true,
+                opacity: opacity
+            });
+            
+            return new THREE.Points(geometry, material);
+        }
+
+        scene.add(createMountainLayer(-15, 0x3a3530, 0.8, 800, 0.4, 0, 25));
+        scene.add(createMountainLayer(-8, 0x4a4540, 0.6, 600, 0.5, -1, 20));
+        scene.add(createMountainLayer(-3, 0x5a554e, 0.5, 400, 0.6, -2, 15));
+
+        // --- 漂浮的墨点（雾气）---
+        const mistGeo = new THREE.BufferGeometry();
+        const mistCount = 1500;
+        const mistPositions = new Float32Array(mistCount * 3);
+        const mistColors = new Float32Array(mistCount * 3);
+        
+        for (let i = 0; i < mistCount; i++) {
+            mistPositions[i*3] = (Math.random() - 0.5) * 50;
+            mistPositions[i*3+1] = Math.random() * 15 - 5;
+            mistPositions[i*3+2] = (Math.random() - 0.5) * 30 - 5;
+            
+            const brightness = 0.3 + Math.random() * 0.5;
+            mistColors[i*3] = brightness * 0.9;
+            mistColors[i*3+1] = brightness * 0.85;
+            mistColors[i*3+2] = brightness * 0.8;
+        }
+        
+        mistGeo.setAttribute('position', new THREE.BufferAttribute(mistPositions, 3));
+        mistGeo.setAttribute('color', new THREE.BufferAttribute(mistColors, 3));
+        
+        const mistMaterial = new THREE.PointsMaterial({
+            size: 0.4,
+            map: inkTexture,
+            vertexColors: true,
+            transparent: true,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false,
+            sizeAttenuation: true,
+            opacity: 0.15
+        });
+        
+        const mistParticles = new THREE.Points(mistGeo, mistMaterial);
+        scene.add(mistParticles);
+
+        // --- 飘动的墨迹粒子 ---
+        const flyingGeo = new THREE.BufferGeometry();
+        const flyingCount = 200;
+        const flyingPositions = new Float32Array(flyingCount * 3);
+        const flyingColors = new Float32Array(flyingCount * 3);
+        
+        for (let i = 0; i < flyingCount; i++) {
+            flyingPositions[i*3] = (Math.random() - 0.5) * 40;
+            flyingPositions[i*3+1] = Math.random() * 12 - 2;
+            flyingPositions[i*3+2] = (Math.random() - 0.5) * 25 - 5;
+            
+            flyingColors[i*3] = 0.2 + Math.random() * 0.3;
+            flyingColors[i*3+1] = 0.15 + Math.random() * 0.25;
+            flyingColors[i*3+2] = 0.1 + Math.random() * 0.2;
+        }
+        
+        flyingGeo.setAttribute('position', new THREE.BufferAttribute(flyingPositions, 3));
+        flyingGeo.setAttribute('color', new THREE.BufferAttribute(flyingColors, 3));
+        
+        const flyingMaterial = new THREE.PointsMaterial({
+            size: 0.6,
+            map: inkTexture,
+            vertexColors: true,
+            transparent: true,
+            blending: THREE.NormalBlending,
+            depthWrite: false,
+            sizeAttenuation: true,
+            opacity: 0.5
+        });
+        
+        const flyingParticles = new THREE.Points(flyingGeo, flyingMaterial);
+        scene.add(flyingParticles);
+
+        // --- 竹叶飘落效果 ---
+        const leavesContainer = document.getElementById('leaves-container');
+        const leafCount = 35;
+        const leaves = [];
+
+        for (let i = 0; i < leafCount; i++) {
+            const leaf = document.createElement('div');
+            const size = 6 + Math.random() * 10;
+            const startX = Math.random() * 100;
+            const delay = Math.random() * 10;
+            const duration = 8 + Math.random() * 10;
+            const rotateStart = Math.random() * 360;
+            
+            leaf.style.position = 'absolute';
+            leaf.style.left = startX + '%';
+            leaf.style.top = '-5%';
+            leaf.style.width = size + 'px';
+            leaf.style.height = size * 0.6 + 'px';
+            leaf.style.backgroundColor = `rgba(${100 + Math.random() * 60}, ${90 + Math.random() * 50}, ${60 + Math.random() * 40}, ${0.3 + Math.random() * 0.4})`;
+            leaf.style.borderRadius = '0 80% 0 80%';
+            leaf.style.transform = `rotate(${rotateStart}deg)`;
+            leaf.style.opacity = 0.4 + Math.random() * 0.5;
+            leaf.style.boxShadow = '0 0 8px rgba(100, 80, 50, 0.3)';
+            leaf.style.animation = `leafFall ${duration}s linear ${delay}s infinite`;
+            leaf.style.pointerEvents = 'none';
+            
+            leavesContainer.appendChild(leaf);
+            leaves.push(leaf);
+        }
+
+        const styleSheet = document.createElement('style');
+        styleSheet.textContent = `
+            @keyframes leafFall {
+                0% { top: -5%; transform: translateX(0) rotate(0deg); opacity: 0; }
+                10% { opacity: 0.7; }
+                90% { opacity: 0.7; }
+                100% { top: 105%; transform: translateX(${Math.random() * 100 - 50}px) rotate(${720 + Math.random() * 360}deg); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(styleSheet);
+
+        // --- 动画循环 ---
+        let clock = new THREE.Clock();
+
+        function animate() {
+            const elapsedTime = performance.now() * 0.001;
+
+            camera.position.x = Math.sin(elapsedTime * 0.15) * 1.5;
+            camera.position.y = 2 + Math.cos(elapsedTime * 0.25) * 0.8;
+            camera.position.z = 18 + Math.sin(elapsedTime * 0.2) * 1;
+            camera.lookAt(0, 2, 0);
+
+            mistParticles.rotation.y += 0.0002;
+            mistParticles.rotation.x += 0.0001;
+            flyingParticles.rotation.y += 0.0005;
+
+            renderer.render(scene, camera);
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+
+        // --- 窗口自适应 ---
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // 隐藏加载提示
+        document.getElementById('loading').style.display = 'none';
+
+        // ============================================================
+        // 点击跳转交互逻辑
+        // ============================================================
+        let isNavigating = false;   // 防止重复点击
+
+        document.body.addEventListener('click', (e) => {
+            if (isNavigating) return;
+            isNavigating = true;
+
+            // 1. 在点击位置创建涟漪扩散效果
+            const ripple = document.createElement('div');
+            ripple.className = 'ripple';
+            const size = Math.max(window.innerWidth, window.innerHeight) * 0.6;
+            ripple.style.width = size + 'px';
+            ripple.style.height = size + 'px';
+            ripple.style.left = e.clientX + 'px';
+            ripple.style.top = e.clientY + 'px';
+            document.body.appendChild(ripple);
+
+            // 2. 页面淡出（配合跳转）
+            document.body.style.transition = 'opacity 0.6s ease';
+            document.body.style.opacity = '0';
+
+            // 3. 延迟跳转，让动画播放完毕
+            setTimeout(() => {
+                window.location.href = TARGET_URL;
+            }, 650);
+
+            // 清理涟漪元素（防止残留）
+            setTimeout(() => {
+                ripple.remove();
+            }, 900);
+        });
+    </script>
+</body>
+</html>

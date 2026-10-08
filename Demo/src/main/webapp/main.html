@@ -1,0 +1,1588 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>太华山 · 星辰主页</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background-color: #030308;
+            position: fixed;
+        }
+        canvas {
+            display: block;
+            touch-action: none;
+        }
+
+        /* ============ 顶部 Logo ============ */
+        #topBar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: max(16px, env(safe-area-inset-top)) 28px 16px 28px;
+            display: flex;
+            align-items: center;
+            z-index: 1000;
+            pointer-events: none;
+            background: linear-gradient(to bottom, rgba(3,3,8,0.8) 0%, rgba(3,3,8,0) 100%);
+        }
+        #logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            pointer-events: auto;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+        #logo:hover {
+            opacity: 0.85;
+        }
+        #logo img {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            object-fit: cover;
+            box-shadow: 0 0 20px rgba(120, 180, 255, 0.5), 0 0 40px rgba(80, 120, 255, 0.2);
+            border: 1px solid rgba(150, 200, 255, 0.3);
+            background: rgba(20, 30, 60, 0.6);
+        }
+        #logoText {
+            display: flex;
+            flex-direction: column;
+            color: #fff;
+        }
+        #logoText .main {
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: 6px;
+            text-shadow: 0 0 20px rgba(120, 180, 255, 0.8), 0 0 40px rgba(80, 120, 255, 0.4);
+        }
+        #logoText .sub {
+            font-size: 10px;
+            letter-spacing: 3px;
+            opacity: 0.5;
+            margin-top: 2px;
+            color: #aaccff;
+            text-shadow: none;
+        }
+
+        /* ============ 右侧按钮组 ============ */
+        #rightButtons {
+            position: fixed;
+            top: max(24px, calc(env(safe-area-inset-top) + 8px));
+            right: 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 1000;
+            pointer-events: auto;
+        }
+        .sideBtn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            border: 1px solid rgba(150, 200, 255, 0.35);
+            background: rgba(15, 25, 55, 0.65);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            color: #d8e8ff;
+            font-size: 14px;
+            letter-spacing: 3px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(80, 130, 255, 0.15), inset 0 0 20px rgba(80, 130, 255, 0.05);
+            white-space: nowrap;
+            user-select: none;
+            text-decoration: none;
+        }
+        .sideBtn:hover {
+            border-color: rgba(150, 200, 255, 0.8);
+            background: rgba(30, 50, 100, 0.8);
+            box-shadow: 0 0 30px rgba(100, 160, 255, 0.45), inset 0 0 30px rgba(100, 160, 255, 0.15);
+            transform: translateX(-4px);
+        }
+        .sideBtn:active {
+            transform: translateX(-2px) scale(0.97);
+        }
+        .sideBtn .icon {
+            font-size: 16px;
+            filter: drop-shadow(0 0 6px rgba(150, 200, 255, 0.8));
+        }
+        #joinBtn {
+            border-color: rgba(255, 200, 120, 0.5);
+            background: rgba(60, 40, 20, 0.65);
+            color: #ffe8c0;
+            box-shadow: 0 0 20px rgba(255, 180, 80, 0.2), inset 0 0 20px rgba(255, 180, 80, 0.05);
+        }
+        #joinBtn:hover {
+            border-color: rgba(255, 200, 120, 0.9);
+            background: rgba(80, 50, 20, 0.85);
+            box-shadow: 0 0 30px rgba(255, 180, 80, 0.5), inset 0 0 30px rgba(255, 180, 80, 0.15);
+        }
+
+        /* ============ 操作提示 ============ */
+        #hint {
+            position: fixed;
+            bottom: max(24px, env(safe-area-inset-bottom));
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.25);
+            font-size: 11px;
+            letter-spacing: 3px;
+            z-index: 100;
+            pointer-events: none;
+            white-space: nowrap;
+            text-shadow: 0 0 10px rgba(100, 150, 255, 0.3);
+            transition: opacity 0.5s;
+        }
+
+        /* ============ 弹窗遮罩 ============ */
+        .modalOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(2, 4, 12, 0.75);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.35s ease;
+            padding: 20px;
+        }
+        .modalOverlay.active {
+            display: flex;
+            opacity: 1;
+        }
+        .modalBox {
+            width: 100%;
+            max-width: 400px;
+            max-height: 85vh;
+            overflow-y: auto;
+            border-radius: 20px;
+            border: 1px solid rgba(150, 200, 255, 0.35);
+            background: linear-gradient(160deg, rgba(18, 28, 60, 0.98) 0%, rgba(10, 15, 35, 0.98) 100%);
+            box-shadow: 0 0 60px rgba(80, 130, 255, 0.3), 0 0 120px rgba(60, 100, 255, 0.15);
+            padding: 28px 26px;
+            transform: translateY(20px) scale(0.96);
+            transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+            position: relative;
+        }
+        .modalOverlay.active .modalBox {
+            transform: translateY(0) scale(1);
+        }
+        .modalBox::-webkit-scrollbar {
+            width: 6px;
+        }
+        .modalBox::-webkit-scrollbar-thumb {
+            background: rgba(120, 170, 255, 0.3);
+            border-radius: 3px;
+        }
+        .modalTitle {
+            font-size: 20px;
+            color: #fff;
+            letter-spacing: 4px;
+            margin-bottom: 6px;
+            text-shadow: 0 0 20px rgba(120, 180, 255, 0.6);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .modalSub {
+            font-size: 12px;
+            color: rgba(170, 200, 255, 0.5);
+            letter-spacing: 2px;
+            margin-bottom: 22px;
+        }
+        .closeBtn {
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1px solid rgba(150, 200, 255, 0.3);
+            background: rgba(20, 30, 60, 0.6);
+            color: #aaccff;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            line-height: 1;
+            z-index: 10;
+        }
+        .closeBtn:hover {
+            background: rgba(60, 90, 160, 0.8);
+            border-color: rgba(150, 200, 255, 0.8);
+            color: #fff;
+            transform: rotate(90deg);
+        }
+
+        /* ============ 加入弹窗内容 ============ */
+        .joinContent {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 6px 0;
+        }
+        .infoRow {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 18px 20px;
+            border-radius: 16px;
+            border: 1px solid rgba(120, 170, 255, 0.2);
+            background: rgba(15, 25, 55, 0.6);
+            transition: all 0.3s;
+        }
+        .infoRow:hover {
+            border-color: rgba(150, 200, 255, 0.45);
+            background: rgba(25, 40, 80, 0.75);
+        }
+        .infoIcon {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+            background: linear-gradient(135deg, rgba(80, 130, 255, 0.25), rgba(150, 100, 255, 0.2));
+            border: 1px solid rgba(120, 170, 255, 0.3);
+            box-shadow: 0 0 20px rgba(100, 150, 255, 0.15);
+        }
+        .infoLabel {
+            font-size: 11px;
+            color: rgba(170, 200, 255, 0.5);
+            letter-spacing: 2px;
+            margin-bottom: 6px;
+        }
+        .infoValue {
+            font-size: 20px;
+            color: #fff;
+            letter-spacing: 3px;
+            font-weight: 600;
+            text-shadow: 0 0 20px rgba(120, 180, 255, 0.5);
+        }
+        .infoValue.wechat {
+            color: #7dd8a0;
+            text-shadow: 0 0 20px rgba(100, 220, 150, 0.5);
+            font-size: 18px;
+            letter-spacing: 2px;
+        }
+        .copyBtn {
+            margin-left: auto;
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1px solid rgba(120, 170, 255, 0.3);
+            background: rgba(30, 50, 100, 0.6);
+            color: #aaccff;
+            font-size: 11px;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+            user-select: none;
+            flex-shrink: 0;
+        }
+        .copyBtn:hover {
+            background: rgba(60, 90, 160, 0.8);
+            border-color: rgba(150, 200, 255, 0.8);
+            color: #fff;
+        }
+        .copyBtn.copied {
+            background: rgba(100, 220, 150, 0.3);
+            border-color: rgba(100, 220, 150, 0.7);
+            color: #7dd8a0;
+        }
+
+        /* ============ 照片放大查看层 ============ */
+        #photoViewer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(2, 4, 12, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 3000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            flex-direction: column;
+            padding: 20px;
+        }
+        #photoViewer.active {
+            display: flex;
+            opacity: 1;
+        }
+        #photoViewer .viewerImgWrap {
+            max-width: 90vw;
+            max-height: 75vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #photoViewer .viewerImg {
+            max-width: 90vw;
+            max-height: 75vh;
+            border-radius: 12px;
+            box-shadow: 0 0 80px rgba(100, 160, 255, 0.5), 0 0 160px rgba(80, 120, 255, 0.25);
+            border: 1px solid rgba(150, 200, 255, 0.3);
+            object-fit: contain;
+            transform: scale(0.9);
+            transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+            background: rgba(15, 25, 55, 0.8);
+        }
+        #photoViewer.active .viewerImg {
+            transform: scale(1);
+        }
+        #photoViewer .viewerClose {
+            position: absolute;
+            top: max(20px, env(safe-area-inset-top));
+            right: 24px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 1px solid rgba(150, 200, 255, 0.4);
+            background: rgba(15, 25, 55, 0.8);
+            backdrop-filter: blur(10px);
+            color: #d8e8ff;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            z-index: 10;
+        }
+        #photoViewer .viewerClose:hover {
+            background: rgba(60, 90, 160, 0.9);
+            border-color: rgba(150, 200, 255, 0.9);
+            color: #fff;
+            transform: rotate(90deg) scale(1.05);
+        }
+        #photoViewer .viewerInfo {
+            margin-top: 24px;
+            color: rgba(200, 220, 255, 0.7);
+            font-size: 13px;
+            letter-spacing: 3px;
+            text-align: center;
+            text-shadow: 0 0 20px rgba(100, 150, 255, 0.5);
+        }
+        #photoViewer .viewerInfo .indexTag {
+            display: inline-block;
+            padding: 4px 14px;
+            border-radius: 20px;
+            background: rgba(90, 130, 255, 0.2);
+            border: 1px solid rgba(120, 170, 255, 0.3);
+            color: #aaccff;
+            font-size: 12px;
+        }
+
+        /* ============ 暂停旋转提示浮层 ============ */
+        #pauseIndicator {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            padding: 14px 28px;
+            border-radius: 40px;
+            background: rgba(15, 25, 55, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(150, 200, 255, 0.4);
+            color: #d8e8ff;
+            font-size: 13px;
+            letter-spacing: 3px;
+            z-index: 1500;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            white-space: nowrap;
+            box-shadow: 0 0 40px rgba(80, 130, 255, 0.3);
+        }
+        #pauseIndicator.show {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        /* ============ 右下角音乐播放器 ============ */
+        #musicPlayer {
+            position: fixed;
+            bottom: max(24px, env(safe-area-inset-bottom));
+            right: 28px;
+            z-index: 1500;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 16px 10px 12px;
+            border-radius: 50px;
+            border: 1px solid rgba(150, 200, 255, 0.35);
+            background: rgba(15, 25, 55, 0.8);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            box-shadow: 0 0 30px rgba(80, 130, 255, 0.2), inset 0 0 30px rgba(80, 130, 255, 0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            user-select: none;
+        }
+        #musicPlayer:hover {
+            border-color: rgba(150, 200, 255, 0.7);
+            box-shadow: 0 0 40px rgba(100, 160, 255, 0.4), inset 0 0 30px rgba(100, 160, 255, 0.1);
+            transform: translateY(-2px);
+        }
+        #musicCover {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(120, 170, 255, 0.5);
+            box-shadow: 0 0 15px rgba(100, 150, 255, 0.3);
+            flex-shrink: 0;
+            background: rgba(30, 50, 100, 0.8);
+            transition: transform 0.3s;
+        }
+        #musicPlayer:hover #musicCover {
+            transform: scale(1.05);
+        }
+        #musicInfo {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            max-width: 140px;
+        }
+        #musicTitle {
+            font-size: 12px;
+            color: #e0ecff;
+            letter-spacing: 1px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-weight: 500;
+        }
+        #musicArtist {
+            font-size: 10px;
+            color: rgba(170, 200, 255, 0.5);
+            letter-spacing: 1px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-top: 2px;
+        }
+        #musicToggle {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 1px solid rgba(120, 170, 255, 0.4);
+            background: rgba(30, 50, 100, 0.6);
+            color: #d8e8ff;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            flex-shrink: 0;
+            padding: 0;
+            line-height: 1;
+        }
+        #musicToggle:hover {
+            background: rgba(60, 90, 160, 0.8);
+            border-color: rgba(150, 200, 255, 0.8);
+            color: #fff;
+        }
+        #musicToggle.playing {
+            border-color: rgba(100, 220, 150, 0.6);
+            background: rgba(30, 80, 50, 0.6);
+            color: #7dd8a0;
+            box-shadow: 0 0 20px rgba(100, 220, 150, 0.3);
+        }
+        @keyframes spinCover {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        #musicCover.playing {
+            animation: spinCover 8s linear infinite;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            #topBar {
+                padding: max(12px, env(safe-area-inset-top)) 16px 12px 16px;
+            }
+            #logo img {
+                width: 40px;
+                height: 40px;
+            }
+            #logoText .main {
+                font-size: 16px;
+                letter-spacing: 4px;
+            }
+            #logoText .sub {
+                font-size: 8px;
+                letter-spacing: 2px;
+            }
+            #rightButtons {
+                top: max(18px, calc(env(safe-area-inset-top) + 6px));
+                right: 16px;
+                gap: 8px;
+            }
+            .sideBtn {
+                padding: 8px 14px;
+                font-size: 12px;
+                letter-spacing: 2px;
+            }
+            .sideBtn .icon {
+                font-size: 14px;
+            }
+            #hint {
+                bottom: max(16px, env(safe-area-inset-bottom));
+                font-size: 10px;
+                letter-spacing: 2px;
+            }
+            .modalBox {
+                padding: 22px 18px;
+                max-width: 92vw;
+            }
+            .modalTitle {
+                font-size: 17px;
+                letter-spacing: 3px;
+            }
+            .infoValue {
+                font-size: 17px;
+                letter-spacing: 2px;
+            }
+            .infoValue.wechat {
+                font-size: 15px;
+            }
+            .infoIcon {
+                width: 44px;
+                height: 44px;
+                font-size: 20px;
+            }
+            #photoViewer .viewerClose {
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
+                top: max(16px, env(safe-area-inset-top));
+                right: 16px;
+            }
+            #photoViewer .viewerImg {
+                max-width: 92vw;
+                max-height: 65vh;
+            }
+            #photoViewer .viewerInfo {
+                font-size: 12px;
+                letter-spacing: 2px;
+                margin-top: 18px;
+            }
+            #musicPlayer {
+                bottom: max(16px, env(safe-area-inset-bottom));
+                right: 16px;
+                padding: 8px 12px 8px 10px;
+                gap: 10px;
+            }
+            #musicCover {
+                width: 36px;
+                height: 36px;
+            }
+            #musicInfo {
+                max-width: 100px;
+            }
+            #musicTitle {
+                font-size: 11px;
+            }
+            #musicArtist {
+                font-size: 9px;
+            }
+            #musicToggle {
+                width: 32px;
+                height: 32px;
+                font-size: 12px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .sideBtn {
+                padding: 7px 12px;
+                font-size: 11px;
+                letter-spacing: 1px;
+            }
+            #logoText .main {
+                font-size: 14px;
+                letter-spacing: 3px;
+            }
+            #logo img {
+                width: 34px;
+                height: 34px;
+            }
+            #musicPlayer {
+                padding: 6px 10px 6px 8px;
+                gap: 8px;
+            }
+            #musicCover {
+                width: 32px;
+                height: 32px;
+            }
+            #musicInfo {
+                max-width: 80px;
+            }
+            #musicTitle {
+                font-size: 10px;
+            }
+            #musicArtist {
+                font-size: 8px;
+            }
+            #musicToggle {
+                width: 28px;
+                height: 28px;
+                font-size: 11px;
+            }
+        }
+
+        @media (max-height: 500px) and (orientation: landscape) {
+            #topBar {
+                padding: 8px 16px;
+            }
+            #logo img {
+                width: 36px;
+                height: 36px;
+            }
+            #logoText .main {
+                font-size: 15px;
+            }
+            #rightButtons {
+                top: 12px;
+                right: 16px;
+                flex-direction: row;
+            }
+            .sideBtn {
+                padding: 7px 14px;
+                font-size: 12px;
+            }
+            #photoViewer .viewerImg {
+                max-height: 80vh;
+            }
+            #photoViewer .viewerInfo {
+                margin-top: 12px;
+            }
+            #musicPlayer {
+                bottom: 12px;
+                right: 12px;
+                padding: 6px 10px 6px 8px;
+                gap: 8px;
+            }
+            #musicCover {
+                width: 32px;
+                height: 32px;
+            }
+            #musicInfo {
+                max-width: 80px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==================== 顶部 Logo ==================== -->
+    <div id="topBar">
+        <div id="logo">
+            <img src="carousel/logo.webp" 
+                 alt="太华山 Logo" 
+                 id="logoImg">
+            <div id="logoText">
+                <span class="main">太华山</span>
+                <span class="sub">TAIHUASHAN</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== 右侧按钮组 ==================== -->
+    <div id="rightButtons">
+        <a class="sideBtn" id="rosterBtn" href="roster.html">
+            <span class="icon">📜</span>
+            <span>花名册</span>
+        </a>
+        <div class="sideBtn" id="joinBtn">
+            <span class="icon">✦</span>
+            <span>加入</span>
+        </div>
+    </div>
+
+
+    <!-- ==================== 暂停指示浮层 ==================== -->
+    <div id="pauseIndicator">⏸ 旋转已暂停 · 点击照片可放大</div>
+
+    <!-- ==================== 右下角音乐播放器 ==================== -->
+    <div id="musicPlayer">
+        <img id="musicCover" 
+             src="https://api.dicebear.com/7.x/identicon/svg?seed=jiangshan&backgroundColor=1a2a5a" 
+             alt="爱江山更爱美人">
+        <div id="musicInfo">
+            <div id="musicTitle">爱江山更爱美人</div>
+            <div id="musicArtist">太华山 · 国风演绎</div>
+        </div>
+        <button id="musicToggle" title="播放/暂停">▶</button>
+    </div>
+
+    <!-- ==================== 弹窗：加入 ==================== -->
+    <div class="modalOverlay" id="joinModal">
+        <div class="modalBox">
+            <button class="closeBtn" data-close="joinModal">✕</button>
+            <div class="modalTitle">✦ 加入太华山</div>
+            <div class="modalSub">JOIN US · 共赴星辰</div>
+            <div class="joinContent">
+                <div class="infoRow">
+                    <div class="infoIcon">🏛️</div>
+                    <div style="flex:1; min-width:0;">
+                        <div class="infoLabel">百业名称</div>
+                        <div class="infoValue">太华山</div>
+                    </div>
+                    <div class="copyBtn" data-copy="太华山">复制</div>
+                </div>
+                <div class="infoRow">
+                    <div class="infoIcon">💬</div>
+                    <div style="flex:1; min-width:0;">
+                        <div class="infoLabel">微信号</div>
+                        <div class="infoValue wechat" id="wechatValue">taihuashan2024</div>
+                    </div>
+                    <div class="copyBtn" data-copy="taihuashan2024">复制</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== 照片放大查看层 ==================== -->
+    <div id="photoViewer">
+        <button class="viewerClose" id="viewerCloseBtn">✕</button>
+        <div class="viewerImgWrap">
+            <img class="viewerImg" id="viewerImg" src="" alt="照片">
+        </div>
+        <div class="viewerInfo">
+            <span class="indexTag" id="viewerIndex">照片</span>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- Three.js -->
+    <!-- ============================================================ -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.128.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.128.0/examples/jsm/"
+            }
+        }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+        // ============================================================
+        // 1. 照片列表 —— 替换成您自己的图片地址
+        // ============================================================
+
+        const imageUrls = [
+            'img/101.jpg',
+            'https://picsum.photos/id/1016/600/600',
+            'https://picsum.photos/id/1018/600/600',
+            'https://picsum.photos/id/1019/600/600',
+            'https://picsum.photos/id/1020/600/600',
+            'https://picsum.photos/id/1024/600/600',
+            'https://picsum.photos/id/1025/600/600',
+            'https://picsum.photos/id/1027/600/600',
+            'https://picsum.photos/id/1035/600/600',
+            'https://picsum.photos/id/1036/600/600',
+            'https://picsum.photos/id/1037/600/600',
+            'https://picsum.photos/id/1039/600/600',
+            'https://picsum.photos/id/1040/600/600',
+            'https://picsum.photos/id/1041/600/600',
+            'https://picsum.photos/id/1043/600/600',
+            'https://picsum.photos/id/1044/600/600',
+            'https://picsum.photos/id/1045/600/600',
+            'https://picsum.photos/id/1047/600/600',
+            'https://picsum.photos/id/1048/600/600',
+            'https://picsum.photos/id/1049/600/600',
+            'https://picsum.photos/id/1050/600/600',
+            'https://picsum.photos/id/1051/600/600',
+            'https://picsum.photos/id/1053/600/600',
+            'https://picsum.photos/id/1055/600/600'
+        ];
+
+        // ============================================================
+        // 2. 基础场景
+        // ============================================================
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x030308);
+        scene.fog = new THREE.FogExp2(0x030308, 0.012);
+
+        const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 200);
+        camera.position.set(0, 1.5, 16);
+        camera.lookAt(0, 0, 0);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.shadowMap.enabled = false;
+        document.body.appendChild(renderer.domElement);
+
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.06;
+        controls.autoRotate = true;
+        controls.autoRotateSpeed = 0.6;
+        controls.enableZoom = true;
+        controls.zoomSpeed = 0.7;
+        controls.enablePan = false;
+        controls.rotateSpeed = 0.5;
+        controls.target.set(0, 0, 0);
+        controls.minDistance = 6;
+        controls.maxDistance = 30;
+        controls.maxPolarAngle = Math.PI * 0.75;
+        controls.minPolarAngle = Math.PI * 0.25;
+
+        // ============================================================
+        // 3. 纹理生成
+        // ============================================================
+        function createGlowTexture() {
+            const size = 256;
+            const canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+            const gradient = ctx.createRadialGradient(size/2, size/2, 0, size/2, size/2, size/2);
+            gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
+            gradient.addColorStop(0.2, 'rgba(220, 240, 255, 0.95)');
+            gradient.addColorStop(0.4, 'rgba(150, 200, 255, 0.6)');
+            gradient.addColorStop(0.7, 'rgba(80, 130, 220, 0.15)');
+            gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, size, size);
+            return new THREE.CanvasTexture(canvas);
+        }
+        const glowTexture = createGlowTexture();
+
+        function createStarTexture() {
+            const size = 256;
+            const canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+            const gradient = ctx.createRadialGradient(size/2, size/2, 0, size/2, size/2, size/2);
+            gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
+            gradient.addColorStop(0.15, 'rgba(200, 230, 255, 0.9)');
+            gradient.addColorStop(0.4, 'rgba(120, 180, 255, 0.4)');
+            gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, size, size);
+            ctx.save();
+            ctx.translate(size/2, size/2);
+            ctx.globalCompositeOperation = 'lighter';
+            const gradH = ctx.createLinearGradient(-size/2, 0, size/2, 0);
+            gradH.addColorStop(0, 'rgba(255,255,255,0)');
+            gradH.addColorStop(0.5, 'rgba(255,255,255,0.5)');
+            gradH.addColorStop(1, 'rgba(255,255,255,0)');
+            ctx.fillStyle = gradH;
+            ctx.fillRect(-size/2, -2, size, 4);
+            const gradV = ctx.createLinearGradient(0, -size/2, 0, size/2);
+            gradV.addColorStop(0, 'rgba(255,255,255,0)');
+            gradV.addColorStop(0.5, 'rgba(255,255,255,0.5)');
+            gradV.addColorStop(1, 'rgba(255,255,255,0)');
+            ctx.fillStyle = gradV;
+            ctx.fillRect(-2, -size/2, 4, size);
+            ctx.restore();
+            return new THREE.CanvasTexture(canvas);
+        }
+        const starTexture = createStarTexture();
+
+        // ============================================================
+        // 4. 创建照片星辰
+        // ============================================================
+        const photoGroup = new THREE.Group();
+        scene.add(photoGroup);
+
+        const totalPhotos = imageUrls.length;
+        const photoMeshes = [];
+        const photoDataList = [];
+        const goldenRatio = (1 + Math.sqrt(5)) / 2;
+
+        for (let i = 0; i < totalPhotos; i++) {
+            const y = 1 - (i / (totalPhotos - 1)) * 2;
+            const radiusAtY = Math.sqrt(1 - y * y);
+            const theta = 2 * Math.PI * i / goldenRatio;
+
+            const baseRadius = 6.0;
+            const radiusVariation = 0.7 + Math.sin(i * 1.7) * 0.3;
+            const r = baseRadius * radiusVariation;
+
+            const x = Math.cos(theta) * radiusAtY * r;
+            const yPos = y * r * 0.85;
+            const z = Math.sin(theta) * radiusAtY * r;
+
+            const pos = new THREE.Vector3(
+                x + (Math.random() - 0.5) * 1.0,
+                yPos + (Math.random() - 0.5) * 1.0,
+                z + (Math.random() - 0.5) * 1.0
+            );
+
+            const hue = 0.6 + (i % 5) * 0.03;
+            const glowColor = new THREE.Color().setHSL(hue, 0.9, 0.65);
+            const glowMaterial = new THREE.SpriteMaterial({
+                map: glowTexture,
+                color: glowColor,
+                transparent: true,
+                opacity: 0.65,
+                blending: THREE.AdditiveBlending,
+                depthWrite: false,
+                depthTest: true
+            });
+            const glowSprite = new THREE.Sprite(glowMaterial);
+            glowSprite.scale.set(2.6, 2.6, 1);
+            glowSprite.position.copy(pos);
+            photoGroup.add(glowSprite);
+
+            let starSprite = null;
+            if (i % 3 === 0) {
+                const starMaterial = new THREE.SpriteMaterial({
+                    map: starTexture,
+                    color: 0xaaccff,
+                    transparent: true,
+                    opacity: 0.5,
+                    blending: THREE.AdditiveBlending,
+                    depthWrite: false,
+                    depthTest: true
+                });
+                starSprite = new THREE.Sprite(starMaterial);
+                starSprite.scale.set(3.2, 3.2, 1);
+                starSprite.position.copy(pos);
+                photoGroup.add(starSprite);
+            }
+
+            const photoSize = 1.3 + Math.random() * 0.4;
+            const geometry = new THREE.PlaneGeometry(photoSize, photoSize);
+            const material = new THREE.MeshBasicMaterial({
+                color: 0xffffff,
+                transparent: true,
+                opacity: 0.0,
+                side: THREE.DoubleSide,
+                depthWrite: true,
+                depthTest: true
+            });
+            const plane = new THREE.Mesh(geometry, material);
+            plane.position.copy(pos);
+            plane.lookAt(new THREE.Vector3(0, 0, 0));
+            plane.rotateZ((Math.random() - 0.5) * 0.2);
+            plane.rotateX((Math.random() - 0.5) * 0.1);
+
+            plane.userData.index = i;
+
+            photoDataList.push({
+                index: i,
+                url: imageUrls[i],
+                mesh: plane
+            });
+
+            plane.userData = {
+                basePosition: pos.clone(),
+                baseScale: photoSize,
+                floatOffset: Math.random() * Math.PI * 2,
+                floatSpeed: 0.25 + Math.random() * 0.45,
+                floatAmplitude: 0.2 + Math.random() * 0.25,
+                glowSprite: glowSprite,
+                starSprite: starSprite,
+                glowBaseScale: 2.6,
+                starBaseScale: 3.2,
+                index: i,
+                loaded: false,
+                fadeProgress: 0.0
+            };
+
+            const loader = new THREE.TextureLoader();
+            loader.setCrossOrigin('anonymous');
+            loader.load(
+                imageUrls[i],
+                (texture) => {
+                    texture.minFilter = THREE.LinearFilter;
+                    texture.magFilter = THREE.LinearFilter;
+                    texture.anisotropy = 4;
+                    material.map = texture;
+                    material.color.set(0xffffff);
+                    material.needsUpdate = true;
+                    plane.userData.loaded = true;
+                },
+                undefined,
+                (err) => {
+                    console.warn('图片加载失败:', imageUrls[i], err);
+                    const fallbackColor = new THREE.Color().setHSL(0.6 + Math.random() * 0.2, 0.6, 0.4);
+                    material.color.set(fallbackColor);
+                    plane.userData.loaded = true;
+                }
+            );
+
+            photoGroup.add(plane);
+            photoMeshes.push(plane);
+        }
+
+        // ============================================================
+        // 5. 星尘粒子
+        // ============================================================
+        function createDistantStars() {
+            const count = 2500;
+            const geometry = new THREE.BufferGeometry();
+            const positions = new Float32Array(count * 3);
+            const colors = new Float32Array(count * 3);
+            for (let i = 0; i < count; i++) {
+                const r = 25 + Math.random() * 35;
+                const theta = Math.random() * Math.PI * 2;
+                const phi = Math.acos(2 * Math.random() - 1);
+                positions[i*3] = r * Math.sin(phi) * Math.cos(theta);
+                positions[i*3+1] = r * Math.sin(phi) * Math.sin(theta) * 0.9;
+                positions[i*3+2] = r * Math.cos(phi);
+                const hue = 0.58 + Math.random() * 0.12;
+                const lightness = 0.4 + Math.random() * 0.4;
+                const c = new THREE.Color().setHSL(hue, 0.7, lightness);
+                colors[i*3] = c.r; colors[i*3+1] = c.g; colors[i*3+2] = c.b;
+            }
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+            const material = new THREE.PointsMaterial({
+                size: 0.18, map: glowTexture, vertexColors: true,
+                transparent: true, blending: THREE.AdditiveBlending,
+                depthWrite: false, sizeAttenuation: true, opacity: 0.8
+            });
+            const points = new THREE.Points(geometry, material);
+            scene.add(points);
+            return points;
+        }
+        const distantStars = createDistantStars();
+
+        function createNearStars() {
+            const count = 1200;
+            const geometry = new THREE.BufferGeometry();
+            const positions = new Float32Array(count * 3);
+            const colors = new Float32Array(count * 3);
+            for (let i = 0; i < count; i++) {
+                const r = 7 + Math.random() * 11;
+                const theta = Math.random() * Math.PI * 2;
+                const phi = Math.acos(2 * Math.random() - 1);
+                positions[i*3] = r * Math.sin(phi) * Math.cos(theta);
+                positions[i*3+1] = r * Math.sin(phi) * Math.sin(theta) * 0.85;
+                positions[i*3+2] = r * Math.cos(phi);
+                const hue = 0.55 + Math.random() * 0.3;
+                const c = new THREE.Color().setHSL(hue, 0.9, 0.65);
+                colors[i*3] = c.r; colors[i*3+1] = c.g; colors[i*3+2] = c.b;
+            }
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+            const material = new THREE.PointsMaterial({
+                size: 0.32, map: glowTexture, vertexColors: true,
+                transparent: true, blending: THREE.AdditiveBlending,
+                depthWrite: false, sizeAttenuation: true, opacity: 0.9
+            });
+            const points = new THREE.Points(geometry, material);
+            scene.add(points);
+            return points;
+        }
+        const nearStars = createNearStars();
+
+        function createFloatingBrightStars() {
+            const count = 180;
+            const geometry = new THREE.BufferGeometry();
+            const positions = new Float32Array(count * 3);
+            const colors = new Float32Array(count * 3);
+            for (let i = 0; i < count; i++) {
+                const r = 5 + Math.random() * 14;
+                const theta = Math.random() * Math.PI * 2;
+                const phi = Math.acos(2 * Math.random() - 1);
+                positions[i*3] = r * Math.sin(phi) * Math.cos(theta);
+                positions[i*3+1] = r * Math.sin(phi) * Math.sin(theta) * 0.85;
+                positions[i*3+2] = r * Math.cos(phi);
+                const choice = Math.random();
+                let c;
+                if (choice < 0.5) c = new THREE.Color(0xffffff);
+                else if (choice < 0.75) c = new THREE.Color(0xffeebb);
+                else c = new THREE.Color(0xbbddff);
+                colors[i*3] = c.r; colors[i*3+1] = c.g; colors[i*3+2] = c.b;
+            }
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+            const material = new THREE.PointsMaterial({
+                size: 0.55, map: starTexture, vertexColors: true,
+                transparent: true, blending: THREE.AdditiveBlending,
+                depthWrite: false, sizeAttenuation: true, opacity: 0.85
+            });
+            const points = new THREE.Points(geometry, material);
+            scene.add(points);
+            return points;
+        }
+        const brightStars = createFloatingBrightStars();
+
+        scene.add(new THREE.AmbientLight(0x223355));
+        const pl1 = new THREE.PointLight(0x88aaff, 0.6);
+        pl1.position.set(8, 6, 8);
+        scene.add(pl1);
+        const pl2 = new THREE.PointLight(0xff88cc, 0.4);
+        pl2.position.set(-8, -4, 6);
+        scene.add(pl2);
+
+        // ============================================================
+        // 6. 动画循环
+        // ============================================================
+        const clock = new THREE.Clock();
+        let elapsedTotal = 0;
+
+        function animate() {
+            const delta = clock.getDelta();
+            elapsedTotal += delta;
+            const elapsed = elapsedTotal;
+
+            photoGroup.rotation.y += 0.0006;
+            photoGroup.rotation.x += 0.00015;
+
+            distantStars.rotation.y -= 0.00008;
+            distantStars.rotation.x += 0.00004;
+            nearStars.rotation.y += 0.0003;
+            nearStars.rotation.x -= 0.00012;
+            brightStars.rotation.y += 0.0002;
+            brightStars.rotation.z += 0.0001;
+
+            photoMeshes.forEach((plane) => {
+                const data = plane.userData;
+                if (!data) return;
+
+                if (data.loaded && data.fadeProgress < 1.0) {
+                    data.fadeProgress = Math.min(1.0, data.fadeProgress + delta * 0.6);
+                    plane.material.opacity = data.fadeProgress * 0.95;
+                }
+
+                const floatY = Math.sin(elapsed * data.floatSpeed + data.floatOffset) * data.floatAmplitude;
+                plane.position.y = data.basePosition.y + floatY;
+
+                if (data.glowSprite) {
+                    data.glowSprite.position.copy(plane.position);
+                    const breath = 1.0 + Math.sin(elapsed * 1.2 + data.floatOffset) * 0.18;
+                    const gs = data.glowBaseScale * breath;
+                    data.glowSprite.scale.set(gs, gs, 1);
+                    data.glowSprite.material.opacity = 0.55 + Math.sin(elapsed * 1.5 + data.floatOffset) * 0.15;
+                }
+
+                if (data.starSprite) {
+                    data.starSprite.position.copy(plane.position);
+                    const twinkle = 1.0 + Math.sin(elapsed * 2.0 + data.floatOffset) * 0.3;
+                    const ss = data.starBaseScale * twinkle;
+                    data.starSprite.scale.set(ss, ss, 1);
+                    data.starSprite.material.opacity = 0.35 + Math.sin(elapsed * 2.5 + data.floatOffset) * 0.2;
+                }
+
+                const photoBreath = 1.0 + Math.sin(elapsed * 1.1 + data.floatOffset) * 0.04;
+                plane.scale.set(photoBreath, photoBreath, 1);
+                plane.rotation.z += 0.0005 * Math.sin(elapsed * 0.8 + data.floatOffset);
+            });
+
+            const starTwinkle = 0.5 + Math.sin(elapsed * 3) * 0.15;
+            brightStars.material.size = starTwinkle;
+
+            controls.update();
+            renderer.render(scene, camera);
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        });
+
+        // ============================================================
+        // 7. UI 交互逻辑
+        // ============================================================
+        function openModal(id) {
+            const modal = document.getElementById(id);
+            if (modal) {
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeModal(id) {
+            const modal = document.getElementById(id);
+            if (modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+
+        document.querySelectorAll('[data-close]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                closeModal(btn.getAttribute('data-close'));
+            });
+        });
+
+        document.querySelectorAll('.modalOverlay').forEach(overlay => {
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    overlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (photoViewer.classList.contains('active')) {
+                    closePhotoViewer();
+                } else {
+                    document.querySelectorAll('.modalOverlay.active').forEach(m => {
+                        m.classList.remove('active');
+                    });
+                    document.body.style.overflow = '';
+                }
+            }
+        });
+
+        document.getElementById('joinBtn').addEventListener('click', () => openModal('joinModal'));
+
+        // ---------- 复制功能 ----------
+        document.querySelectorAll('.copyBtn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const text = btn.getAttribute('data-copy');
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(text).then(() => {
+                        btn.textContent = '已复制';
+                        btn.classList.add('copied');
+                        setTimeout(() => {
+                            btn.textContent = '复制';
+                            btn.classList.remove('copied');
+                        }, 1500);
+                    }).catch(() => {
+                        fallbackCopy(text, btn);
+                    });
+                } else {
+                    fallbackCopy(text, btn);
+                }
+            });
+        });
+
+        function fallbackCopy(text, btn) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                btn.textContent = '已复制';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = '复制';
+                    btn.classList.remove('copied');
+                }, 1500);
+            } catch (err) {
+                console.warn('复制失败:', err);
+            }
+            document.body.removeChild(textarea);
+        }
+
+        // ============================================================
+        // 8. 点击照片放大 + 暂停旋转
+        // ============================================================
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+
+        const photoViewer = document.getElementById('photoViewer');
+        const viewerImg = document.getElementById('viewerImg');
+        const viewerIndex = document.getElementById('viewerIndex');
+        const viewerCloseBtn = document.getElementById('viewerCloseBtn');
+        const pauseIndicator = document.getElementById('pauseIndicator');
+        const hint = document.getElementById('hint');
+
+        let isPaused = false;
+
+        function pauseRotation() {
+            if (!isPaused) {
+                isPaused = true;
+                controls.autoRotate = false;
+                pauseIndicator.classList.add('show');
+                hint.style.opacity = '0';
+                setTimeout(() => {
+                    pauseIndicator.classList.remove('show');
+                }, 2000);
+            }
+        }
+
+        function resumeRotation() {
+            if (isPaused) {
+                isPaused = false;
+                controls.autoRotate = true;
+            }
+        }
+
+        function openPhotoViewer(index) {
+            const photoInfo = photoDataList[index];
+            if (!photoInfo) return;
+
+            viewerImg.src = photoInfo.url;
+            viewerIndex.textContent = `第 ${index + 1} / ${totalPhotos} 张`;
+            photoViewer.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            pauseRotation();
+        }
+
+        function closePhotoViewer() {
+            photoViewer.classList.remove('active');
+            document.body.style.overflow = '';
+            hint.style.opacity = '1';
+            resumeRotation();
+        }
+
+        viewerCloseBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            closePhotoViewer();
+        });
+
+        photoViewer.addEventListener('click', (e) => {
+            if (e.target === photoViewer || e.target.classList.contains('viewerImgWrap')) {
+                closePhotoViewer();
+            }
+        });
+
+        let pointerDownTime = 0;
+        let pointerDownPos = { x: 0, y: 0 };
+        let isDragging = false;
+
+        function onPointerDown(event) {
+            pointerDownTime = Date.now();
+            const clientX = event.clientX || (event.touches && event.touches[0].clientX) || 0;
+            const clientY = event.clientY || (event.touches && event.touches[0].clientY) || 0;
+            pointerDownPos.x = clientX;
+            pointerDownPos.y = clientY;
+            isDragging = false;
+        }
+
+        function onPointerMove(event) {
+            const clientX = event.clientX || (event.touches && event.touches[0].clientX) || 0;
+            const clientY = event.clientY || (event.touches && event.touches[0].clientY) || 0;
+            const dx = clientX - pointerDownPos.x;
+            const dy = clientY - pointerDownPos.y;
+            if (Math.sqrt(dx * dx + dy * dy) > 10) {
+                isDragging = true;
+            }
+        }
+
+        function onPointerUp(event) {
+            if (isDragging) return;
+            const duration = Date.now() - pointerDownTime;
+            if (duration > 300) return;
+
+            let clientX, clientY;
+            if (event.changedTouches && event.changedTouches[0]) {
+                clientX = event.changedTouches[0].clientX;
+                clientY = event.changedTouches[0].clientY;
+            } else {
+                clientX = event.clientX;
+                clientY = event.clientY;
+            }
+
+            mouse.x = (clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(clientY / window.innerHeight) * 2 + 1;
+
+            raycaster.setFromCamera(mouse, camera);
+            const intersects = raycaster.intersectObjects(photoMeshes);
+
+            if (intersects.length > 0) {
+                const hit = intersects[0];
+                const index = hit.object.userData.index;
+                if (index !== undefined) {
+                    openPhotoViewer(index);
+                }
+            }
+        }
+
+        renderer.domElement.addEventListener('pointerdown', onPointerDown, { passive: true });
+        renderer.domElement.addEventListener('pointermove', onPointerMove, { passive: true });
+        renderer.domElement.addEventListener('pointerup', onPointerUp, { passive: true });
+
+        // ============================================================
+        // 9. 音乐播放器 —— 程序化古筝合成音
+        //    曲目：《爱江山更爱美人》
+        // ============================================================
+        const musicToggle = document.getElementById('musicToggle');
+        const musicCover = document.getElementById('musicCover');
+        const musicTitle = document.getElementById('musicTitle');
+        const musicArtist = document.getElementById('musicArtist');
+
+        (function() {
+            const AudioCtx = window.AudioContext || window.webkitAudioContext;
+            let audioCtx = null;
+            let isPlaying = false;
+            let loopTimer = null;
+            let noteIndex = 0;
+
+            // 《爱江山更爱美人》主旋律片段（简化版，五声音阶）
+            // 音高映射：0=C4, 1=D4, 2=E4, 3=G4, 4=A4, 5=C5
+            const scale = [261.63, 293.66, 329.63, 392.00, 440.00, 523.25];
+            // 旋律音符序列（-1 为休止）
+            // 这段旋律模仿《爱江山更爱美人》的经典副歌走向
+            const melody = [
+                2, 3, 4, 3, 2, 1, 0, -1,
+                2, 3, 4, 5, 4, 3, 2, -1,
+                0, 2, 3, 2, 1, 0, -1, -1,
+                1, 2, 3, 4, 3, 2, 1, -1,
+                2, 3, 4, 5, 4, 3, 4, 3,
+                2, 1, 0, 1, 2, 3, 2, -1,
+                0, 1, 2, 1, 0, -1, -1, -1,
+                2, 3, 2, 1, 0, 1, 2, -1
+            ];
+
+            // 播放一个古筝风格音符
+            function playNote(freq, startTime, duration, volume) {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                
+                osc.type = 'triangle';
+                osc.frequency.value = freq;
+
+                gain.gain.setValueAtTime(0, startTime);
+                gain.gain.linearRampToValueAtTime(volume || 0.3, startTime + 0.02);
+                gain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
+
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                osc.start(startTime);
+                osc.stop(startTime + duration + 0.05);
+            }
+
+            // 播放一个乐句
+            function playPhrase() {
+                if (!audioCtx || !isPlaying) return;
+
+                const now = audioCtx.currentTime;
+                const noteDuration = 0.42; // 稍慢，更有韵味
+                const phraseLength = 16;   // 每次播放 16 个音符
+
+                for (let i = 0; i < phraseLength; i++) {
+                    const noteValue = melody[(noteIndex + i) % melody.length];
+                    if (noteValue >= 0) {
+                        const freq = scale[noteValue % scale.length];
+                        // 每句开头的高音点缀
+                        const octave = (i === 0 || i === 8) ? 2 : 1;
+                        // 重音处理：每小节第一个音稍强
+                        const volume = (i % 4 === 0) ? 0.38 : 0.28;
+                        playNote(freq * octave, now + i * noteDuration, noteDuration * 1.3, volume);
+                    }
+                }
+
+                noteIndex = (noteIndex + phraseLength) % melody.length;
+                loopTimer = setTimeout(playPhrase, phraseLength * noteDuration * 1000);
+            }
+
+            function startMusic() {
+                if (!audioCtx) {
+                    audioCtx = new AudioCtx();
+                }
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+                
+                isPlaying = true;
+                noteIndex = 0;
+                musicToggle.textContent = '⏸';
+                musicToggle.classList.add('playing');
+                musicCover.classList.add('playing');
+                
+                playPhrase();
+            }
+
+            function stopMusic() {
+                isPlaying = false;
+                if (loopTimer) {
+                    clearTimeout(loopTimer);
+                    loopTimer = null;
+                }
+                musicToggle.textContent = '▶';
+                musicToggle.classList.remove('playing');
+                musicCover.classList.remove('playing');
+            }
+
+            function toggleMusic() {
+                if (isPlaying) {
+                    stopMusic();
+                } else {
+                    startMusic();
+                }
+            }
+
+            musicToggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleMusic();
+            });
+
+            document.getElementById('musicPlayer').addEventListener('click', (e) => {
+                if (e.target === musicToggle) return;
+                toggleMusic();
+            });
+
+            window.__toggleMusic = toggleMusic;
+        })();
+
+        // ============================================================
+        // 10. 全局方法
+        // ============================================================
+        window.setTaihuaLogo = function(url) {
+            const img = document.getElementById('logoImg');
+            if (img) img.src = url;
+            console.log('Logo 已替换为:', url);
+        };
+        window.setWechatValue = function(value) {
+            const el = document.getElementById('wechatValue');
+            if (el) {
+                el.textContent = value;
+                const copyBtn = el.closest('.infoRow').querySelector('.copyBtn');
+                if (copyBtn) copyBtn.setAttribute('data-copy', value);
+            }
+            console.log('微信号已替换为:', value);
+        };
+        window.setRosterUrl = function(url) {
+            const btn = document.getElementById('rosterBtn');
+            if (btn) btn.href = url;
+            console.log('花名册链接已替换为:', url);
+        };
+
+        console.log('✨ 太华山 · 星辰相册已启动');
+        console.log('💡 替换 Logo: window.setTaihuaLogo("图片地址")');
+        console.log('💡 替换微信号: window.setWechatValue("新微信号")');
+        console.log('💡 替换花名册链接: window.setRosterUrl("页面地址")');
+        console.log('🎵 点击右下角播放器可播放/暂停《爱江山更爱美人》风格古筝旋律');
+    </script>
+</body>
+</html>

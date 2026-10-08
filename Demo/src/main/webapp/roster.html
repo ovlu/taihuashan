@@ -1,0 +1,1495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>太华山花名册</title>
+  <style>
+    /* ========== 全局与丰富武侠背景 ========== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #050505;
+      font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', 'STKaiti', 'KaiTi', serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+      position: relative;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(ellipse at 15% 20%, rgba(180, 120, 50, 0.15) 0%, transparent 45%),
+        radial-gradient(ellipse at 85% 75%, rgba(150, 60, 60, 0.12) 0%, transparent 45%),
+        radial-gradient(ellipse at 50% 50%, rgba(60, 100, 120, 0.08) 0%, transparent 60%),
+        radial-gradient(ellipse at 25% 30%, #1a1208 0%, transparent 40%),
+        radial-gradient(ellipse at 75% 65%, #0f1a1a 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, #0f0f0f 0%, #000000 100%);
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        repeating-linear-gradient(115deg, transparent 0px, rgba(180, 140, 80, 0.02) 2px, transparent 4px, transparent 30px),
+        repeating-linear-gradient(65deg, transparent 0px, rgba(140, 100, 60, 0.015) 2px, transparent 4px, transparent 40px),
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.9;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        radial-gradient(ellipse 300px 120px at 10% 15%, rgba(200, 180, 150, 0.06) 0%, transparent 100%),
+        radial-gradient(ellipse 400px 150px at 90% 25%, rgba(180, 160, 130, 0.05) 0%, transparent 100%),
+        radial-gradient(ellipse 350px 130px at 30% 85%, rgba(160, 140, 110, 0.06) 0%, transparent 100%),
+        radial-gradient(ellipse 280px 110px at 75% 90%, rgba(200, 180, 150, 0.04) 0%, transparent 100%);
+      pointer-events: none;
+      z-index: 0;
+      animation: cloudDrift 40s ease-in-out infinite alternate;
+    }
+
+    @keyframes cloudDrift {
+      0% { transform: translate(0, 0) scale(1); opacity: 0.7; }
+      100% { transform: translate(20px, -15px) scale(1.05); opacity: 1; }
+    }
+
+    /* ========== 右侧返回首页按钮 ========== */
+    .home-btn-wrapper {
+      position: fixed;
+      right: 35px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      pointer-events: none;
+    }
+
+    .home-btn {
+      pointer-events: auto;
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #2a1e10, #0f0a06);
+      border: 2px solid rgba(200, 140, 60, 0.6);
+      color: #e0b060;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.4s cubic-bezier(0.2, 0.9, 0.3, 1.1);
+      box-shadow: 
+        0 10px 25px rgba(0, 0, 0, 0.9),
+        0 0 20px rgba(180, 120, 50, 0.25),
+        inset 0 1px 0 rgba(255, 200, 150, 0.1);
+      text-decoration: none;
+      overflow: hidden;
+      animation: homeBtnGlow 4s ease-in-out infinite alternate;
+    }
+
+    @keyframes homeBtnGlow {
+      0% { 
+        box-shadow: 
+          0 10px 25px rgba(0, 0, 0, 0.9),
+          0 0 20px rgba(180, 120, 50, 0.25),
+          inset 0 1px 0 rgba(255, 200, 150, 0.1);
+      }
+      100% { 
+        box-shadow: 
+          0 10px 25px rgba(0, 0, 0, 0.9),
+          0 0 35px rgba(220, 150, 60, 0.5),
+          0 0 60px rgba(200, 140, 60, 0.2),
+          inset 0 1px 0 rgba(255, 200, 150, 0.15);
+      }
+    }
+
+    .home-btn:hover {
+      transform: translateY(-5px) scale(1.08);
+      border-color: #e0b060;
+      color: #ffe0a0;
+      background: linear-gradient(145deg, #4a3018, #2a1e10);
+      box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.95),
+        0 0 45px rgba(220, 150, 60, 0.7),
+        0 0 80px rgba(200, 140, 60, 0.3),
+        inset 0 1px 0 rgba(255, 220, 160, 0.2);
+    }
+
+    .home-btn:active {
+      transform: translateY(-2px) scale(0.98);
+    }
+
+    /* 按钮内部图标 - 房子/向上箭头 */
+    .home-btn svg {
+      width: 32px;
+      height: 32px;
+      transition: transform 0.4s ease;
+      filter: drop-shadow(0 0 6px rgba(200, 140, 60, 0.6));
+    }
+
+    .home-btn:hover svg {
+      transform: translateY(-3px) scale(1.1);
+      filter: drop-shadow(0 0 12px rgba(220, 150, 60, 0.9));
+    }
+
+    /* 按钮内部旋转光环 */
+    .home-btn::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: conic-gradient(
+        from 0deg,
+        transparent 0deg,
+        rgba(200, 140, 60, 0.3) 60deg,
+        transparent 120deg,
+        transparent 180deg,
+        rgba(200, 140, 60, 0.15) 240deg,
+        transparent 300deg
+      );
+      animation: ringRotate 8s linear infinite;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    @keyframes ringRotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* 按钮下方小字 */
+    .home-btn-label {
+      font-size: 0.75rem;
+      color: #c9954a;
+      letter-spacing: 4px;
+      font-family: 'STKaiti', 'KaiTi', serif;
+      writing-mode: horizontal-tb;
+      text-shadow: 0 0 10px rgba(200, 140, 60, 0.5), 0 1px 2px #000;
+      white-space: nowrap;
+      padding-left: 4px;
+    }
+
+    /* 上下装饰线 */
+    .home-btn-wrapper::before,
+    .home-btn-wrapper::after {
+      content: '';
+      width: 2px;
+      height: 40px;
+      background: linear-gradient(180deg, transparent, rgba(200, 140, 60, 0.6), transparent);
+      border-radius: 50%;
+      box-shadow: 0 0 8px rgba(200, 140, 60, 0.5);
+    }
+
+    /* 右下角印章 */
+    .corner-seal {
+      position: fixed;
+      bottom: 25px;
+      right: 35px;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      pointer-events: none;
+    }
+
+    .corner-seal .seal-text {
+      font-size: 0.85rem;
+      color: rgba(200, 80, 60, 0.25);
+      letter-spacing: 8px;
+      writing-mode: vertical-rl;
+      font-family: 'STKaiti', 'KaiTi', serif;
+      border: 1px solid rgba(200, 80, 60, 0.2);
+      padding: 14px 7px;
+      background: rgba(20, 10, 10, 0.3);
+      border-radius: 4px;
+    }
+
+    .corner-seal .seal-dot {
+      width: 8px;
+      height: 8px;
+      background: rgba(200, 80, 60, 0.2);
+      border-radius: 50%;
+    }
+
+    /* 左侧竖排诗意文字 */
+    .poem-side {
+      position: fixed;
+      left: 25px;
+      top: 50%;
+      transform: translateY(-50%);
+      writing-mode: vertical-rl;
+      font-size: 0.75rem;
+      color: rgba(180, 150, 110, 0.15);
+      letter-spacing: 10px;
+      font-family: 'STKaiti', 'KaiTi', serif;
+      z-index: 2;
+      pointer-events: none;
+      line-height: 2;
+    }
+
+    /* ========== 独立空间主容器 ========== */
+    .space-container {
+      max-width: 1200px;
+      width: 100%;
+      background: linear-gradient(145deg, #161210, #0a0808);
+      border-radius: 2.5rem;
+      padding: 2.5rem 2.5rem 3rem;
+      box-shadow: 
+        0 30px 60px rgba(0, 0, 0, 0.95),
+        0 0 0 1px rgba(180, 120, 50, 0.3),
+        0 0 80px rgba(150, 90, 40, 0.08),
+        inset 0 1px 0 rgba(220, 180, 120, 0.08),
+        inset 0 -2px 0 rgba(0, 0, 0, 0.7);
+      border: 1px solid rgba(130, 80, 40, 0.4);
+      position: relative;
+      z-index: 1;
+      transition: box-shadow 0.4s ease;
+    }
+
+    .space-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 70%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #8a5a2a, #e0b060, #c9954a, #8a5a2a, transparent);
+      border-radius: 50%;
+      opacity: 0.8;
+      box-shadow: 0 0 15px rgba(200, 140, 60, 0.4);
+    }
+
+    .space-container::after {
+      content: '';
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      width: 40px;
+      height: 40px;
+      border-top: 2px solid rgba(200, 140, 60, 0.4);
+      border-right: 2px solid rgba(200, 140, 60, 0.4);
+      border-radius: 0 8px 0 0;
+      pointer-events: none;
+      transition: border-color 0.3s;
+    }
+
+    .space-container:hover::after {
+      border-color: rgba(220, 170, 90, 0.7);
+    }
+
+    /* ========== Logo 区域 ========== */
+    .logo-area {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .logo-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.2rem;
+      filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.95));
+    }
+
+    .logo-image-wrapper {
+      width: 90px;
+      height: 90px;
+      border-radius: 1.2rem;
+      overflow: hidden;
+      border: 3px solid #8a5a2a;
+      box-shadow: 
+        0 0 0 2px #1a1208,
+        0 0 25px rgba(200, 140, 60, 0.4),
+        0 0 45px rgba(180, 120, 50, 0.2),
+        0 12px 20px -8px black;
+      background: #111;
+      flex-shrink: 0;
+      position: relative;
+      transition: border-color 0.3s, box-shadow 0.4s;
+      animation: logoGlow 4s ease-in-out infinite alternate;
+    }
+
+    @keyframes logoGlow {
+      0% { box-shadow: 0 0 0 2px #1a1208, 0 0 20px rgba(200, 140, 60, 0.3), 0 0 40px rgba(180, 120, 50, 0.15), 0 12px 20px -8px black; }
+      100% { box-shadow: 0 0 0 2px #1a1208, 0 0 35px rgba(220, 150, 60, 0.55), 0 0 60px rgba(200, 140, 60, 0.25), 0 12px 20px -8px black; }
+    }
+
+    .logo-image-wrapper:hover {
+      border-color: #e0b060;
+      box-shadow: 
+        0 0 0 2px #2a1e12,
+        0 0 40px rgba(220, 150, 60, 0.6),
+        0 0 70px rgba(200, 140, 60, 0.3),
+        0 15px 25px -8px black;
+    }
+
+    .logo-image-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s ease, filter 0.4s ease;
+      filter: brightness(1) contrast(1.05) saturate(1);
+    }
+
+    .logo-image-wrapper:hover img {
+      transform: scale(1.1);
+      filter: brightness(1.1) contrast(1.1) saturate(1.1);
+    }
+
+    .logo-image-wrapper::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border-radius: 1rem;
+      box-shadow: inset 0 0 0 2px rgba(200, 140, 60, 0.3);
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .logo-text .chinese {
+      font-size: 3.2rem;
+      font-weight: 700;
+      letter-spacing: 12px;
+      color: #e8c890;
+      text-shadow: 
+        0 0 30px rgba(200, 150, 80, 0.6),
+        0 0 60px rgba(180, 120, 50, 0.3),
+        0 2px 4px #000,
+        0 4px 12px rgba(0, 0, 0, 0.95);
+      line-height: 1.1;
+      font-family: 'STKaiti', 'KaiTi', 'Times New Roman', serif;
+      position: relative;
+    }
+
+    .logo-text .sub {
+      font-size: 0.9rem;
+      letter-spacing: 10px;
+      color: #a08050;
+      text-transform: uppercase;
+      margin-top: 6px;
+      font-weight: 300;
+      padding-left: 10px;
+      text-shadow: 0 1px 3px #000, 0 0 10px rgba(180, 120, 50, 0.3);
+    }
+
+    .album-title {
+      text-align: center;
+      font-size: 1.4rem;
+      letter-spacing: 16px;
+      color: #d9b88c;
+      margin-bottom: 2.5rem;
+      font-weight: 400;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.8rem;
+      font-family: 'STKaiti', 'KaiTi', serif;
+      text-shadow: 0 0 20px rgba(200, 140, 60, 0.4), 0 2px 5px #000;
+      padding-left: 16px;
+    }
+
+    .album-title::before,
+    .album-title::after {
+      content: '';
+      flex: 0 0 80px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #c9954a, #e0b060, #c9954a, transparent);
+      box-shadow: 0 0 8px rgba(200, 140, 60, 0.5);
+    }
+
+    .album-title .diamond {
+      width: 8px;
+      height: 8px;
+      background: #c9954a;
+      transform: rotate(45deg);
+      box-shadow: 0 0 10px rgba(200, 140, 60, 0.8);
+      flex-shrink: 0;
+    }
+
+    .featured-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.2rem;
+      margin-bottom: 2.8rem;
+    }
+
+    .regular-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.8rem;
+    }
+
+    .member-card {
+      background: 
+        linear-gradient(145deg, #1f1a15, #0d0a08),
+        radial-gradient(circle at 30% 20%, rgba(200, 140, 60, 0.06) 0%, transparent 60%);
+      border-radius: 1.6rem;
+      padding: 1.5rem 1.3rem 1.7rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border: 2px solid rgba(160, 100, 45, 0.35);
+      cursor: pointer;
+      position: relative;
+      transform: rotateX(2deg) rotateY(-2deg);
+      transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.3, 1.1), 
+                  box-shadow 0.4s ease,
+                  border-color 0.3s ease;
+      box-shadow: 
+        10px 15px 30px rgba(0, 0, 0, 0.85),
+        -3px -3px 10px rgba(80, 60, 40, 0.12),
+        0 0 25px rgba(150, 90, 40, 0.08),
+        inset 0 1px 0 rgba(255, 200, 150, 0.08);
+      will-change: transform;
+      overflow: hidden;
+    }
+
+    .member-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 30% 30%, rgba(220, 170, 100, 0.1) 0%, transparent 50%),
+                  radial-gradient(circle at 70% 70%, rgba(200, 120, 60, 0.08) 0%, transparent 50%);
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .member-card:hover::before {
+      opacity: 1;
+    }
+
+    .member-card::after {
+      content: '';
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      right: 10px;
+      bottom: 10px;
+      border-radius: 1.2rem;
+      border: 1px solid transparent;
+      background: 
+        linear-gradient(45deg, rgba(200, 140, 60, 0.4) 0%, transparent 15%) top left / 25px 25px no-repeat,
+        linear-gradient(-45deg, rgba(200, 140, 60, 0.4) 0%, transparent 15%) top right / 25px 25px no-repeat,
+        linear-gradient(135deg, rgba(200, 140, 60, 0.4) 0%, transparent 15%) bottom left / 25px 25px no-repeat,
+        linear-gradient(-135deg, rgba(200, 140, 60, 0.4) 0%, transparent 15%) bottom right / 25px 25px no-repeat;
+      pointer-events: none;
+      z-index: 3;
+      transition: opacity 0.3s;
+      opacity: 0.8;
+    }
+
+    .member-card:hover {
+      transform: rotateX(0deg) rotateY(0deg) translateY(-14px) translateZ(25px);
+      border-color: rgba(220, 160, 70, 0.7);
+      box-shadow: 
+        0 35px 60px rgba(0, 0, 0, 0.95),
+        0 0 40px rgba(200, 140, 60, 0.25),
+        0 0 0 1px rgba(220, 160, 70, 0.4),
+        inset 0 1px 0 rgba(255, 220, 160, 0.15);
+    }
+
+    .member-card:hover::after {
+      opacity: 1;
+    }
+
+    .member-card.featured-card {
+      padding: 2.4rem 2rem 2.4rem;
+      border-width: 2.5px;
+      transform: rotateX(1.5deg) rotateY(-1.5deg) scale(1.01);
+    }
+
+    .member-card.featured-card:hover {
+      transform: rotateX(0deg) rotateY(0deg) translateY(-18px) translateZ(35px) scale(1.01);
+    }
+
+    .avatar-frame {
+      width: 130px;
+      height: 130px;
+      border-radius: 1.1rem;
+      overflow: hidden;
+      border: 3px solid #7a5228;
+      box-shadow: 
+        0 0 0 2px #1a1208,
+        0 0 25px rgba(180, 110, 45, 0.35),
+        0 0 45px rgba(150, 90, 40, 0.15),
+        0 15px 25px -8px black;
+      transition: border-color 0.3s, box-shadow 0.4s;
+      margin-bottom: 1.1rem;
+      background: #111;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 2;
+    }
+
+    .avatar-frame::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border-radius: 0.9rem;
+      box-shadow: inset 0 0 0 2px rgba(200, 140, 60, 0.25);
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .member-card.featured-card .avatar-frame {
+      width: 100%;
+      max-width: 360px;
+      height: auto;
+      aspect-ratio: 1 / 1;
+      border-radius: 1.6rem;
+      border-width: 4px;
+    }
+
+    .member-card:hover .avatar-frame {
+      border-color: #e0b060;
+      box-shadow: 
+        0 0 0 2px #2a1e12,
+        0 0 35px rgba(220, 150, 60, 0.5),
+        0 0 60px rgba(200, 140, 60, 0.25),
+        0 20px 30px -8px black;
+    }
+
+    .avatar-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s ease, filter 0.5s ease;
+      filter: brightness(0.95) contrast(1.08) saturate(0.9) sepia(0.08);
+    }
+
+    .member-card:hover .avatar-frame img {
+      transform: scale(1.1);
+      filter: brightness(1.08) contrast(1.12) saturate(1.05) sepia(0);
+    }
+
+    .member-name {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #f0d9b0;
+      letter-spacing: 5px;
+      margin: 0.4rem 0 0.5rem;
+      text-shadow: 
+        0 0 20px rgba(220, 150, 60, 0.5),
+        0 0 40px rgba(180, 120, 50, 0.25),
+        0 2px 5px #000;
+      font-family: 'STKaiti', 'KaiTi', 'Times New Roman', serif;
+      position: relative;
+      z-index: 2;
+    }
+
+    .member-card.featured-card .member-name {
+      font-size: 2.6rem;
+      letter-spacing: 10px;
+      margin: 0.7rem 0 0.7rem;
+      text-shadow: 
+        0 0 30px rgba(220, 150, 60, 0.6),
+        0 0 60px rgba(180, 120, 50, 0.3),
+        0 3px 6px #000;
+    }
+
+    .member-name::after {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 2px;
+      margin: 6px auto 0;
+      background: linear-gradient(90deg, transparent, #c9954a, #e0b060, #c9954a, transparent);
+      border-radius: 50%;
+      box-shadow: 0 0 8px rgba(200, 140, 60, 0.6);
+      transition: width 0.4s ease;
+    }
+
+    .member-card:hover .member-name::after {
+      width: 70px;
+    }
+
+    .member-card.featured-card .member-name::after {
+      width: 70px;
+    }
+
+    .member-card.featured-card:hover .member-name::after {
+      width: 120px;
+    }
+
+    .member-role {
+      font-size: 1.05rem;
+      color: #f0d5a0;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      background: linear-gradient(145deg, #2a1e10, #1a1208);
+      padding: 0.45rem 1.6rem;
+      border-radius: 30px;
+      border: 1.5px solid rgba(200, 140, 60, 0.5);
+      margin-bottom: 0.2rem;
+      font-weight: 600;
+      font-family: 'STKaiti', 'KaiTi', serif;
+      position: relative;
+      z-index: 2;
+      box-shadow: 
+        inset 0 1px 0 rgba(255, 220, 160, 0.15),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.5),
+        0 6px 12px rgba(0, 0, 0, 0.7),
+        0 0 20px rgba(180, 120, 50, 0.15);
+      text-shadow: 0 1px 3px #000, 0 0 10px rgba(200, 140, 60, 0.4);
+    }
+
+    .member-role::before,
+    .member-role::after {
+      content: '◆';
+      font-size: 0.5rem;
+      color: #c9954a;
+      margin: 0 8px;
+      vertical-align: middle;
+      text-shadow: 0 0 6px rgba(200, 140, 60, 0.8);
+    }
+
+    .member-card.featured-card .member-role {
+      font-size: 1.6rem;
+      padding: 0.6rem 2.6rem;
+      letter-spacing: 10px;
+      border-width: 2px;
+    }
+
+    /* ========== 独立放大空间 ========== */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.96);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.4s ease, visibility 0.4s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-content {
+      background: linear-gradient(145deg, #181210, #0a0808);
+      border-radius: 2.2rem;
+      max-width: 90vw;
+      width: 920px;
+      max-height: 90vh;
+      padding: 2.2rem 2.2rem 1.7rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 
+        0 45px 90px rgba(0, 0, 0, 0.98),
+        0 0 0 2px rgba(180, 120, 50, 0.4),
+        0 0 80px rgba(150, 90, 40, 0.15),
+        inset 0 1px 0 rgba(255, 200, 150, 0.08);
+      border: 1px solid rgba(150, 90, 40, 0.5);
+      transform: scale(0.9);
+      transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.3, 1.1);
+      position: relative;
+      overflow-y: auto;
+    }
+
+    .modal-overlay.active .modal-content {
+      transform: scale(1);
+    }
+
+    .gallery-main {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      max-height: 55vh;
+    }
+
+    .modal-image-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 1.6rem;
+      overflow: hidden;
+      box-shadow: 
+        0 0 0 2px #4a3018,
+        0 35px 60px -10px black,
+        0 0 50px rgba(180, 110, 50, 0.2);
+      background: #0a0a0a;
+      max-width: 100%;
+      max-height: 55vh;
+      border: 2px solid rgba(180, 120, 50, 0.4);
+    }
+
+    .modal-image-wrapper img {
+      width: auto;
+      height: auto;
+      max-width: 70vw;
+      max-height: 55vh;
+      object-fit: contain;
+      display: block;
+      border-radius: 1.4rem;
+      transition: opacity 0.2s ease;
+    }
+
+    .nav-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: linear-gradient(145deg, #2a1e10, #0f0a06);
+      backdrop-filter: blur(6px);
+      border: 1.5px solid rgba(200, 140, 60, 0.6);
+      color: #e0b060;
+      font-size: 2.2rem;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      z-index: 10;
+      user-select: none;
+      line-height: 1;
+      padding-bottom: 4px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.9), 0 0 15px rgba(180, 120, 50, 0.2);
+    }
+
+    .nav-btn:hover {
+      background: linear-gradient(145deg, #4a3018, #2a1e10);
+      color: #ffe0a0;
+      border-color: #e0b060;
+      box-shadow: 0 0 30px rgba(220, 150, 60, 0.5);
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    .nav-btn:active {
+      transform: translateY(-50%) scale(0.95);
+    }
+
+    .nav-btn.prev { left: 12px; }
+    .nav-btn.next { right: 12px; }
+
+    .thumbnail-strip {
+      display: flex;
+      gap: 0.9rem;
+      margin-top: 1.4rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      padding: 0.5rem 0;
+      max-width: 100%;
+    }
+
+    .thumb-item {
+      width: 62px;
+      height: 62px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: border-color 0.25s, transform 0.2s, box-shadow 0.3s;
+      background: #1a1a1a;
+      flex-shrink: 0;
+      opacity: 0.55;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8);
+    }
+
+    .thumb-item:hover {
+      opacity: 1;
+      transform: scale(1.06);
+      border-color: #a06a2a;
+    }
+
+    .thumb-item.active {
+      border-color: #e0b060;
+      box-shadow: 
+        0 0 20px rgba(220, 150, 60, 0.6),
+        0 0 0 2px #f0d5b0,
+        0 4px 12px rgba(0, 0, 0, 0.8);
+      opacity: 1;
+      transform: scale(1.1);
+    }
+
+    .thumb-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .modal-caption {
+      margin-top: 1.4rem;
+      font-size: 1.7rem;
+      font-weight: 400;
+      color: #f0d9b0;
+      letter-spacing: 8px;
+      text-shadow: 0 0 25px rgba(220, 150, 60, 0.5), 0 2px 5px #000;
+      background: linear-gradient(145deg, #1f1812, #0f0a06);
+      padding: 0.6rem 2.8rem;
+      border-radius: 60px;
+      border: 1.5px solid rgba(200, 140, 60, 0.5);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      gap: 1.8rem;
+      font-family: 'STKaiti', 'KaiTi', serif;
+      box-shadow: 
+        inset 0 1px 0 rgba(255, 220, 160, 0.12),
+        0 10px 25px rgba(0, 0, 0, 0.8),
+        0 0 30px rgba(180, 120, 50, 0.15);
+    }
+
+    .photo-counter {
+      font-size: 1.05rem;
+      color: #d9b88c;
+      letter-spacing: 3px;
+      background: rgba(40, 28, 16, 0.8);
+      padding: 0.25rem 1rem;
+      border-radius: 30px;
+      border: 1px solid rgba(180, 120, 50, 0.5);
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 1rem;
+      right: 1.4rem;
+      font-size: 2.2rem;
+      background: transparent;
+      border: none;
+      color: #c9954a;
+      cursor: pointer;
+      line-height: 1;
+      transition: color 0.3s, transform 0.3s, text-shadow 0.3s;
+      padding: 0.2rem 0.9rem;
+      border-radius: 50%;
+      font-weight: 300;
+      z-index: 10;
+    }
+
+    .close-btn:hover {
+      color: #ffe0a0;
+      transform: scale(1.25) rotate(90deg);
+      text-shadow: 0 0 30px rgba(220, 150, 60, 0.9);
+    }
+
+    /* ========== 响应式 ========== */
+    @media (max-width: 1100px) {
+      .home-btn-wrapper {
+        right: 15px;
+      }
+      .home-btn {
+        width: 58px;
+        height: 58px;
+      }
+      .home-btn svg {
+        width: 26px;
+        height: 26px;
+      }
+      .home-btn-label {
+        font-size: 0.65rem;
+        letter-spacing: 3px;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .featured-row {
+        gap: 1.5rem;
+      }
+      .regular-row {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+      }
+      .member-card.featured-card .member-name {
+        font-size: 2rem;
+      }
+      .member-card.featured-card .member-role {
+        font-size: 1.3rem;
+        padding: 0.5rem 1.8rem;
+      }
+      .poem-side { display: none; }
+    }
+
+    @media (max-width: 640px) {
+      .space-container {
+        padding: 1.8rem 1.2rem 2.2rem;
+      }
+      .logo-text .chinese {
+        font-size: 2.3rem;
+        letter-spacing: 7px;
+      }
+      .logo-text .sub {
+        font-size: 0.6rem;
+        letter-spacing: 6px;
+      }
+      .logo-image-wrapper {
+        width: 70px;
+        height: 70px;
+      }
+      .album-title {
+        font-size: 1.1rem;
+        letter-spacing: 10px;
+        gap: 1rem;
+      }
+      .album-title::before,
+      .album-title::after {
+        flex: 0 0 40px;
+      }
+      .featured-row {
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
+        margin-bottom: 1.8rem;
+      }
+      .regular-row {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+      }
+      .member-card {
+        padding: 1rem 0.8rem 1.2rem;
+        border-radius: 1.2rem;
+      }
+      .member-card.featured-card {
+        padding: 1.6rem 1.2rem 1.6rem;
+      }
+      .member-card.featured-card .avatar-frame {
+        max-width: 240px;
+      }
+      .avatar-frame {
+        width: 100px;
+        height: 100px;
+      }
+      .member-name {
+        font-size: 1.15rem;
+        letter-spacing: 3px;
+      }
+      .member-card.featured-card .member-name {
+        font-size: 1.6rem;
+        letter-spacing: 6px;
+      }
+      .member-role {
+        font-size: 0.82rem;
+        padding: 0.3rem 1rem;
+        letter-spacing: 3px;
+      }
+      .member-role::before,
+      .member-role::after {
+        margin: 0 4px;
+      }
+      .member-card.featured-card .member-role {
+        font-size: 1.05rem;
+        padding: 0.4rem 1.5rem;
+        letter-spacing: 5px;
+      }
+      .modal-content {
+        padding: 1.5rem 1rem 1rem;
+        border-radius: 1.6rem;
+        width: 95vw;
+      }
+      .modal-image-wrapper img {
+        max-width: 80vw;
+        max-height: 45vh;
+      }
+      .modal-caption {
+        font-size: 1.2rem;
+        padding: 0.35rem 1.4rem;
+        gap: 0.9rem;
+        letter-spacing: 4px;
+      }
+      .photo-counter {
+        font-size: 0.8rem;
+      }
+      .nav-btn {
+        width: 42px;
+        height: 42px;
+        font-size: 1.7rem;
+      }
+      .thumb-item {
+        width: 46px;
+        height: 46px;
+      }
+      .gallery-main {
+        max-height: 45vh;
+      }
+      .corner-seal { display: none; }
+
+      /* 移动端返回按钮调整 */
+      .home-btn-wrapper {
+        right: 12px;
+        gap: 8px;
+      }
+      .home-btn-wrapper::before,
+      .home-btn-wrapper::after {
+        height: 25px;
+      }
+      .home-btn {
+        width: 52px;
+        height: 52px;
+      }
+      .home-btn svg {
+        width: 24px;
+        height: 24px;
+      }
+      .home-btn-label {
+        font-size: 0.6rem;
+        letter-spacing: 2px;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .regular-row {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.8rem;
+      }
+      .member-card .avatar-frame {
+        width: 85px;
+        height: 85px;
+      }
+      .member-card.featured-card .avatar-frame {
+        max-width: 190px;
+      }
+      .member-name {
+        font-size: 1rem;
+        letter-spacing: 2px;
+      }
+      .member-card.featured-card .member-name {
+        font-size: 1.4rem;
+        letter-spacing: 4px;
+      }
+      .thumb-item {
+        width: 38px;
+        height: 38px;
+      }
+      .modal-caption {
+        font-size: 1rem;
+        flex-direction: column;
+        gap: 0.3rem;
+        padding: 0.4rem 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 固定装饰：左侧竖排诗意文字 -->
+  <div class="poem-side">華山論劍 · 群英薈萃 · 江湖再現</div>
+
+  <!-- ========== 右侧返回首页按钮 ========== -->
+  <div class="home-btn-wrapper">
+    <a href="home.html" class="home-btn" id="homeBtn" title="返回首页" aria-label="返回首页">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- 房子图标 -->
+        <path d="M3 10.5L12 3L21 10.5V20C21 20.5523 20.5523 21 20 21H15V15H9V21H4C3.44772 21 3 20.5523 3 20V10.5Z" 
+              stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <!-- 向上的箭头（隐含回首页之意） -->
+        <path d="M12 13V8M12 8L9.5 10.5M12 8L14.5 10.5" 
+              stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+    <div class="home-btn-label">返回首页</div>
+  </div>
+
+  <!-- 固定装饰：右下角印章 -->
+  <div class="corner-seal">
+    <div class="seal-dot"></div>
+    <div class="seal-text">太華山</div>
+  </div>
+
+  <div class="space-container">
+
+    <!-- Logo 区域 -->
+    <div class="logo-area">
+      <div class="logo-icon">
+        <div class="logo-image-wrapper" id="logoWrapper">
+          <img id="customLogo" 
+               src="carousel/logo.webp" 
+               alt="太华山 Logo"
+               data-default-src="carousel/logo.webp">
+        </div>
+        <div class="logo-text">
+          <span class="chinese">太华山</span>
+          <span class="sub">TAI HUA SHAN</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 相册标题：花名册 -->
+    <div class="album-title">
+      <span class="diamond"></span>
+      花 名 册
+      <span class="diamond"></span>
+    </div>
+
+    <!-- ========== 上方两张超大卡片 ========== -->
+    <div class="featured-row">
+      <!-- 福禄 -->
+      <div class="member-card featured-card" data-name="福禄" data-photos='
+      [
+      "https://picsum.photos/id/1011/1000/1000",
+      "https://picsum.photos/id/1012/1000/1000",
+      "https://picsum.photos/id/1013/1000/1000"
+      ]'>
+        <div class="avatar-frame">
+          <img src="https://picsum.photos/id/1011/600/600" alt="福禄">
+        </div>
+        <div class="member-name">福禄</div>
+        <div class="member-role">社长</div>
+      </div>
+      <!-- 权威御姐 -->
+      <div class="member-card featured-card" data-name="权威御姐" data-photos='["https://picsum.photos/id/1015/1000/1000","https://picsum.photos/id/1016/1000/1000","https://picsum.photos/id/1018/1000/1000","https://picsum.photos/id/1020/1000/1000"]'>
+        <div class="avatar-frame">
+          <img src="https://picsum.photos/id/1015/600/600" alt="权威御姐">
+        </div>
+        <div class="member-name">权威御姐</div>
+        <div class="member-role">副社长</div>
+      </div>
+    </div>
+
+    <!-- ========== 下方平铺小卡片 ========== -->
+    <div class="regular-row">
+      <!-- 筱八 -->
+      <div class="member-card" data-name="筱八" data-photos='["img/xiaoba/1.jpg","img/xiaoba/2.jpg","img/xiaoba/3.jpg","img/xiaoba/4.jpg"]'>
+        <div class="avatar-frame">
+          <img src="img/xiaoba/0.jpg" alt="筱八">
+        </div>
+        <div class="member-name">筱八</div>
+        <div class="member-role">成员</div>
+      </div>
+      <!-- 雪见 -->
+      <div class="member-card" data-name="雪见" data-photos='["https://picsum.photos/id/1024/1000/1000","https://picsum.photos/id/1025/1000/1000","https://picsum.photos/id/1026/1000/1000","https://picsum.photos/id/1027/1000/1000","https://picsum.photos/id/1028/1000/1000"]'>
+        <div class="avatar-frame">
+          <img src="https://picsum.photos/id/1024/400/400" alt="雪见">
+        </div>
+        <div class="member-name">雪见</div>
+        <div class="member-role">灵狐</div>
+      </div>
+      <!-- 沉璧 -->
+      <div class="member-card" data-name="沉璧" data-photos='["https://picsum.photos/id/1005/1000/1000","https://picsum.photos/id/1006/1000/1000","https://picsum.photos/id/1009/1000/1000"]'>
+        <div class="avatar-frame">
+          <img src="https://picsum.photos/id/1005/400/400" alt="沉璧">
+        </div>
+        <div class="member-name">沉璧</div>
+        <div class="member-role">乐师</div>
+      </div>
+      <!-- 断岳 -->
+      <div class="member-card" data-name="断岳" data-photos='["https://picsum.photos/id/1069/1000/1000","https://picsum.photos/id/1070/1000/1000","https://picsum.photos/id/1071/1000/1000"]'>
+        <div class="avatar-frame">
+          <img src="https://picsum.photos/id/1069/400/400" alt="断岳">
+        </div>
+        <div class="member-name">断岳</div>
+        <div class="member-role">刀客</div>
+      </div>
+      <!-- 云舒 -->
+      <div class="member-card" data-name="云舒" data-photos='["https://picsum.photos/id/1043/1000/1000","https://picsum.photos/id/1044/1000/1000","https://picsum.photos/id/1045/1000/1000"]'>
+        <div class="avatar-frame">
+          <img src="https://picsum.photos/id/1043/400/400" alt="云舒">
+        </div>
+        <div class="member-name">云舒</div>
+        <div class="member-role">琴师</div>
+      </div>
+      <!-- 墨白 -->
+      <div class="member-card" data-name="墨白" data-photos='["https://picsum.photos/id/1050/1000/1000","https://picsum.photos/id/1051/1000/1000","https://picsum.photos/id/1052/1000/1000","https://picsum.photos/id/1053/1000/1000"]'>
+        <div class="avatar-frame">
+          <img src="https://picsum.photos/id/1050/400/400" alt="墨白">
+        </div>
+        <div class="member-name">墨白</div>
+        <div class="member-role">书生</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 独立放大空间 -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-content" id="modalContent">
+      <button class="close-btn" id="closeModalBtn" aria-label="关闭">&times;</button>
+      
+      <div class="gallery-main">
+        <button class="nav-btn prev" id="prevBtn" aria-label="上一张">‹</button>
+        <div class="modal-image-wrapper">
+          <img id="modalImage" src="" alt="放大图片">
+        </div>
+        <button class="nav-btn next" id="nextBtn" aria-label="下一张">›</button>
+      </div>
+
+      <div class="thumbnail-strip" id="thumbnailStrip"></div>
+
+      <div class="modal-caption">
+        <span id="modalCaption">队友</span>
+        <span class="photo-counter" id="photoCounter">1 / 1</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      let currentPhotos = [];
+      let currentIndex = 0;
+      let currentName = '';
+
+      const modalOverlay = document.getElementById('modalOverlay');
+      const modalImage = document.getElementById('modalImage');
+      const modalCaption = document.getElementById('modalCaption');
+      const photoCounter = document.getElementById('photoCounter');
+      const closeBtn = document.getElementById('closeModalBtn');
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      const thumbnailStrip = document.getElementById('thumbnailStrip');
+
+      // ========== Logo 图片替换 API ==========
+      const LOGO_DEFAULT = 'https://picsum.photos/id/1040/400/400';
+      
+      window.setLogoImage = function(imageUrl) {
+        const logoImg = document.getElementById('customLogo');
+        if (logoImg && imageUrl) {
+          logoImg.src = imageUrl;
+          logoImg.alt = '太华山 Logo';
+        }
+      };
+      
+      window.resetLogoImage = function() {
+        const logoImg = document.getElementById('customLogo');
+        if (logoImg) {
+          logoImg.src = logoImg.dataset.defaultSrc || LOGO_DEFAULT;
+        }
+      };
+
+      // ========== 返回首页按钮逻辑 ==========
+      const homeBtn = document.getElementById('homeBtn');
+      
+      // 如果需要在点击时添加动效或自定义跳转逻辑
+      homeBtn.addEventListener('click', function(e) {
+        // 添加点击动画效果
+        this.style.transform = 'scale(0.9)';
+        setTimeout(() => {
+          this.style.transform = '';
+        }, 150);
+
+        // 如果不想用 href 跳转，可取消下面注释自定义跳转
+        // e.preventDefault();
+        // window.location.href = 'index.html';
+        
+        // 演示：在新标签打开（可改为当前页跳转）
+        // 当前使用 <a href="index.html"> 默认行为，可修改为实际首页地址
+      });
+
+      // ========== 相册逻辑 ==========
+      function updateMainImage() {
+        if (!currentPhotos.length) return;
+        if (currentIndex < 0) currentIndex = 0;
+        if (currentIndex >= currentPhotos.length) currentIndex = currentPhotos.length - 1;
+
+        const newSrc = currentPhotos[currentIndex];
+        modalImage.style.opacity = '0.6';
+        setTimeout(() => {
+          modalImage.src = newSrc;
+          modalImage.alt = currentName + ' 照片 ' + (currentIndex + 1);
+          modalImage.style.opacity = '1';
+        }, 60);
+
+        photoCounter.textContent = `${currentIndex + 1} / ${currentPhotos.length}`;
+
+        const thumbs = thumbnailStrip.querySelectorAll('.thumb-item');
+        thumbs.forEach((thumb, idx) => {
+          thumb.classList.toggle('active', idx === currentIndex);
+        });
+      }
+
+      function renderThumbnails() {
+        thumbnailStrip.innerHTML = '';
+        if (!currentPhotos.length) return;
+
+        currentPhotos.forEach((src, idx) => {
+          const thumb = document.createElement('div');
+          thumb.className = `thumb-item ${idx === currentIndex ? 'active' : ''}`;
+          thumb.dataset.index = idx;
+          thumb.innerHTML = `<img src="${src}" alt="缩略图 ${idx+1}" loading="lazy">`;
+          thumb.addEventListener('click', (e) => {
+            e.stopPropagation();
+            currentIndex = idx;
+            updateMainImage();
+          });
+          thumbnailStrip.appendChild(thumb);
+        });
+      }
+
+      function openModal(name, photosArray) {
+        currentName = name;
+        currentPhotos = photosArray;
+        currentIndex = 0;
+
+        modalCaption.textContent = name;
+        renderThumbnails();
+        modalImage.src = currentPhotos[0];
+        modalImage.alt = name + ' 照片 1';
+        photoCounter.textContent = `1 / ${currentPhotos.length}`;
+        const thumbs = thumbnailStrip.querySelectorAll('.thumb-item');
+        if (thumbs.length) thumbs[0].classList.add('active');
+
+        modalOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeModal() {
+        modalOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+        setTimeout(() => {
+          if (!modalOverlay.classList.contains('active')) {
+            modalImage.src = '';
+            thumbnailStrip.innerHTML = '';
+            currentPhotos = [];
+            currentIndex = 0;
+          }
+        }, 400);
+      }
+
+      function goPrev() {
+        if (currentPhotos.length <= 1) return;
+        currentIndex = (currentIndex - 1 + currentPhotos.length) % currentPhotos.length;
+        updateMainImage();
+      }
+
+      function goNext() {
+        if (currentPhotos.length <= 1) return;
+        currentIndex = (currentIndex + 1) % currentPhotos.length;
+        updateMainImage();
+      }
+
+      document.addEventListener('click', (e) => {
+        const card = e.target.closest('.member-card');
+        if (!card) return;
+
+        const name = card.dataset.name;
+        const photosJson = card.dataset.photos;
+        if (!name || !photosJson) return;
+
+        try {
+          const photos = JSON.parse(photosJson);
+          if (Array.isArray(photos) && photos.length > 0) {
+            openModal(name, photos);
+          }
+        } catch (err) {
+          console.warn('照片数据解析失败', err);
+        }
+      });
+
+      closeBtn.addEventListener('click', closeModal);
+
+      modalOverlay.addEventListener('click', (e) => {
+        if (e.target === modalOverlay) {
+          closeModal();
+        }
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
+          closeModal();
+        }
+        if (modalOverlay.classList.contains('active')) {
+          if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            goPrev();
+          } else if (e.key === 'ArrowRight') {
+            e.preventDefault();
+            goNext();
+          }
+        }
+      });
+
+      prevBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        goPrev();
+      });
+      nextBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        goNext();
+      });
+
+      modalImage.addEventListener('error', function() {
+        this.src = 'https://picsum.photos/id/1015/1000/1000';
+      });
+
+      const logoImg = document.getElementById('customLogo');
+      if (logoImg) {
+        logoImg.addEventListener('error', function() {
+          this.src = 'https://picsum.photos/id/1040/400/400';
+        });
+      }
+
+      // 3D 鼠标跟随微动效
+      const cards = document.querySelectorAll('.member-card');
+      cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+          const rotateX = (y - centerY) / 25;
+          const rotateY = (centerX - x) / 25;
+
+          if (!card.matches(':hover')) {
+            card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+          }
+        });
+
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = '';
+        });
+      });
+    })();
+  </script>
+
+</body>
+</html>

@@ -761,6 +761,10 @@
     </div>
 
 
+    <!-- ==================== 底部操作提示 ==================== -->
+    <!-- 该元素原先缺失，导致 JS 里 hint.style 抛错、暂停浮层的定时器无法注册 -->
+    <div id="hint">拖动旋转 · 点击照片可放大</div>
+
     <!-- ==================== 暂停指示浮层 ==================== -->
     <div id="pauseIndicator">⏸ 旋转已暂停 · 点击照片可放大</div>
 
@@ -835,30 +839,22 @@
         // ============================================================
 
         const imageUrls = [
-            'img/101.jpg',
-            'https://picsum.photos/id/1016/600/600',
-            'https://picsum.photos/id/1018/600/600',
-            'https://picsum.photos/id/1019/600/600',
-            'https://picsum.photos/id/1020/600/600',
-            'https://picsum.photos/id/1024/600/600',
-            'https://picsum.photos/id/1025/600/600',
-            'https://picsum.photos/id/1027/600/600',
-            'https://picsum.photos/id/1035/600/600',
-            'https://picsum.photos/id/1036/600/600',
-            'https://picsum.photos/id/1037/600/600',
-            'https://picsum.photos/id/1039/600/600',
-            'https://picsum.photos/id/1040/600/600',
-            'https://picsum.photos/id/1041/600/600',
-            'https://picsum.photos/id/1043/600/600',
-            'https://picsum.photos/id/1044/600/600',
-            'https://picsum.photos/id/1045/600/600',
-            'https://picsum.photos/id/1047/600/600',
-            'https://picsum.photos/id/1048/600/600',
-            'https://picsum.photos/id/1049/600/600',
-            'https://picsum.photos/id/1050/600/600',
-            'https://picsum.photos/id/1051/600/600',
-            'https://picsum.photos/id/1053/600/600',
-            'https://picsum.photos/id/1055/600/600'
+            'carousel/huodong/1.jpg',
+            'carousel/huodong/2.jpg',
+            'carousel/huodong/3.jpg',
+            'carousel/huodong/4.jpg',
+            'carousel/huodong/5.jpg',
+            'carousel/huodong/6.jpg',
+            'carousel/huodong/7.jpg',
+            'carousel/huodong/8.jpg',
+            'carousel/huodong/9.jpg',
+            'carousel/huodong/10.jpg',
+            'carousel/huodong/11.jpg',
+            'carousel/huodong/12.jpg',
+            'carousel/huodong/13.jpg',
+            'carousel/huodong/14.jpg'
+
+            
         ];
 
         // ============================================================
@@ -1180,6 +1176,10 @@
         // ============================================================
         // 6. 动画循环
         // ============================================================
+        // 暂停状态：必须在 animate() 首次同步执行前声明，
+        // 否则动画循环里读取 isPaused 会触发 TDZ 报错（let 的暂时性死区）
+        let isPaused = false;
+
         const clock = new THREE.Clock();
         let elapsedTotal = 0;
 
@@ -1188,15 +1188,19 @@
             elapsedTotal += delta;
             const elapsed = elapsedTotal;
 
-            photoGroup.rotation.y += 0.0006;
-            photoGroup.rotation.x += 0.00015;
+            // 「旋转已暂停」提示必须名副其实：暂停时停掉照片群与星层的自转
+            // （elapsedTotal 继续累加，恢复播放时不会出现相位跳变）
+            if (!isPaused) {
+                photoGroup.rotation.y += 0.0006;
+                photoGroup.rotation.x += 0.00015;
 
-            distantStars.rotation.y -= 0.00008;
-            distantStars.rotation.x += 0.00004;
-            nearStars.rotation.y += 0.0003;
-            nearStars.rotation.x -= 0.00012;
-            brightStars.rotation.y += 0.0002;
-            brightStars.rotation.z += 0.0001;
+                distantStars.rotation.y -= 0.00008;
+                distantStars.rotation.x += 0.00004;
+                nearStars.rotation.y += 0.0003;
+                nearStars.rotation.x -= 0.00012;
+                brightStars.rotation.y += 0.0002;
+                brightStars.rotation.z += 0.0001;
+            }
 
             photoMeshes.forEach((plane) => {
                 const data = plane.userData;
@@ -1351,25 +1355,46 @@
         const pauseIndicator = document.getElementById('pauseIndicator');
         const hint = document.getElementById('hint');
 
-        let isPaused = false;
+        // 保存定时器句柄，避免上一轮的计时器提前掐掉新一轮的浮层
+        let pauseHintTimer = null;
+
+        // 浮层的显示时长
+        const PAUSE_HINT_DURATION = 2000;
+
+        // 立刻收起浮层并清理定时器（浮层唯一的正规退场口）
+        function hidePauseIndicator() {
+            if (pauseHintTimer) {
+                clearTimeout(pauseHintTimer);
+                pauseHintTimer = null;
+            }
+            pauseIndicator.classList.remove('show');
+        }
 
         function pauseRotation() {
-            if (!isPaused) {
-                isPaused = true;
-                controls.autoRotate = false;
-                pauseIndicator.classList.add('show');
-                hint.style.opacity = '0';
-                setTimeout(() => {
-                    pauseIndicator.classList.remove('show');
-                }, 2000);
+            if (isPaused) return;
+            isPaused = true;
+            controls.autoRotate = false;
+            if (hint) hint.style.opacity = '0';
+
+            // 清掉可能残留的上一轮计时器，保证本次浮层能完整显示 2 秒
+            if (pauseHintTimer) {
+                clearTimeout(pauseHintTimer);
+                pauseHintTimer = null;
             }
+            pauseIndicator.classList.add('show');
+            pauseHintTimer = setTimeout(() => {
+                pauseIndicator.classList.remove('show');
+                pauseHintTimer = null;
+            }, PAUSE_HINT_DURATION);
         }
 
         function resumeRotation() {
-            if (isPaused) {
-                isPaused = false;
-                controls.autoRotate = true;
-            }
+            if (!isPaused) return;
+            isPaused = false;
+            controls.autoRotate = true;
+            if (hint) hint.style.opacity = '1';
+            // 关闭大图时立即收起浮层，不再等满 2 秒
+            hidePauseIndicator();
         }
 
         function openPhotoViewer(index) {
@@ -1384,9 +1409,9 @@
         }
 
         function closePhotoViewer() {
+            if (!photoViewer.classList.contains('active')) return;
             photoViewer.classList.remove('active');
             document.body.style.overflow = '';
-            hint.style.opacity = '1';
             resumeRotation();
         }
 
@@ -1395,8 +1420,14 @@
             closePhotoViewer();
         });
 
-        photoViewer.addEventListener('click', (e) => {
-            if (e.target === photoViewer || e.target.classList.contains('viewerImgWrap')) {
+        // 点击遮罩任意位置（含图片本身）均可关闭
+        photoViewer.addEventListener('click', () => {
+            closePhotoViewer();
+        });
+
+        // ESC 关闭大图
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && photoViewer.classList.contains('active')) {
                 closePhotoViewer();
             }
         });

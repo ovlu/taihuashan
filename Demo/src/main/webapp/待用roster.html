@@ -923,6 +923,77 @@
 				font-family: 'Segoe UI', sans-serif;
 			}
 
+			/* ========== 个人名言 ========== */
+			.modal-quote {
+				margin-top: 1.1rem;
+				max-width: 760px;
+				padding: 0.9rem 2.6rem;
+				position: relative;
+				text-align: center;
+				font-family: 'STKaiti', 'KaiTi', serif;
+				font-size: 1.25rem;
+				line-height: 1.9;
+				letter-spacing: 4px;
+				color: #d8bb8c;
+				text-shadow: 0 0 18px rgba(200, 140, 60, 0.35), 0 2px 4px #000;
+				opacity: 0;
+				transform: translateY(10px);
+				transition: opacity 0.55s ease, transform 0.55s cubic-bezier(0.2, 0.9, 0.3, 1.1);
+			}
+
+			/* 打开时由 JS 加 .show 触发渐入 */
+			.modal-quote.show {
+				opacity: 1;
+				transform: translateY(0);
+			}
+
+			.modal-quote:empty {
+				display: none;
+			}
+
+			/* 左右引号装饰 */
+			.modal-quote::before,
+			.modal-quote::after {
+				content: '';
+				position: absolute;
+				top: 0;
+				width: 22px;
+				height: 18px;
+				opacity: 0.55;
+			}
+
+			.modal-quote::before {
+				left: 0;
+				background:
+					radial-gradient(circle at 100% 0, transparent 0 70%, rgba(200, 140, 60, 0.9) 71% 100%);
+				border-top: 2px solid rgba(200, 140, 60, 0.9);
+				border-left: 2px solid rgba(200, 140, 60, 0.9);
+				border-radius: 2px 0 0 0;
+			}
+
+			.modal-quote::after {
+				right: 0;
+				background:
+					radial-gradient(circle at 0 0, transparent 0 70%, rgba(200, 140, 60, 0.9) 71% 100%);
+				border-top: 2px solid rgba(200, 140, 60, 0.9);
+				border-right: 2px solid rgba(200, 140, 60, 0.9);
+				border-radius: 0 2px 0 0;
+			}
+
+			/* 名言上方细分隔线 */
+			.modal-quote::first-line {
+				line-height: 1.9;
+			}
+
+			.quote-rule {
+				margin-top: 1.2rem;
+				width: 180px;
+				height: 1px;
+				background: linear-gradient(90deg, transparent, #c9954a, #e0b060, #c9954a, transparent);
+				box-shadow: 0 0 8px rgba(200, 140, 60, 0.5);
+				flex-shrink: 0;
+			}
+
 			.close-btn {
 				position: absolute;
 				top: 1rem;
@@ -1097,6 +1168,19 @@
 					letter-spacing: 4px;
 				}
 
+				.modal-quote {
+					font-size: 1rem;
+					letter-spacing: 2px;
+					padding: 0.7rem 1.6rem;
+					margin-top: 0.8rem;
+					line-height: 1.8;
+				}
+
+				.quote-rule {
+					width: 120px;
+					margin-top: 0.9rem;
+				}
+
 				.photo-counter {
 					font-size: 0.8rem;
 				}
@@ -1183,6 +1267,12 @@
 					gap: 0.3rem;
 					padding: 0.4rem 1rem;
 				}
+
+				.modal-quote {
+					font-size: 0.88rem;
+					letter-spacing: 1px;
+					padding: 0.5rem 1.2rem;
+				}
 			}
 		</style>
 	</head>
@@ -1245,7 +1335,8 @@
       "img/fulu/2.png",
       "img/fulu/1.png",
       "img/fulu/3.png"
-      ]'>
+      ]'
+						data-quote="福泽自种，禄在手中；太华山门，自我而始。">
 					<div class="avatar-frame">
 						<img src="img/fulu/1.png" alt="福禄">
 					</div>
@@ -1254,9 +1345,10 @@
 				</div>
 				<!-- 权威御姐 -->
 				<div class="member-card featured-card" data-name="权威御姐"
-					data-photos='["img/quanweiyujie/2.jpg","img/quanweiyujie/3.jpg","img/quanweiyujie/4.jpg","img/quanweiyujie/5.jpg","img/quanweiyujie/6.jpg"]'>
+					data-photos='["img/quanweiyujie/2.jpg","img/quanweiyujie/3.jpg","img/quanweiyujie/1.jpg","img/quanweiyujie/5.jpg","img/quanweiyujie/6.jpg"]'
+						data-quote="规矩是我定的，人情也是我给的。">
 					<div class="avatar-frame">
-						<img src="img/quanweiyujie/1.jpg" alt="权威御姐">
+						<img src="img/quanweiyujie/4.jpg" alt="权威御姐">
 					</div>
 					<div class="member-name">权威御姐</div>
 					<div class="member-role">副社长</div>
@@ -1267,7 +1359,8 @@
 			<div class="regular-row">
 				<!-- 柴瑱 -->
 				<div class="member-card" data-name="柴瑱"
-					data-photos='["img/chaitian/2.png","img/chaitian/3.png"]'>
+					data-photos='["img/chaitian/2.png","img/chaitian/3.png"]'
+						data-quote="这一局押上性命，才配叫一声豪赌。">
 					<div class="avatar-frame">
 						<img src="img/chaitian/1.png" alt="柴瑱">
 					</div>
@@ -1277,7 +1370,8 @@
 				
 				<!-- 兮夜青争 -->
 				<div class="member-card" data-name="兮夜青争"
-					data-photos='["img/xiyeqingzheng/2.jpg","img/xiyeqingzheng/3.png","img/xiyeqingzheng/4.png","img/xiyeqingzheng/5.png","img/xiyeqingzheng/6.png"]'>
+					data-photos='["img/xiyeqingzheng/2.jpg","img/xiyeqingzheng/3.png","img/xiyeqingzheng/4.png","img/xiyeqingzheng/5.png","img/xiyeqingzheng/6.png"]'
+						data-quote="夜色无声，青锋自鸣。">
 					<div class="avatar-frame">
 						<img src="img/xiyeqingzheng/1.jpg" alt="兮夜青争">
 					</div>
@@ -1286,7 +1380,8 @@
 				</div>
 				<!-- 渡春见野 -->
 				<div class="member-card" data-name="渡春见野"
-					data-photos='["img/duchunjianye/1.png"]'>
+					data-photos='["img/duchunjianye/1.png"]'
+						data-quote="渡得过春风，方见得原野。">
 					<div class="avatar-frame">
 						<img src="img/duchunjianye/1.png" alt="渡春见野">
 					</div>
@@ -1295,7 +1390,8 @@
 				</div>
 				<!-- 空心竹菌 -->
 				<div class="member-card" data-name="空心竹菌"
-					data-photos='["img/kongxinzhujun/1.png"]'>
+					data-photos='["img/kongxinzhujun/1.png"]'
+						data-quote="竹本无心，故能容万物之声。">
 					<div class="avatar-frame">
 						<img src="img/kongxinzhujun/1.png" alt="空心竹菌">
 					</div>
@@ -1304,7 +1400,8 @@
 				</div>
 				<!-- 四穗 -->
 				<div class="member-card" data-name="四穗"
-					data-photos='["img/sisui/1.png"]'>
+					data-photos='["img/sisui/1.png"]'
+						data-quote="我才四岁，你们都得让着我。">
 					<div class="avatar-frame">
 						<img src="img/sisui/1.png" alt="四穗">
 					</div>
@@ -1313,7 +1410,8 @@
 				</div>
 				<!-- 牧玺衍 -->
 				<div class="member-card" data-name="牧玺衍"
-					data-photos='["img/muxiyan/1.png"]'>
+					data-photos='["img/muxiyan/1.png"]'
+						data-quote="玺在掌中，名衍天下。">
 					<div class="avatar-frame">
 						<img src="img/muxiyan/1.png" alt="牧玺衍">
 					</div>
@@ -1322,7 +1420,8 @@
 				</div>
 				<!-- 集天 -->
 				<div class="member-card" data-name="集天"
-					data-photos='["img/jitian/1.jpg"]'>
+					data-photos='["img/jitian/1.jpg"]'
+						data-quote="集天下之大，不过一念之间。">
 					<div class="avatar-frame">
 						<img src="img/jitian/1.jpg" alt="集天">
 					</div>
@@ -1331,7 +1430,8 @@
 				</div>
 				<!-- 徐尚九熙 -->
 				<div class="member-card" data-name="徐尚九熙"
-					data-photos='["img/xushangjiuxi/2.jpg"]'>
+					data-photos='["img/xushangjiuxi/2.jpg"]'
+						data-quote="差半步登台，也差半步封神。">
 					<div class="avatar-frame">
 						<img src="img/xushangjiuxi/1.png" alt="徐尚九熙">
 					</div>
@@ -1340,7 +1440,8 @@
 				</div>
 				<!-- 涧冰 -->
 				<div class="member-card" data-name="涧冰"
-					data-photos='["img/jianbing/2.jpg","img/jianbing/3.jpg","img/jianbing/4.jpg","img/jianbing/5.jpg"]'>
+					data-photos='["img/jianbing/2.jpg","img/jianbing/3.jpg","img/jianbing/4.jpg","img/jianbing/5.jpg"]'
+						data-quote="十年如一日，冰亦能生温。">
 					<div class="avatar-frame">
 						<img src="img/jianbing/1.jpg" alt="涧冰">
 					</div>
@@ -1349,7 +1450,8 @@
 				</div>
 				<!-- 五呤仙 -->
 				<div class="member-card" data-name="五呤仙"
-					data-photos='["img/wuyinxian/2.jpg","img/wuyinxian/3.jpg","img/wuyinxian/4.png"]'>
+					data-photos='["img/wuyinxian/2.jpg","img/wuyinxian/3.jpg","img/wuyinxian/4.png"]'
+						data-quote="师父的道我走一半，另一半我自己走。">
 					<div class="avatar-frame">
 						<img src="img/wuyinxian/1.jpg" alt="五呤仙">
 					</div>
@@ -1358,7 +1460,8 @@
 				</div>
 				<!-- 无名书 -->
 				<div class="member-card" data-name="无名书"
-					data-photos='["img/wumingshu/2.jpg","img/wumingshu/3.jpg","img/wumingshu/4.jpg"]'>
+					data-photos='["img/wumingshu/2.jpg","img/wumingshu/3.jpg","img/wumingshu/4.jpg"]'
+						data-quote="书不留名，名自在人心。">
 					<div class="avatar-frame">
 						<img src="img/wumingshu/1.png" alt="无名书">
 					</div>
@@ -1367,7 +1470,8 @@
 				</div>
 				<!-- 忆黯 -->
 				<div class="member-card" data-name="忆黯"
-					data-photos='["img/yian/2.png","img/yian/3.jpg","img/yian/4.png"]'>
+					data-photos='["img/yian/2.png","img/yian/3.jpg","img/yian/4.png"]'
+						data-quote="黯到极处生光，才配叫回忆。">
 					<div class="avatar-frame">
 						<img src="img/yian/1.jpg" alt="忆黯">
 					</div>
@@ -1376,7 +1480,8 @@
 				</div>
 				<!-- 筱八 -->
 				<div class="member-card" data-name="筱八"
-					data-photos='["img/xiaoba/1.jpg","img/xiaoba/2.jpg","img/xiaoba/3.jpg","img/xiaoba/4.jpg"]'>
+					data-photos='["img/xiaoba/1.jpg","img/xiaoba/2.jpg","img/xiaoba/3.jpg","img/xiaoba/4.jpg"]'
+						data-quote="八面来风，我自岿然。">
 					<div class="avatar-frame">
 						<img src="img/xiaoba/0.jpg" alt="筱八">
 					</div>
@@ -1385,7 +1490,8 @@
 				</div>
 				<!-- 锦鲤小猪 -->
 				<div class="member-card" data-name="锦鲤小猪"
-					data-photos='["img/jinlixiaozhu/2.png","img/jinlixiaozhu/3.png","img/jinlixiaozhu/4.jpg","img/jinlixiaozhu/5.jpg"]'>
+					data-photos='["img/jinlixiaozhu/2.png","img/jinlixiaozhu/3.png","img/jinlixiaozhu/4.jpg","img/jinlixiaozhu/5.jpg"]'
+						data-quote="有问必答，好运必达。">
 					<div class="avatar-frame">
 						<img src="img/jinlixiaozhu/1.jpg" alt="锦鲤小猪">
 					</div>
@@ -1395,7 +1501,8 @@
 				
 				<!-- 我温柔的批爆 -->
 				<div class="member-card" data-name="我温柔的批爆"
-					data-photos='["img/wowenroudepibao/2.png","img/wowenroudepibao/3.png","img/wowenroudepibao/4.jpg","img/wowenroudepibao/5.jpg"]'>
+					data-photos='["img/wowenroudepibao/2.png","img/wowenroudepibao/3.png","img/wowenroudepibao/4.jpg","img/wowenroudepibao/5.jpg"]'
+						data-quote="我很温柔，只是出手重了些。">
 					<div class="avatar-frame">
 						<img src="img/wowenroudepibao/1.jpg" alt="我温柔的批爆">
 					</div>
@@ -1404,7 +1511,8 @@
 				</div>
 				<!-- 苛书 -->
 				<div class="member-card" data-name="苛书"
-					data-photos='["img/keshu/2.png","img/keshu/3.jpg","img/keshu/4.jpg","img/keshu/5.jpg"]'>
+					data-photos='["img/keshu/2.png","img/keshu/3.jpg","img/keshu/4.jpg","img/keshu/5.jpg"]'
+						data-quote="字字苛刻，句句真心。">
 					<div class="avatar-frame">
 						<img src="img/keshu/1.png" alt="苛书">
 					</div>
@@ -1413,7 +1521,8 @@
 				</div>
 				<!-- 是西柚柚 -->
 				<div class="member-card" data-name="是西柚柚"
-					data-photos='["img/shixiyouyou/2.jpg","img/shixiyouyou/3.jpg","img/shixiyouyou/1.jpg"]'>
+					data-photos='["img/shixiyouyou/2.jpg","img/shixiyouyou/3.jpg","img/shixiyouyou/1.jpg"]'
+						data-quote="一曲既出，谁与争锋。">
 					<div class="avatar-frame">
 						<img src="img/shixiyouyou/4.jpg" alt="是西柚柚">
 					</div>
@@ -1422,7 +1531,8 @@
 				</div>
 				<!-- 丌阑 -->
 				<div class="member-card" data-name="丌阑"
-					data-photos='["img/qilan/2.png","img/qilan/3.png","img/qilan/4.png","img/qilan/5.png","img/qilan/6.png"]'>
+					data-photos='["img/qilan/2.png","img/qilan/3.png","img/qilan/4.png","img/qilan/5.png","img/qilan/6.png"]'
+						data-quote="阑珊之处，灯火为凭。">
 					<div class="avatar-frame">
 						<img src="img/qilan/1.png" alt="丌阑">
 					</div>
@@ -1431,7 +1541,8 @@
 				</div>
 				<!-- 殁凉 -->
 				<div class="member-card" data-name="殁凉"
-					data-photos='["img/moliang/2.png","img/moliang/3.png","img/moliang/4.png","img/moliang/5.png","img/moliang/6.png"]'>
+					data-photos='["img/moliang/2.png","img/moliang/3.png","img/moliang/4.png","img/moliang/5.png","img/moliang/6.png"]'
+						data-quote="凉至极处，便是重生。">
 					<div class="avatar-frame">
 						<img src="img/moliang/1.png" alt="殁凉">
 					</div>
@@ -1441,7 +1552,8 @@
 				
 				<!-- 柷敔 -->
 				<div class="member-card" data-name="柷敔"
-					data-photos='["img/zhuyu/1.png"]'>
+					data-photos='["img/zhuyu/1.png"]'
+						data-quote="鱼在釜中，我在局外。">
 					<div class="avatar-frame">
 						<img src="img/zhuyu/1.png" alt="柷敔">
 					</div>
@@ -1450,7 +1562,8 @@
 				</div>
 				<!-- 逸玖 -->
 				<div class="member-card" data-name="逸玖"
-					data-photos='["img/yijiu/1.jpg"]'>
+					data-photos='["img/yijiu/1.jpg"]'
+						data-quote="十九正好，来日方长。">
 					<div class="avatar-frame">
 						<img src="img/yijiu/1.jpg" alt="逸玖">
 					</div>
@@ -1459,7 +1572,8 @@
 				</div>
 				<!-- 焓卿 -->
 				<div class="member-card" data-name="焓卿"
-					data-photos='["img/hanqin/1.jpg"]'>
+					data-photos='["img/hanqin/1.jpg"]'
+						data-quote="火候到了，风自会来。">
 					<div class="avatar-frame">
 						<img src="img/hanqin/2.png" alt="焓卿">
 					</div>
@@ -1468,7 +1582,8 @@
 				</div>
 				<!-- 玄不染 -->
 				<div class="member-card" data-name="玄不染"
-					data-photos='["img/xuanburan/2.jpg","img/xuanburan/3.jpg","img/xuanburan/4.jpg"]'>
+					data-photos='["img/xuanburan/2.jpg","img/xuanburan/3.jpg","img/xuanburan/4.jpg"]'
+						data-quote="万丈红尘，不染我衣。">
 					<div class="avatar-frame">
 						<img src="img/xuanburan/1.jpg" alt="玄不染">
 					</div>
@@ -1477,7 +1592,8 @@
 				</div>
 				<!-- 亓月 -->
 				<div class="member-card" data-name="亓月"
-					data-photos='["img/qiyue/2.png","img/qiyue/3.png"]'>
+					data-photos='["img/qiyue/2.png","img/qiyue/3.png"]'
+						data-quote="七月流火，我心如月。">
 					<div class="avatar-frame">
 						<img src="img/qiyue/1.png" alt="亓月">
 					</div>
@@ -1487,7 +1603,8 @@
 				
 				<!-- 西门无缺 -->
 				<div class="member-card" data-name="西门无缺"
-					data-photos='["img/ximenwuque/2.png","img/ximenwuque/3.jpg","img/ximenwuque/4.jpg"]'>
+					data-photos='["img/ximenwuque/2.png","img/ximenwuque/3.jpg","img/ximenwuque/4.jpg"]'
+						data-quote="剑无缺，心亦无缺。">
 					<div class="avatar-frame">
 						<img src="img/ximenwuque/1.jpg" alt="西门无缺">
 					</div>
@@ -1496,7 +1613,8 @@
 				</div>
 				<!-- 抚月光 -->
 				<div class="member-card" data-name="抚月光"
-					data-photos='["img/fuyueguang/1.jpg"]'>
+					data-photos='["img/fuyueguang/1.jpg"]'
+						data-quote="月光可抚，不必相争。">
 					<div class="avatar-frame">
 						<img src="img/fuyueguang/2.jpg" alt="抚月光">
 					</div>
@@ -1505,7 +1623,8 @@
 				</div>
 				<!-- 一百斤兔子 -->
 				<div class="member-card" data-name="一百斤兔子"
-					data-photos='["img/yibaijintuzi/1.jpg"]'>
+					data-photos='["img/yibaijintuzi/1.jpg"]'
+						data-quote="一百斤的温柔，压也要压死你。">
 					<div class="avatar-frame">
 						<img src="img/yibaijintuzi/1.jpg" alt="一百斤兔子">
 					</div>
@@ -1514,7 +1633,8 @@
 				</div>
 				<!-- 江泠灀 -->
 				<div class="member-card" data-name="江泠灀"
-					data-photos='["img/jianglingshuang/2.jpg","img/jianglingshuang/3.jpg","img/jianglingshuang/4.jpg","img/jianglingshuang/5.jpg","img/jianglingshuang/6.jpg"]'>
+					data-photos='["img/jianglingshuang/2.jpg","img/jianglingshuang/3.jpg","img/jianglingshuang/4.jpg","img/jianglingshuang/5.jpg","img/jianglingshuang/6.jpg"]'
+						data-quote="江水泠泠，灀色如霜。">
 					<div class="avatar-frame">
 						<img src="img/jianglingshuang/1.jpg" alt="江泠灀">
 					</div>
@@ -1523,7 +1643,8 @@
 				</div>
 				<!-- 苍岑 -->
 				<div class="member-card" data-name="苍岑"
-					data-photos='["img/cangcen/2.jpg","img/cangcen/3.jpg"]'>
+					data-photos='["img/cangcen/2.jpg","img/cangcen/3.jpg"]'
+						data-quote="苍山负雪，岑寂无声。">
 					<div class="avatar-frame">
 						<img src="img/cangcen/1.jpg" alt="苍岑">
 					</div>
@@ -1532,7 +1653,8 @@
 				</div>
 				<!-- 灬顾丶熙 -->
 				<div class="member-card" data-name="灬顾丶熙"
-					data-photos='["img/guxi/2.jpg","img/guxi/3.jpg","img/guxi/4.jpg","img/guxi/5.jpg"]'>
+					data-photos='["img/guxi/2.jpg","img/guxi/3.jpg","img/guxi/4.jpg","img/guxi/5.jpg"]'
+						data-quote="顾盼生辉，熙攘皆客。">
 					<div class="avatar-frame">
 						<img src="img/guxi/1.jpg" alt="灬顾丶熙">
 					</div>
@@ -1541,7 +1663,8 @@
 				</div>
 				<!-- 赐戏 -->
 				<div class="member-card" data-name="赐戏"
-					data-photos='["img/cixi/2.jpg"]'>
+					data-photos='["img/cixi/2.jpg"]'
+						data-quote="人生如戏，赐我一场痛快。">
 					<div class="avatar-frame">
 						<img src="img/cixi/1.jpg" alt="赐戏">
 					</div>
@@ -1550,7 +1673,8 @@
 				</div>
 				<!-- 执念 -->
 				<div class="member-card" data-name="执念"
-					data-photos='["img/zhinian/2.jpg","img/zhinian/3.png","img/zhinian/4.jpg"]'>
+					data-photos='["img/zhinian/2.jpg","img/zhinian/3.png","img/zhinian/4.jpg"]'
+						data-quote="执念成火，焚尽虚妄。">
 					<div class="avatar-frame">
 						<img src="img/zhinian/1.png" alt="执念">
 					</div>
@@ -1559,7 +1683,8 @@
 				</div>
 				<!-- 长安 -->
 				<div class="member-card" data-name="长安"
-					data-photos='["img/changan/2.jpg","img/changan/3.jpg","img/changan/4.jpg","img/changan/5.jpg"]'>
+					data-photos='["img/changan/2.jpg","img/changan/3.jpg","img/changan/4.jpg","img/changan/5.jpg"]'
+						data-quote="长安二字，够我赌上一生。">
 					<div class="avatar-frame">
 						<img src="img/changan/1.jpg" alt="长安">
 					</div>
@@ -1568,7 +1693,8 @@
 				</div>
 				<!-- 小柠猫 -->
 				<div class="member-card" data-name="小柠猫"
-					data-photos='["img/xiaoningmao/2.png","img/xiaoningmao/3.jpg","img/xiaoningmao/4.png","img/xiaoningmao/5.png"]'>
+					data-photos='["img/xiaoningmao/2.png","img/xiaoningmao/3.jpg","img/xiaoningmao/4.png","img/xiaoningmao/5.png"]'
+						data-quote="柠檬微酸，猫步轻悄。">
 					<div class="avatar-frame">
 						<img src="img/xiaoningmao/1.jpg" alt="小柠猫">
 					</div>
@@ -1577,7 +1703,8 @@
 				</div>
 				<!-- 徐江南 -->
 				<div class="member-card" data-name="徐江南"
-					data-photos='["img/xujiangnan/1.jpg"]'>
+					data-photos='["img/xujiangnan/1.jpg"]'
+						data-quote="江南烟雨，一剑惊鸿。">
 					<div class="avatar-frame">
 						<img src="img/xujiangnan/1.jpg" alt="徐江南">
 					</div>
@@ -1586,7 +1713,8 @@
 				</div>
 				<!-- 期风 -->
 				<div class="member-card" data-name="期风"
-					data-photos='["img/qifeng/2.jpg","img/qifeng/3.jpg","img/qifeng/4.jpg"]'>
+					data-photos='["img/qifeng/2.jpg","img/qifeng/3.jpg","img/qifeng/4.jpg"]'
+						data-quote="风有期，人无期。">
 					<div class="avatar-frame">
 						<img src="img/qifeng/1.jpg" alt="期风">
 					</div>
@@ -1595,7 +1723,8 @@
 				</div>
 				<!-- 郦意灿 -->
 				<div class="member-card" data-name="郦意灿"
-					data-photos='["img/liyican/2.jpg","img/liyican/3.jpg","img/liyican/4.jpg"]'>
+					data-photos='["img/liyican/2.jpg","img/liyican/3.jpg","img/liyican/4.jpg"]'
+						data-quote="意气风发，灿若星辰。">
 					<div class="avatar-frame">
 						<img src="img/liyican/1.jpg" alt="郦意灿">
 					</div>
@@ -1623,6 +1752,10 @@
 					<span id="modalCaption">队友</span>
 					<span class="photo-counter" id="photoCounter">1 / 1</span>
 				</div>
+
+				<!-- 个人名言（点击卡片后显示在底部） -->
+				<div class="quote-rule" id="quoteRule" style="display: none;"></div>
+				<div class="modal-quote" id="modalQuote"></div>
 			</div>
 		</div>
 
@@ -1640,6 +1773,28 @@
 				const prevBtn = document.getElementById('prevBtn');
 				const nextBtn = document.getElementById('nextBtn');
 				const thumbnailStrip = document.getElementById('thumbnailStrip');
+				const modalQuote = document.getElementById('modalQuote');
+				const quoteRule = document.getElementById('quoteRule');
+
+				// 无名言时的默认文案（成员未配置 data-quote 时使用）
+				const QUOTE_FALLBACK = '江湖路远，来日方长。';
+
+				// 渲染底部名言：仅在打开新成员时调用，重播渐入动画
+				function renderQuote(quote) {
+					const text = (quote && quote.trim()) ? quote.trim() : QUOTE_FALLBACK;
+
+					// 用 textContent 赋值，避免 HTML 注入
+					modalQuote.textContent = text;
+
+					if (quoteRule) {
+						quoteRule.style.display = '';
+					}
+
+					// 先移除 class 并强制回流，保证每次打开都重播动画
+					modalQuote.classList.remove('show');
+					void modalQuote.offsetWidth;
+					modalQuote.classList.add('show');
+				}
 
 				// ========== Logo 图片替换 API ==========
 				const LOGO_DEFAULT = 'https://picsum.photos/id/1040/400/400';
@@ -1718,12 +1873,13 @@
 					});
 				}
 
-				function openModal(name, photosArray) {
+				function openModal(name, photosArray, quote) {
 					currentName = name;
 					currentPhotos = photosArray;
 					currentIndex = 0;
 
 					modalCaption.textContent = name;
+					renderQuote(quote);
 					renderThumbnails();
 					modalImage.src = currentPhotos[0];
 					modalImage.alt = name + ' 照片 1';
@@ -1738,10 +1894,14 @@
 				function closeModal() {
 					modalOverlay.classList.remove('active');
 					document.body.style.overflow = '';
+					// 收起名言，下次打开重新播放渐入动画
+					modalQuote.classList.remove('show');
 					setTimeout(() => {
 						if (!modalOverlay.classList.contains('active')) {
 							modalImage.src = '';
 							thumbnailStrip.innerHTML = '';
+							modalQuote.textContent = '';
+							if (quoteRule) quoteRule.style.display = 'none';
 							currentPhotos = [];
 							currentIndex = 0;
 						}
@@ -1771,7 +1931,7 @@
 					try {
 						const photos = JSON.parse(photosJson);
 						if (Array.isArray(photos) && photos.length > 0) {
-							openModal(name, photos);
+							openModal(name, photos, card.dataset.quote);
 						}
 					} catch (err) {
 						console.warn('照片数据解析失败', err);

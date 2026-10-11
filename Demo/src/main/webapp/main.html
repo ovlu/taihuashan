@@ -478,19 +478,38 @@
             box-shadow: 0 0 40px rgba(100, 160, 255, 0.4), inset 0 0 30px rgba(100, 160, 255, 0.1);
             transform: translateY(-2px);
         }
-        #musicCover {
+        /* 外层：圆形裁切 + 边框光晕，负责切歌时的淡入淡出与缩放
+           内层 img 只负责旋转，两者 transform 互不覆盖 */
+        #coverWrap {
             width: 42px;
             height: 42px;
             border-radius: 50%;
-            object-fit: cover;
+            overflow: hidden;
+            flex-shrink: 0;
             border: 2px solid rgba(120, 170, 255, 0.5);
             box-shadow: 0 0 15px rgba(100, 150, 255, 0.3);
-            flex-shrink: 0;
             background: rgba(30, 50, 100, 0.8);
-            transition: transform 0.3s;
+            cursor: pointer;
+            transition: transform 0.3s ease, opacity 0.28s ease,
+                        box-shadow 0.4s ease, border-color 0.4s ease;
         }
-        #musicPlayer:hover #musicCover {
+        #musicPlayer:hover #coverWrap {
             transform: scale(1.05);
+            border-color: rgba(150, 200, 255, 0.85);
+            box-shadow: 0 0 22px rgba(120, 175, 255, 0.5);
+        }
+        /* 切歌瞬间：缩小 + 淡出，换图后由 JS 移除。
+           选择器带上 #musicPlayer 以压过上面的 :hover 规则，
+           否则鼠标停在播放器上时切歌不会缩放。 */
+        #musicPlayer #coverWrap.switching {
+            opacity: 0;
+            transform: scale(0.68) rotate(-30deg);
+        }
+        #musicCover {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
         }
         #musicInfo {
             display: flex;
@@ -537,6 +556,44 @@
             background: rgba(60, 90, 160, 0.8);
             border-color: rgba(150, 200, 255, 0.8);
             color: #fff;
+        }
+        /* 播放键与下一首并排，主次区分：播放键略大 */
+        .musicControls {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+        #musicNext {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 1px solid rgba(120, 170, 255, 0.3);
+            background: rgba(25, 40, 80, 0.5);
+            color: #b8d4ff;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            padding: 0;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+        #musicNext:hover {
+            background: rgba(60, 90, 160, 0.8);
+            border-color: rgba(150, 200, 255, 0.8);
+            color: #fff;
+            transform: scale(1.08);
+        }
+        #musicNext:active {
+            transform: scale(0.94);
+        }
+        #musicNext:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+            transform: none;
         }
         #musicToggle.playing {
             border-color: rgba(100, 220, 150, 0.6);
@@ -629,7 +686,7 @@
                 padding: 8px 12px 8px 10px;
                 gap: 10px;
             }
-            #musicCover {
+            #coverWrap {
                 width: 36px;
                 height: 36px;
             }
@@ -646,6 +703,14 @@
                 width: 32px;
                 height: 32px;
                 font-size: 12px;
+            }
+            #musicNext {
+                width: 27px;
+                height: 27px;
+                font-size: 11px;
+            }
+            .musicControls {
+                gap: 5px;
             }
         }
 
@@ -667,7 +732,7 @@
                 padding: 6px 10px 6px 8px;
                 gap: 8px;
             }
-            #musicCover {
+            #coverWrap {
                 width: 32px;
                 height: 32px;
             }
@@ -684,6 +749,14 @@
                 width: 28px;
                 height: 28px;
                 font-size: 11px;
+            }
+            #musicNext {
+                width: 24px;
+                height: 24px;
+                font-size: 10px;
+            }
+            .musicControls {
+                gap: 4px;
             }
         }
 
@@ -719,7 +792,7 @@
                 padding: 6px 10px 6px 8px;
                 gap: 8px;
             }
-            #musicCover {
+            #coverWrap {
                 width: 32px;
                 height: 32px;
             }
@@ -770,14 +843,22 @@
 
     <!-- ==================== 右下角音乐播放器 ==================== -->
     <div id="musicPlayer">
-        <img id="musicCover" 
-             src="https://api.dicebear.com/7.x/identicon/svg?seed=jiangshan&backgroundColor=1a2a5a" 
-             alt="爱江山更爱美人">
+        <!-- 外层容器负责切歌时的淡入淡出/缩放，内层 img 负责旋转，两者互不冲突 -->
+        <div id="coverWrap" title="点击切换下一首">
+            <img id="musicCover"
+                 src="music/cover-01.jpg"
+                 alt="封面">
+        </div>
         <div id="musicInfo">
-            <div id="musicTitle">爱江山更爱美人</div>
+            <div id="musicTitle">加载中…</div>
             <div id="musicArtist">太华山 · 国风演绎</div>
         </div>
-        <button id="musicToggle" title="播放/暂停">▶</button>
+        <div class="musicControls">
+            <button id="musicToggle" title="播放/暂停">▶</button>
+            <button id="musicNext" title="下一首">⏭</button>
+        </div>
+        <!-- 真实音频源：src 由 PLAYLIST 动态注入 -->
+        <audio id="musicAudio" preload="metadata"></audio>
     </div>
 
     <!-- ==================== 弹窗：加入 ==================== -->
@@ -852,7 +933,8 @@
             'carousel/huodong/11.jpg',
             'carousel/huodong/12.jpg',
             'carousel/huodong/13.jpg',
-            'carousel/huodong/14.jpg'
+            'carousel/huodong/14.jpg',
+			'carousel/huodong/15.jpg'
 
             
         ];
@@ -1489,26 +1571,42 @@
         renderer.domElement.addEventListener('pointerup', onPointerUp, { passive: true });
 
         // ============================================================
-        // 9. 音乐播放器 —— 程序化古筝合成音
-        //    曲目：《爱江山更爱美人》
+        // 9. 音乐播放器 —— 播放 music/ 文件夹中的真实音频文件
+        //    曲目来源：main.html 同级目录下的 music/ 文件夹
         // ============================================================
         const musicToggle = document.getElementById('musicToggle');
-        const musicCover = document.getElementById('musicCover');
-        const musicTitle = document.getElementById('musicTitle');
+        const musicCover  = document.getElementById('musicCover');
+        const musicTitle  = document.getElementById('musicTitle');
         const musicArtist = document.getElementById('musicArtist');
+        const musicAudio  = document.getElementById('musicAudio');
+        const musicNext   = document.getElementById('musicNext');
+        const coverWrap   = document.getElementById('coverWrap');
+
+        // ============================================================
+        // 播放列表配置区
+        // 把音乐文件放进 main.html 同级的 music/ 文件夹，在这里登记即可。
+        // src  : 音频文件路径（相对 main.html）
+        // title: 显示在播放器上的曲名
+        // cover: 封面图路径（不填则按曲目顺序自动取 DEFAULT_COVERS）
+        // ============================================================
+        let PLAYLIST = [
+            { src: 'music/keshu.mp3', title: '我以为', artist: '太华山 · 苛书', cover: 'img/keshu/1.png' },
+            { src: 'music/xiyou.mp3', title: '易燃易爆炸',     artist: '太华山 · 是西柚柚', cover: 'img/shixiyouyou/1.jpg' }
+            // { src: 'music/你的文件.mp3', title: '曲目名', artist: '演唱者', cover: 'music/你的封面.jpg' },
+        ];
 
         (function() {
-            const AudioCtx = window.AudioContext || window.webkitAudioContext;
-            let audioCtx = null;
-            let isPlaying = false;
-            let loopTimer = null;
-            let noteIndex = 0;
+            let trackIndex  = 0;
+            let isPlaying   = false;
+            let usingSynth  = false;   // 音频文件不可用时自动回退到合成音
+            let firstRender = true;    // 首次渲染封面不做过渡动画
 
-            // 《爱江山更爱美人》主旋律片段（简化版，五声音阶）
-            // 音高映射：0=C4, 1=D4, 2=E4, 3=G4, 4=A4, 5=C5
-            const scale = [261.63, 293.66, 329.63, 392.00, 440.00, 523.25];
-            // 旋律音符序列（-1 为休止）
-            // 这段旋律模仿《爱江山更爱美人》的经典副歌走向
+            musicAudio.volume = 0.6;
+
+            // ---------- 兜底：程序化古筝合成音 ----------
+            const AudioCtx = window.AudioContext || window.webkitAudioContext;
+            let audioCtx = null, loopTimer = null, noteIndex = 0;
+            const scale  = [261.63, 293.66, 329.63, 392.00, 440.00, 523.25];
             const melody = [
                 2, 3, 4, 3, 2, 1, 0, -1,
                 2, 3, 4, 5, 4, 3, 2, -1,
@@ -1520,96 +1618,258 @@
                 2, 3, 2, 1, 0, 1, 2, -1
             ];
 
-            // 播放一个古筝风格音符
             function playNote(freq, startTime, duration, volume) {
                 const osc = audioCtx.createOscillator();
                 const gain = audioCtx.createGain();
-                
                 osc.type = 'triangle';
                 osc.frequency.value = freq;
-
                 gain.gain.setValueAtTime(0, startTime);
                 gain.gain.linearRampToValueAtTime(volume || 0.3, startTime + 0.02);
                 gain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
-
                 osc.connect(gain);
                 gain.connect(audioCtx.destination);
-
                 osc.start(startTime);
                 osc.stop(startTime + duration + 0.05);
             }
 
-            // 播放一个乐句
             function playPhrase() {
-                if (!audioCtx || !isPlaying) return;
-
+                if (!audioCtx || !isPlaying || !usingSynth) return;
                 const now = audioCtx.currentTime;
-                const noteDuration = 0.42; // 稍慢，更有韵味
-                const phraseLength = 16;   // 每次播放 16 个音符
-
+                const noteDuration = 0.42;
+                const phraseLength = 16;
                 for (let i = 0; i < phraseLength; i++) {
                     const noteValue = melody[(noteIndex + i) % melody.length];
                     if (noteValue >= 0) {
                         const freq = scale[noteValue % scale.length];
-                        // 每句开头的高音点缀
                         const octave = (i === 0 || i === 8) ? 2 : 1;
-                        // 重音处理：每小节第一个音稍强
                         const volume = (i % 4 === 0) ? 0.38 : 0.28;
                         playNote(freq * octave, now + i * noteDuration, noteDuration * 1.3, volume);
                     }
                 }
-
                 noteIndex = (noteIndex + phraseLength) % melody.length;
                 loopTimer = setTimeout(playPhrase, phraseLength * noteDuration * 1000);
             }
 
-            function startMusic() {
-                if (!audioCtx) {
-                    audioCtx = new AudioCtx();
-                }
-                if (audioCtx.state === 'suspended') {
-                    audioCtx.resume();
-                }
-                
-                isPlaying = true;
+            function startSynth() {
+                if (!audioCtx) audioCtx = new AudioCtx();
+                if (audioCtx.state === 'suspended') audioCtx.resume();
                 noteIndex = 0;
-                musicToggle.textContent = '⏸';
-                musicToggle.classList.add('playing');
-                musicCover.classList.add('playing');
-                
                 playPhrase();
             }
 
-            function stopMusic() {
-                isPlaying = false;
-                if (loopTimer) {
-                    clearTimeout(loopTimer);
-                    loopTimer = null;
+            function stopSynth() {
+                if (loopTimer) { clearTimeout(loopTimer); loopTimer = null; }
+            }
+
+            // ---------- 曲目渲染与加载 ----------
+            function currentTrack() {
+                return PLAYLIST.length ? PLAYLIST[trackIndex % PLAYLIST.length] : null;
+            }
+
+            // 每首歌的默认封面：未配置 cover 时按序号取，保证切歌画面一定会变
+            const DEFAULT_COVERS = ['music/cover-01.jpg', 'music/cover-02.jpg'];
+            // 图片加载失败时的内嵌占位封面（纯 SVG，无外部依赖）
+            const FALLBACK_COVER = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(
+                '<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120">' +
+                '<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">' +
+                '<stop offset="0" stop-color="#22356b"/><stop offset="1" stop-color="#0a0f23"/>' +
+                '</linearGradient></defs><rect width="120" height="120" fill="url(#g)"/>' +
+                '<text x="60" y="74" font-size="54" text-anchor="middle" fill="#9fc4ff">&#9834;</text></svg>'
+            );
+
+            function pickCover(t) {
+                if (t && t.cover) return t.cover;
+                return DEFAULT_COVERS[trackIndex % DEFAULT_COVERS.length];
+            }
+
+            // 换封面：淡出 → 换图（等图片解码完成）→ 淡入，重置旋转动画
+            let coverTimer = null;
+            function switchCover(url, animate) {
+                if (!url || musicCover.getAttribute('src') === url) return;
+
+                const apply = () => {
+                    const reveal = () => {
+                        if (coverWrap) coverWrap.classList.remove('switching');
+                    };
+                    // 等图片真正解码完成再淡入，避免看到空白帧
+                    musicCover.onload  = reveal;
+                    musicCover.onerror = () => {
+                        if (musicCover.getAttribute('src') !== FALLBACK_COVER) {
+                            musicCover.src = FALLBACK_COVER;   // 破图太难看，换成音符占位
+                        }
+                        reveal();
+                    };
+                    musicCover.src = url;
+                    if (musicCover.complete) {
+                        reveal();
+                    } else {
+                        setTimeout(reveal, 1200);    // 兜底：1.2s 后无论如何恢复显示
+                    }
+                };
+
+                if (!animate || !coverWrap) { apply(); return; }
+
+                clearTimeout(coverTimer);
+                coverWrap.classList.add('switching');
+                coverTimer = setTimeout(apply, 280);   // 与 CSS .switching 过渡时长一致
+            }
+
+            function renderTrack() {
+                const t = currentTrack();
+                if (!t) {
+                    musicTitle.textContent = '暂无曲目';
+                    musicArtist.textContent = '请在 music/ 放入音频';
+                    return;
                 }
-                musicToggle.textContent = '▶';
-                musicToggle.classList.remove('playing');
+                musicTitle.textContent  = t.title  || '未知曲目';
+                musicArtist.textContent = t.artist || '太华山 · 星辰';
+                switchCover(pickCover(t), !firstRender);
+                musicCover.alt = t.title || '封面';
+                if (coverWrap) coverWrap.title = '当前：' + (t.title || '未知曲目') + ' · 点击切换下一首';
+                updateNextBtn();
+            }
+
+            // 只有一首歌时「下一首」无意义，置灰
+            function updateNextBtn() {
+                if (!musicNext) return;
+                musicNext.disabled = PLAYLIST.length <= 1;
+                musicNext.title = PLAYLIST.length <= 1
+                    ? '播放列表中仅一首'
+                    : '下一首（' + (trackIndex + 1) + '/' + PLAYLIST.length + '）';
+            }
+
+            // 重启封面旋转动画，让新封面的旋转从 0 度开始
+            function restartSpin() {
+                if (!musicCover) return;
                 musicCover.classList.remove('playing');
+                void musicCover.offsetWidth;          // 强制回流，使动画真正重置
+                if (isPlaying) musicCover.classList.add('playing');
+            }
+
+            function loadTrack(i) {
+                if (!PLAYLIST.length) return;
+                trackIndex = ((i % PLAYLIST.length) + PLAYLIST.length) % PLAYLIST.length;
+                const t = currentTrack();
+                musicAudio.src = t.src;
+                musicAudio.load();
+                renderTrack();
+                restartSpin();
+            }
+
+            // 切到下一首：保持当前播放状态（正在播就继续播，暂停就保持暂停）
+            function nextTrack() {
+                if (PLAYLIST.length <= 1) return;
+                const wasPlaying = isPlaying;
+                stopMusic();
+                usingSynth = false;               // 换曲时重试真实文件
+                loadTrack(trackIndex + 1);
+                if (wasPlaying) startMusic();
+            }
+
+            function setPlayingUI(on) {
+                isPlaying = on;
+                musicToggle.textContent = on ? '⏸' : '▶';
+                musicToggle.classList.toggle('playing', on);
+                musicCover.classList.toggle('playing', on);
+            }
+
+            function fallbackToSynth(reason) {
+                console.warn('[音乐] 音频文件不可用，回退到合成音：', reason);
+                usingSynth = true;
+                startSynth();
+                setPlayingUI(true);
+            }
+
+            function startMusic() {
+                if (!PLAYLIST.length) { renderTrack(); return; }
+                if (usingSynth) { startSynth(); setPlayingUI(true); return; }
+
+                const p = musicAudio.play();
+                if (p && typeof p.catch === 'function') {
+                    p.then(() => setPlayingUI(true))
+                     .catch(err => fallbackToSynth(musicAudio.src + ' → ' + err.message));
+                } else {
+                    setPlayingUI(true);
+                }
+            }
+
+            function stopMusic() {
+                musicAudio.pause();
+                stopSynth();
+                setPlayingUI(false);
             }
 
             function toggleMusic() {
-                if (isPlaying) {
-                    stopMusic();
-                } else {
-                    startMusic();
-                }
+                if (isPlaying) stopMusic(); else startMusic();
             }
 
+            // ---------- 事件绑定 ----------
             musicToggle.addEventListener('click', (e) => {
                 e.stopPropagation();
                 toggleMusic();
             });
 
+            // 下一首按钮
+            if (musicNext) {
+                musicNext.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    nextTrack();
+                });
+            }
+
+            // 点击封面同样切换下一首
+            const coverHit = coverWrap || musicCover;
+            if (coverHit) {
+                coverHit.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    nextTrack();
+                });
+            }
+
+            // 播放结束自动进入下一首
+            musicAudio.addEventListener('ended', () => {
+                if (!PLAYLIST.length) return;
+                if (PLAYLIST.length === 1) {   // 单曲循环
+                    musicAudio.currentTime = 0;
+                    musicAudio.play().catch(() => {});
+                    return;
+                }
+                loadTrack(trackIndex + 1);
+                startMusic();
+            });
+
+            // 文件缺失 / 格式不支持 → 回退合成音
+            musicAudio.addEventListener('error', () => {
+                if (isPlaying || !usingSynth) fallbackToSynth(musicAudio.src);
+            });
+
+            musicAudio.addEventListener('loadedmetadata', () => { usingSynth = false; });
+
             document.getElementById('musicPlayer').addEventListener('click', (e) => {
-                if (e.target === musicToggle) return;
+                // 按钮与封面有自己的行为，不触发整条播放条的播放/暂停
+                if (e.target === musicToggle || e.target === musicNext ||
+                    e.target === musicCover || e.target === coverWrap ||
+                    (coverWrap && coverWrap.contains(e.target)) ||
+                    e.target.closest('.musicControls')) return;
                 toggleMusic();
             });
 
+            // ---------- 初始化 ----------
+            loadTrack(0);
+            firstRender = false;
+
             window.__toggleMusic = toggleMusic;
+            // 运行时替换播放列表：window.setMusicPlaylist([...])
+            window.setMusicPlaylist = function(list) {
+                if (!Array.isArray(list) || !list.length) return;
+                const wasPlaying = isPlaying;
+                stopMusic();
+                PLAYLIST = list;
+                usingSynth = false;
+                loadTrack(0);
+                if (wasPlaying) startMusic();
+                console.log('播放列表已更新:', PLAYLIST);
+            };
         })();
 
         // ============================================================

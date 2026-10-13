@@ -889,6 +889,233 @@
             box-shadow: 0 0 20px rgba(200, 170, 100, 0.35);
         }
 
+        /* ============================================
+           江湖告示 · 小弹窗
+           ============================================ */
+        .notice-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .notice-modal.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .notice-card {
+            width: min(88%, 380px);
+            max-height: 76vh;
+            overflow-y: auto;
+            padding: 28px 30px 24px;
+            text-align: center;
+            position: relative;
+            background:
+                radial-gradient(ellipse at 50% 0%, rgba(200, 170, 100, 0.10) 0%, transparent 60%),
+                linear-gradient(160deg, #1c1610 0%, #100b07 100%);
+            border: 1px solid rgba(200, 170, 100, 0.45);
+            border-radius: 16px;
+            box-shadow:
+                0 0 45px rgba(200, 170, 100, 0.22),
+                0 20px 50px rgba(0, 0, 0, 0.75),
+                inset 0 1px 0 rgba(230, 215, 184, 0.14);
+            transform: translateY(16px) scale(0.94);
+            opacity: 0;
+            transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.2), opacity 0.3s ease;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(200, 170, 100, 0.45) transparent;
+        }
+
+        .notice-card::-webkit-scrollbar { width: 4px; }
+        .notice-card::-webkit-scrollbar-thumb {
+            background: rgba(200, 170, 100, 0.45);
+            border-radius: 4px;
+        }
+
+        .notice-modal.show .notice-card {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+
+        /* 顶部金色描边 */
+        .notice-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 12%;
+            width: 76%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #c9a45c, #f0dcae, #c9a45c, transparent);
+        }
+
+        .notice-close-x {
+            position: absolute;
+            top: 10px;
+            right: 12px;
+            width: 26px;
+            height: 26px;
+            line-height: 24px;
+            border: none;
+            background: transparent;
+            color: rgba(230, 215, 184, 0.45);
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: all 0.25s ease;
+        }
+
+        .notice-close-x:hover {
+            color: #c9a45c;
+            background: rgba(200, 170, 100, 0.12);
+        }
+
+        .notice-seal {
+            width: 46px;
+            height: 46px;
+            margin: 0 auto 12px;
+            border-radius: 50%;
+            border: 1px solid rgba(200, 170, 100, 0.55);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: #c9a45c;
+            background: radial-gradient(circle, rgba(200, 170, 100, 0.16), transparent 70%);
+            box-shadow: 0 0 18px rgba(200, 170, 100, 0.28);
+            animation: sealPulse 3.2s ease-in-out infinite;
+        }
+
+        @keyframes sealPulse {
+            0%, 100% { box-shadow: 0 0 14px rgba(200, 170, 100, 0.22); }
+            50% { box-shadow: 0 0 26px rgba(200, 170, 100, 0.5); }
+        }
+
+        .notice-card h3 {
+            color: #e6d7b8;
+            font-size: 20px;
+            letter-spacing: 5px;
+            font-weight: 500;
+            font-family: "STKaiti", "KaiTi", "楷体", serif;
+            text-shadow: 0 0 16px rgba(200, 170, 100, 0.55);
+        }
+
+        .notice-card .notice-sub {
+            color: rgba(230, 215, 184, 0.38);
+            font-size: 11px;
+            letter-spacing: 3px;
+            margin-top: 4px;
+        }
+
+        .notice-divider {
+            width: 56px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #c9a45c, transparent);
+            margin: 14px auto 16px;
+        }
+
+        .notice-list {
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .notice-row {
+            display: flex;
+            gap: 10px;
+            padding: 10px 12px;
+            background: rgba(200, 170, 100, 0.055);
+            border: 1px solid rgba(200, 170, 100, 0.16);
+            border-radius: 10px;
+            transition: all 0.28s ease;
+        }
+
+        .notice-row:hover {
+            background: rgba(200, 170, 100, 0.11);
+            border-color: rgba(200, 170, 100, 0.38);
+            transform: translateX(3px);
+        }
+
+        .notice-row .idx {
+            flex-shrink: 0;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: rgba(200, 170, 100, 0.16);
+            color: #c9a45c;
+            font-size: 12px;
+            line-height: 20px;
+            text-align: center;
+            font-family: "STKaiti", "KaiTi", "楷体", serif;
+        }
+
+        .notice-row .txt {
+            color: rgba(230, 215, 184, 0.88);
+            font-size: 13.5px;
+            line-height: 1.7;
+            letter-spacing: 0.6px;
+        }
+
+        .notice-row .txt b {
+            color: #c9a45c;
+            font-weight: 600;
+        }
+
+        .notice-actions {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .notice-ok {
+            width: 100%;
+            padding: 10px 0;
+            border-radius: 26px;
+            border: 1px solid rgba(200, 170, 100, 0.5);
+            background: linear-gradient(180deg, rgba(200, 170, 100, 0.22), rgba(200, 170, 100, 0.08));
+            color: #fff3d6;
+            font-size: 14px;
+            letter-spacing: 4px;
+            cursor: pointer;
+            font-family: "STKaiti", "KaiTi", "楷体", serif;
+            transition: all 0.3s ease;
+        }
+
+        .notice-ok:hover {
+            border-color: #c9a45c;
+            box-shadow: 0 0 20px rgba(200, 170, 100, 0.4);
+            transform: translateY(-1px);
+        }
+
+        .notice-nomore {
+            background: none;
+            border: none;
+            color: rgba(230, 215, 184, 0.42);
+            font-size: 12px;
+            letter-spacing: 1px;
+            cursor: pointer;
+            padding: 2px 6px;
+            transition: color 0.25s ease;
+        }
+
+        .notice-nomore:hover {
+            color: rgba(230, 215, 184, 0.8);
+        }
+
         /* ========== 响应式 ========== */
         @media (max-width: 1024px) {
             .album-entry {
@@ -1016,6 +1243,17 @@
             }
             .join-item .value {
                 font-size: 15px;
+            }
+            .notice-card {
+                width: min(92%, 340px);
+                padding: 24px 20px 20px;
+            }
+            .notice-card h3 {
+                font-size: 18px;
+                letter-spacing: 4px;
+            }
+            .notice-row .txt {
+                font-size: 12.5px;
             }
             .bg-bamboo-left,
             .bg-bamboo-right {
@@ -1340,6 +1578,7 @@
         <div class="logo">燕云十六声</div>
         <div class="nav-center"></div>
         <div class="nav-right">
+            <button class="nav-btn" id="noticeBtn">江湖告示</button>
             <button class="nav-btn" id="albumBtn">花名册</button>
             <button class="nav-btn" id="joinBtn">加入</button>
         </div>
@@ -1588,6 +1827,41 @@
         </div>
     </div>
 
+    <!-- ========== 江湖告示 · 小弹窗 ========== -->
+    <div class="notice-modal" id="noticeModal" role="dialog" aria-modal="true" aria-labelledby="noticeTitle">
+        <div class="notice-card">
+            <button class="notice-close-x" id="noticeCloseX" aria-label="关闭">✕</button>
+            <div class="notice-seal">⚔</div>
+            <h3 id="noticeTitle">江湖告示</h3>
+            <div class="notice-sub">NOTICE · 太华山</div>
+            <div class="notice-divider"></div>
+
+            <div class="notice-list">
+                <div class="notice-row">
+                    <span class="idx">一</span>
+                    <span class="txt">山门<b>卯时</b>启、<b>亥时</b>闭，夜行需结伴，勿独闯深山。</span>
+                </div>
+                <div class="notice-row">
+                    <span class="idx">二</span>
+                    <span class="txt">百业派对每天<b>七点半</b>集结。</span>
+                </div>
+                <div class="notice-row">
+                    <span class="idx">三</span>
+                    <span class="txt">网站加载较慢，<b>请耐心等候</b></span>
+                </div>
+                <div class="notice-row">
+                    <span class="idx">四</span>
+                    <span class="txt">入山引路请加微信 <b>cool86161</b></span>
+                </div>
+            </div>
+
+            <div class="notice-actions">
+                <button class="notice-ok" id="noticeOk">知 晓</button>
+                <button class="notice-nomore" id="noticeNoMore">今日不再提示</button>
+            </div>
+        </div>
+    </div>
+
     <!-- ============================================
          右下角音乐播放器（与首页共用 music/ 目录）
          ============================================ -->
@@ -1679,6 +1953,52 @@
         joinModal.addEventListener('click', (e) => {
             if (e.target === joinModal) closeJoinModal();
         });
+
+        /* ==========================================================
+           江湖告示小弹窗
+           - 顶部「江湖告示」按钮可随时唤出
+           - 首次进入页面自动弹出一次（当日点过「今日不再提示」则不再自动弹）
+           ========================================================== */
+        (function() {
+            const noticeModal  = document.getElementById('noticeModal');
+            const noticeBtn    = document.getElementById('noticeBtn');
+            const noticeOk     = document.getElementById('noticeOk');
+            const noticeNoMore = document.getElementById('noticeNoMore');
+            const noticeCloseX = document.getElementById('noticeCloseX');
+            if (!noticeModal) return;
+
+            const TODAY_KEY = 'taihua_notice_mute_date';
+            const today = new Date().toISOString().slice(0, 10);
+
+            const openNotice = () => noticeModal.classList.add('show');
+            const closeNotice = () => noticeModal.classList.remove('show');
+
+            noticeBtn && noticeBtn.addEventListener('click', openNotice);
+            noticeOk && noticeOk.addEventListener('click', closeNotice);
+            noticeCloseX && noticeCloseX.addEventListener('click', closeNotice);
+
+            noticeNoMore && noticeNoMore.addEventListener('click', () => {
+                try { localStorage.setItem(TODAY_KEY, today); } catch (e) {}
+                closeNotice();
+            });
+
+            // 点击遮罩空白处关闭
+            noticeModal.addEventListener('click', (e) => {
+                if (e.target === noticeModal) closeNotice();
+            });
+
+            // ESC 关闭
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && noticeModal.classList.contains('show')) closeNotice();
+            });
+
+            // 进入页面 0.9s 后自动弹出一次
+            let muted = false;
+            try { muted = localStorage.getItem(TODAY_KEY) === today; } catch (e) {}
+            if (!muted) {
+                setTimeout(openNotice, 900);
+            }
+        })();
 
         window.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && joinModal.classList.contains('show')) {

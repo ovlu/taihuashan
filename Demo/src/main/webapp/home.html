@@ -272,11 +272,11 @@
             min-height: 0;
         }
 
-        /* 视频播放器区块 */
+        /* 视频播放器区块（加宽以容纳右侧留言板） */
         .video-section {
             position: relative;
             width: 100%;
-            max-width: 1100px;
+            max-width: 1240px;
             margin: 30px auto 10px;
             padding: 0 20px;
             flex-shrink: 0;
@@ -570,6 +570,445 @@
             letter-spacing: 4px;
             margin-top: 8px;
         }
+
+        /* ============================================
+           ★★★ 视频（左） + 山门留言板（右） ★★★
+           ============================================ */
+        .content-cols {
+            display: flex;
+            align-items: stretch;
+            gap: 24px;
+        }
+
+        /* 左：视频列 */
+        .video-col {
+            flex: 1 1 64%;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .video-col .video-title {
+            padding: 16px 0 0;
+        }
+
+        /* 右：留言板列 */
+        .board-col {
+            flex: 0 1 34%;
+            min-width: 300px;
+            max-width: 420px;
+            display: flex;
+        }
+
+        .msg-board {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            min-height: 340px;
+            max-height: 540px;
+            padding: 18px 18px 16px;
+            border: 1px solid rgba(200, 170, 100, 0.35);
+            border-radius: 18px;
+            background:
+                radial-gradient(ellipse at 50% 0%, rgba(200, 170, 100, 0.08) 0%, transparent 60%),
+                linear-gradient(160deg, rgba(26, 20, 14, 0.92) 0%, rgba(12, 8, 5, 0.95) 100%);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            box-shadow:
+                0 0 40px rgba(200, 170, 100, 0.15),
+                0 18px 50px rgba(0, 0, 0, 0.75),
+                inset 0 1px 0 rgba(230, 215, 184, 0.12);
+            overflow: hidden;
+            animation: boardGlow 6s ease-in-out infinite;
+        }
+
+        @keyframes boardGlow {
+            0%, 100% {
+                box-shadow:
+                    0 0 40px rgba(200, 170, 100, 0.15),
+                    0 18px 50px rgba(0, 0, 0, 0.75),
+                    inset 0 1px 0 rgba(230, 215, 184, 0.12);
+            }
+            50% {
+                box-shadow:
+                    0 0 58px rgba(200, 170, 100, 0.26),
+                    0 18px 50px rgba(0, 0, 0, 0.75),
+                    inset 0 1px 0 rgba(230, 215, 184, 0.2);
+            }
+        }
+
+        /* 顶部金色描边 */
+        .msg-board::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 14%;
+            width: 72%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #c9a45c, #f0dcae, #c9a45c, transparent);
+        }
+
+        .msg-board-head {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+        .msg-seal {
+            flex-shrink: 0;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid rgba(200, 170, 100, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: #c9a45c;
+            background: radial-gradient(circle, rgba(200, 170, 100, 0.16), transparent 70%);
+            box-shadow: 0 0 16px rgba(200, 170, 100, 0.25);
+        }
+
+        .msg-head-text {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .msg-head-text h2 {
+            color: #e6d7b8;
+            font-size: 19px;
+            font-weight: 500;
+            letter-spacing: 4px;
+            font-family: "STKaiti", "KaiTi", "楷体", serif;
+            text-shadow: 0 0 16px rgba(200, 170, 100, 0.55);
+            white-space: nowrap;
+        }
+
+        .msg-head-sub {
+            display: block;
+            color: rgba(230, 215, 184, 0.35);
+            font-size: 10px;
+            letter-spacing: 2px;
+            margin-top: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .msg-count {
+            flex-shrink: 0;
+            min-width: 30px;
+            padding: 3px 8px;
+            text-align: center;
+            border-radius: 20px;
+            border: 1px solid rgba(200, 170, 100, 0.3);
+            background: rgba(200, 170, 100, 0.08);
+            color: #c9a45c;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        .msg-head-badges {
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 5px;
+        }
+
+        /* 同步状态：云端（绿金）/ 本地（灰） */
+        .msg-state {
+            flex-shrink: 0;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 3px 8px;
+            border-radius: 20px;
+            border: 1px solid rgba(200, 170, 100, 0.3);
+            background: rgba(200, 170, 100, 0.08);
+            color: rgba(230, 215, 184, 0.55);
+            font-size: 10.5px;
+            letter-spacing: 1px;
+            white-space: nowrap;
+            cursor: default;
+        }
+
+        .msg-state::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: rgba(230, 215, 184, 0.35);
+            box-shadow: 0 0 6px rgba(230, 215, 184, 0.3);
+        }
+
+        .msg-state.cloud {
+            color: #9fd6a8;
+            border-color: rgba(159, 214, 168, 0.4);
+            background: rgba(159, 214, 168, 0.08);
+        }
+
+        .msg-state.cloud::before {
+            background: #9fd6a8;
+            box-shadow: 0 0 8px rgba(159, 214, 168, 0.8);
+            animation: statePulse 2.4s ease-in-out infinite;
+        }
+
+        @keyframes statePulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.35; }
+        }
+
+        /* 提示条 */
+        .msg-tip {
+            display: none;
+            padding: 7px 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(200, 170, 100, 0.28);
+            background: rgba(200, 170, 100, 0.08);
+            color: rgba(230, 215, 184, 0.85);
+            font-size: 12px;
+            letter-spacing: 0.5px;
+            line-height: 1.5;
+        }
+
+        .msg-tip.show { display: block; }
+        .msg-tip.error {
+            border-color: rgba(217, 139, 106, 0.5);
+            background: rgba(217, 139, 106, 0.1);
+            color: #e9b49b;
+        }
+        .msg-tip.ok {
+            border-color: rgba(159, 214, 168, 0.45);
+            background: rgba(159, 214, 168, 0.09);
+            color: #a9dcb2;
+        }
+
+        .msg-divider {
+            flex-shrink: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(200, 170, 100, 0.55), transparent);
+            margin: 12px 0 10px;
+        }
+
+        /* 留言列表 */
+        .msg-list {
+            flex: 1 1 auto;
+            min-height: 120px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 2px 6px 2px 2px;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(200, 170, 100, 0.45) transparent;
+        }
+
+        .msg-list::-webkit-scrollbar { width: 4px; }
+        .msg-list::-webkit-scrollbar-thumb {
+            background: rgba(200, 170, 100, 0.45);
+            border-radius: 4px;
+        }
+        .msg-list::-webkit-scrollbar-track { background: transparent; }
+
+        .msg-item {
+            display: flex;
+            gap: 10px;
+            padding: 10px 12px;
+            background: rgba(200, 170, 100, 0.055);
+            border: 1px solid rgba(200, 170, 100, 0.16);
+            border-radius: 12px;
+            transition: background 0.28s ease, border-color 0.28s ease, transform 0.28s ease;
+            animation: msgIn 0.35s ease;
+        }
+
+        @keyframes msgIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .msg-item:hover {
+            background: rgba(200, 170, 100, 0.11);
+            border-color: rgba(200, 170, 100, 0.38);
+            transform: translateX(3px);
+        }
+
+        .msg-avatar {
+            flex-shrink: 0;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: #241a0c;
+            font-family: "STKaiti", "KaiTi", "楷体", serif;
+            background: linear-gradient(145deg, #f7e6bd 0%, #c9a45c 60%, #a07d3a 100%);
+            box-shadow: 0 0 14px rgba(200, 170, 100, 0.35);
+        }
+
+        .msg-body {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .msg-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .msg-name {
+            color: #e6d7b8;
+            font-size: 13.5px;
+            letter-spacing: 1px;
+            font-family: "STKaiti", "KaiTi", "楷体", serif;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 45%;
+        }
+
+        .msg-time {
+            margin-left: auto;
+            color: rgba(230, 215, 184, 0.35);
+            font-size: 11px;
+            white-space: nowrap;
+        }
+
+        .msg-pending {
+            flex-shrink: 0;
+            padding: 1px 6px;
+            border-radius: 20px;
+            border: 1px solid rgba(217, 139, 106, 0.35);
+            color: rgba(233, 180, 155, 0.85);
+            font-size: 10px;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        .msg-del {
+            flex-shrink: 0;
+            background: none;
+            border: none;
+            color: rgba(230, 215, 184, 0.28);
+            font-size: 12px;
+            cursor: pointer;
+            padding: 0 2px;
+            line-height: 1;
+            transition: color 0.25s ease;
+        }
+
+        .msg-del:hover { color: #c9a45c; }
+
+        .msg-text {
+            margin-top: 4px;
+            color: rgba(230, 215, 184, 0.88);
+            font-size: 13px;
+            line-height: 1.7;
+            letter-spacing: 0.4px;
+            word-break: break-word;
+            white-space: pre-wrap;
+        }
+
+        /* 空状态 */
+        .msg-empty {
+            margin: auto;
+            padding: 18px 10px;
+            text-align: center;
+            color: rgba(230, 215, 184, 0.38);
+            font-size: 12.5px;
+            letter-spacing: 2px;
+            line-height: 1.8;
+            font-family: "STKaiti", "KaiTi", "楷体", serif;
+        }
+
+        .msg-empty-seal {
+            display: block;
+            font-size: 26px;
+            margin-bottom: 8px;
+            color: rgba(200, 170, 100, 0.35);
+        }
+
+        /* 输入区 */
+        .msg-form {
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(200, 170, 100, 0.16);
+        }
+
+        .msg-input-name,
+        .msg-input-text {
+            width: 100%;
+            background: rgba(10, 7, 4, 0.6);
+            border: 1px solid rgba(200, 170, 100, 0.22);
+            border-radius: 10px;
+            color: #e6d7b8;
+            font-size: 13px;
+            font-family: inherit;
+            padding: 8px 10px;
+            outline: none;
+            transition: border-color 0.28s ease, box-shadow 0.28s ease;
+        }
+
+        .msg-input-text {
+            resize: none;
+            line-height: 1.6;
+        }
+
+        .msg-input-name::placeholder,
+        .msg-input-text::placeholder {
+            color: rgba(230, 215, 184, 0.28);
+        }
+
+        .msg-input-name:focus,
+        .msg-input-text:focus {
+            border-color: rgba(201, 164, 92, 0.8);
+            box-shadow: 0 0 14px rgba(200, 170, 100, 0.25);
+        }
+
+        .msg-form-foot {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .msg-counter {
+            color: rgba(230, 215, 184, 0.35);
+            font-size: 11px;
+            letter-spacing: 1px;
+        }
+
+        .msg-counter.over { color: #d98b6a; }
+
+        .msg-submit {
+            padding: 8px 24px;
+            border-radius: 26px;
+            border: 1px solid rgba(200, 170, 100, 0.5);
+            background: linear-gradient(180deg, rgba(200, 170, 100, 0.22), rgba(200, 170, 100, 0.06));
+            color: #fff3d6;
+            font-size: 13px;
+            letter-spacing: 4px;
+            cursor: pointer;
+            font-family: "STKaiti", "KaiTi", "楷体", serif;
+            transition: all 0.3s ease;
+        }
+
+        .msg-submit:hover {
+            border-color: #c9a45c;
+            box-shadow: 0 0 20px rgba(200, 170, 100, 0.4);
+            transform: translateY(-1px);
+        }
+
+        .msg-submit:active { transform: translateY(0); }
 
         /* ========== 江湖相册 · 入口卡片 ========== */
         .album-section {
@@ -1126,6 +1565,36 @@
                 max-width: 180px;
                 height: 80px;
             }
+            .content-cols {
+                gap: 18px;
+            }
+            .board-col {
+                min-width: 280px;
+            }
+        }
+
+        /* 窄屏：视频与留言板改为上下堆叠 */
+        @media (max-width: 900px) {
+            .content-cols {
+                flex-direction: column;
+                gap: 18px;
+            }
+            .video-col {
+                flex: 1 1 auto;
+            }
+            .board-col {
+                flex: 1 1 auto;
+                max-width: none;
+                min-width: 0;
+            }
+            .msg-board {
+                max-height: none;
+                min-height: 300px;
+            }
+            .msg-list {
+                max-height: 300px;
+                min-height: 110px;
+            }
         }
 
         @media (max-width: 768px) {
@@ -1153,6 +1622,22 @@
             .video-section {
                 margin: 16px auto 8px;
                 padding: 0 12px;
+            }
+            .content-cols {
+                gap: 14px;
+            }
+            .msg-board {
+                padding: 16px 14px 14px;
+                border-radius: 16px;
+            }
+            .msg-head-text h2 {
+                font-size: 17px;
+                letter-spacing: 3px;
+            }
+            .msg-seal {
+                width: 34px;
+                height: 34px;
+                font-size: 16px;
             }
             .taihua-logo {
                 gap: 8px;
@@ -1754,22 +2239,63 @@
                 </div>
             </div>
 
-            <!-- 抖音视频 iframe 嵌入 -->
-            <div class="video-wrapper">
-                <div class="video-badge">百业宣传</div>
+            <!-- 左：视频 ｜ 右：留言板 -->
+            <div class="content-cols">
 
-                <iframe 
-                    src="https://open.douyin.com/player/video?vid=7559060766079520052&autoplay=0"
-                    frameborder="0"
-                    referrerpolicy="unsafe-url"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen>
-                </iframe>
-            </div>
+                <!-- ---------- 左侧：抖音视频 ---------- -->
+                <div class="video-col">
+                    <div class="video-wrapper">
+                        <div class="video-badge">百业宣传</div>
 
-            <div class="video-title">
-                <h1>燕云十六声</h1>
-                <p>乱世风云 · 侠客行</p>
+                        <iframe 
+                            src="https://open.douyin.com/player/video?vid=7559060766079520052&autoplay=0"
+                            frameborder="0"
+                            referrerpolicy="unsafe-url"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+
+                    <div class="video-title">
+                        <h1>燕云十六声</h1>
+                        <p>乱世风云 · 侠客行</p>
+                    </div>
+                </div>
+
+                <!-- ---------- 右侧：山门留言板 ---------- -->
+                <aside class="board-col">
+                    <div class="msg-board">
+                        <div class="msg-board-head">
+                            <div class="msg-seal">✎</div>
+                            <div class="msg-head-text">
+                                <h2>山门留言</h2>
+                                <span class="msg-head-sub">MESSAGE BOARD · 太华山</span>
+                            </div>
+                            <div class="msg-head-badges">
+                                <span class="msg-count" id="msgCount" title="留言条数">0</span>
+                                <span class="msg-state" id="msgState" title="留言同步状态">本地</span>
+                            </div>
+                        </div>
+
+                        <div class="msg-divider"></div>
+
+                        <div class="msg-list" id="msgList">
+                            <!-- 留言由脚本渲染 -->
+                        </div>
+
+                        <form class="msg-form" id="msgForm" autocomplete="off">
+                            <div class="msg-tip" id="msgTip"></div>
+                            <input class="msg-input-name" id="msgName" type="text"
+                                   maxlength="12" placeholder="署名（选填，默认「无名氏」）">
+                            <textarea class="msg-input-text" id="msgText" rows="3"
+                                      maxlength="140" placeholder="留书于此，与山中同道共览…（Ctrl + Enter 发送）"></textarea>
+                            <div class="msg-form-foot">
+                                <span class="msg-counter"><span id="msgLen">0</span>/140</span>
+                                <button type="submit" class="msg-submit" id="msgSubmit">题 字</button>
+                            </div>
+                        </form>
+                    </div>
+                </aside>
             </div>
         </div>
 
@@ -2005,6 +2531,393 @@
                 closeJoinModal();
             }
         });
+    </script>
+
+    <!-- ============================================
+         山门留言板逻辑
+         - 数据存 localStorage，刷新不丢
+         - 纯 textContent 渲染，避免 XSS
+         ============================================ -->
+    <script>
+        (function () {
+            /* ============================================================
+               配置
+               - API_BASE：后端地址。走 Nginx 反代时保持 '/api' 即可；
+                 前后端分离部署时，在 home.html 本段之前插入一行脚本设置：
+                 window.TAIHUA_MSG_API = 'https://你的域名/api';
+               - 后端不可用时自动降级为「本地暂存」，恢复后自动补交
+               ============================================================ */
+            const API_BASE = (typeof window.TAIHUA_MSG_API === 'string' && window.TAIHUA_MSG_API.trim())
+                ? window.TAIHUA_MSG_API.trim().replace(/\/+$/, '')
+                : '/api';
+
+            const STORE_KEY   = 'taihua_message_board_v1';        // 本地缓存
+            const PENDING_KEY = 'taihua_message_board_pending';   // 待同步队列
+            const NAME_KEY    = 'taihua_message_board_name';
+            const MAX_LEN     = 140;
+            const MAX_KEEP    = 100;
+
+            const listEl   = document.getElementById('msgList');
+            const formEl   = document.getElementById('msgForm');
+            const nameEl   = document.getElementById('msgName');
+            const textEl   = document.getElementById('msgText');
+            const lenEl    = document.getElementById('msgLen');
+            const countEl  = document.getElementById('msgCount');
+            const stateEl  = document.getElementById('msgState');
+            const tipEl    = document.getElementById('msgTip');
+            const submitEl = document.getElementById('msgSubmit');
+            if (!listEl || !formEl || !textEl) return;
+
+            let messages = [];        // { id, name, text, time, pending? }
+            let pending  = [];        // 断网时暂存的留言
+            let mode     = 'local';   // 'cloud' | 'local'
+            let posting  = false;
+
+            /* ---------- 本地读写 ---------- */
+            function readJSON(key) {
+                try {
+                    const v = JSON.parse(localStorage.getItem(key) || '[]');
+                    return Array.isArray(v) ? v : [];
+                } catch (e) { return []; }
+            }
+            function writeJSON(key, val) {
+                try { localStorage.setItem(key, JSON.stringify(val)); } catch (e) {}
+            }
+            const saveLocal  = () => writeJSON(STORE_KEY, messages.filter(m => !m.pending).slice(-MAX_KEEP));
+            const savePending = () => writeJSON(PENDING_KEY, pending);
+
+            /* ---------- 提示条 ---------- */
+            let tipTimer = null;
+            function showTip(msg, type) {
+                if (!tipEl) return;
+                tipEl.textContent = msg;
+                tipEl.className = 'msg-tip show' + (type ? ' ' + type : '');
+                clearTimeout(tipTimer);
+                tipTimer = setTimeout(() => { tipEl.className = 'msg-tip'; }, 4000);
+            }
+
+            /* ---------- 状态灯 ---------- */
+            function setState(next) {
+                mode = next;
+                if (!stateEl) return;
+                stateEl.textContent = next === 'cloud' ? '云端' : '本地';
+                stateEl.className = 'msg-state' + (next === 'cloud' ? ' cloud' : '');
+                stateEl.title = next === 'cloud'
+                    ? '已连接服务端，留言全站互通'
+                    : '未连上服务端，留言暂存在本机（联网后会自动补交）';
+            }
+
+            /* ---------- 时间格式化 ---------- */
+            const pad = n => (n < 10 ? '0' + n : String(n));
+            function fmtTime(ts) {
+                const d = new Date(ts);
+                const diff = (Date.now() - ts) / 1000;
+                if (diff < 0) return '刚刚';
+                if (diff < 60) return '刚刚';
+                if (diff < 3600) return Math.floor(diff / 60) + ' 分钟前';
+                const hm = pad(d.getHours()) + ':' + pad(d.getMinutes());
+                const today = new Date();
+                if (d.toDateString() === today.toDateString()) return '今天 ' + hm;
+                const yd = new Date(Date.now() - 86400000);
+                if (d.toDateString() === yd.toDateString()) return '昨天 ' + hm;
+                return (d.getMonth() + 1) + '月' + d.getDate() + '日 ' + hm;
+            }
+
+            /* ---------- 渲染（全部用 textContent，杜绝 XSS） ---------- */
+            function buildItem(m) {
+                const item = document.createElement('div');
+                item.className = 'msg-item';
+
+                const avatar = document.createElement('div');
+                avatar.className = 'msg-avatar';
+                avatar.textContent = (m.name || '无')[0];
+
+                const body = document.createElement('div');
+                body.className = 'msg-body';
+
+                const meta = document.createElement('div');
+                meta.className = 'msg-meta';
+
+                const name = document.createElement('span');
+                name.className = 'msg-name';
+                name.textContent = m.name || '无名氏';
+
+                if (m.pending) {
+                    const tag = document.createElement('span');
+                    tag.className = 'msg-pending';
+                    tag.textContent = '待同步';
+                    meta.appendChild(tag);
+                }
+
+                const time = document.createElement('span');
+                time.className = 'msg-time';
+                time.textContent = m.time ? fmtTime(m.time) : '';
+
+                const del = document.createElement('button');
+                del.className = 'msg-del';
+                del.type = 'button';
+                del.title = '抹去此条留言（需管理员口令）';
+                del.textContent = '✕';
+                del.addEventListener('click', () => onDelete(m));
+
+                meta.append(name, time, del);
+
+                const text = document.createElement('div');
+                text.className = 'msg-text';
+                text.textContent = m.text;
+
+                body.append(meta, text);
+                item.append(avatar, body);
+                return item;
+            }
+
+            function render(scrollToEnd) {
+                // 记住滚动位置：轮询刷新时不该把人拽回顶部
+                const prevTop = listEl.scrollTop;
+                const atBottom = listEl.scrollHeight - prevTop - listEl.clientHeight < 40;
+
+                listEl.textContent = '';
+
+                if (!messages.length) {
+                    const empty = document.createElement('div');
+                    empty.className = 'msg-empty';
+                    const seal = document.createElement('span');
+                    seal.className = 'msg-empty-seal';
+                    seal.textContent = '✎';
+                    empty.appendChild(seal);
+                    empty.appendChild(document.createTextNode('板上一片空白，愿你落下第一笔墨迹'));
+                    listEl.appendChild(empty);
+                } else {
+                    messages.forEach(m => listEl.appendChild(buildItem(m)));
+                }
+
+                if (countEl) countEl.textContent = messages.length;
+                requestAnimationFrame(() => {
+                    if (scrollToEnd || atBottom) listEl.scrollTop = listEl.scrollHeight;
+                    else listEl.scrollTop = prevTop;
+                });
+            }
+
+            /* ---------- 网络请求 ---------- */
+            function api(path, opts) {
+                const init = Object.assign({
+                    headers: { 'Content-Type': 'application/json' }
+                }, opts || {});
+
+                let timer = null;
+                if (typeof AbortController === 'function') {
+                    const ctrl = new AbortController();
+                    init.signal = ctrl.signal;
+                    timer = setTimeout(() => ctrl.abort(), 8000);   // 8 秒超时
+                }
+
+                return fetch(API_BASE + path, init)
+                    .then(r => r.json().catch(() => ({ ok: false, msg: '服务端返回异常' })))
+                    .finally(() => { if (timer) clearTimeout(timer); });
+            }
+
+            /* ---------- 载入 ---------- */
+            async function load() {
+                try {
+                    const data = await api('/messages');
+                    if (!data || !data.ok || !Array.isArray(data.list)) throw new Error('bad response');
+
+                    messages = data.list
+                        .filter(m => m && typeof m.text === 'string')
+                        .map(m => ({ id: m.id, name: m.name || '无名氏', text: m.text, time: m.time }))
+                        .concat(pending.map(p => Object.assign({}, p, { pending: true })));
+
+                    saveLocal();
+                    setState('cloud');
+                    render(false);
+                    flushPending();          // 把断网时暂存的补交上去
+                } catch (e) {
+                    messages = readJSON(STORE_KEY)
+                        .filter(m => m && typeof m.text === 'string')
+                        .filter(m => typeof m.time === 'number')
+                        .concat(pending.map(p => Object.assign({}, p, { pending: true })));
+                    setState('local');
+                    render(false);
+                }
+            }
+
+            /* ---------- 断网暂存 → 联网补交 ---------- */
+            let flushing = false;
+            async function flushPending() {
+                if (flushing || !pending.length || mode !== 'cloud') return;
+                flushing = true;
+                const queue = pending.slice();
+                for (const p of queue) {
+                    try {
+                        const data = await api('/messages', {
+                            method: 'POST',
+                            body: JSON.stringify({ name: p.name, text: p.text })
+                        });
+                        if (data && data.ok) {
+                            pending = pending.filter(x => x.id !== p.id);
+                            savePending();
+                        } else if (data && data.msg) {
+                            break;   // 被限流/拦截时停止补交，下次再试
+                        }
+                    } catch (e) { break; }
+                    await new Promise(r => setTimeout(r, 600));   // 间隔一下，避开限流
+                }
+                flushing = false;
+                try {
+                    const data = await api('/messages');
+                    if (data && data.ok && Array.isArray(data.list)) {
+                        messages = data.list
+                            .filter(m => m && typeof m.text === 'string')
+                            .map(m => ({ id: m.id, name: m.name || '无名氏', text: m.text, time: m.time }))
+                            .concat(pending.map(p => Object.assign({}, p, { pending: true })));
+                        saveLocal();
+                        render(false);
+                    }
+                } catch (e) {}
+            }
+
+            /* ---------- 发表 ---------- */
+            function updateLen() {
+                if (!lenEl) return;
+                const n = textEl.value.length;
+                lenEl.textContent = n;
+                const box = lenEl.parentElement;
+                if (box) box.classList.toggle('over', n >= MAX_LEN);
+            }
+
+            function lockForm(on) {
+                posting = on;
+                if (submitEl) {
+                    submitEl.disabled = on;
+                    submitEl.textContent = on ? '挥毫中…' : '题 字';
+                }
+            }
+
+            async function submit() {
+                if (posting) return;
+                const text = (textEl.value || '').trim();
+                if (!text) { textEl.focus(); showTip('墨迹未落，说点什么吧', 'error'); return; }
+                if (text.length > MAX_LEN) { showTip('最多 ' + MAX_LEN + ' 字', 'error'); return; }
+
+                const name = ((nameEl && nameEl.value) || '').trim() || '无名氏';
+                try { localStorage.setItem(NAME_KEY, name.slice(0, MAX_LEN)); } catch (e) {}
+
+                lockForm(true);
+
+                if (mode === 'cloud') {
+                    try {
+                        const data = await api('/messages', {
+                            method: 'POST',
+                            body: JSON.stringify({ name: name.slice(0, 12), text: text.slice(0, MAX_LEN) })
+                        });
+                        if (data && data.ok && data.item) {
+                            messages.push({
+                                id: data.item.id,
+                                name: data.item.name || name,
+                                text: data.item.text,
+                                time: data.item.time || Date.now()
+                            });
+                            if (messages.length > MAX_KEEP) messages = messages.slice(-MAX_KEEP);
+                            saveLocal();
+                            textEl.value = '';
+                            updateLen();
+                            render(true);
+                            lockForm(false);
+                            return;
+                        }
+                        // 服务端有明确拒绝理由（限流 / 敏感词）
+                        showTip(data && data.msg ? data.msg : '题字未成，稍后再试', 'error');
+                        lockForm(false);
+                        return;
+                    } catch (e) {
+                        // 网络不通 → 落到本地暂存
+                        setState('local');
+                    }
+                }
+
+                // 本地暂存
+                const item = {
+                    id: 'local-' + Date.now() + '-' + Math.random().toString(36).slice(2, 7),
+                    name: name.slice(0, 12),
+                    text: text.slice(0, MAX_LEN),
+                    time: Date.now(),
+                    pending: true
+                };
+                pending.push({ id: item.id, name: item.name, text: item.text, time: item.time });
+                savePending();
+                messages.push(item);
+                if (messages.length > MAX_KEEP) messages = messages.slice(-MAX_KEEP);
+                saveLocal();
+                textEl.value = '';
+                updateLen();
+                render(true);
+                lockForm(false);
+                showTip('未连上服务端，已暂存本机，联网后自动补交', 'error');
+            }
+
+            /* ---------- 删除（管理员口令） ---------- */
+            async function onDelete(m) {
+                if (m.pending) {                       // 还没上传的，本地直接抹掉
+                    pending = pending.filter(x => x.id !== m.id);
+                    savePending();
+                    messages = messages.filter(x => x.id !== m.id);
+                    saveLocal();
+                    render(false);
+                    return;
+                }
+
+                const token = window.prompt('抹去这笔墨迹，需管理员口令：');
+                if (token === null) return;
+                if (!token) { showTip('口令不能为空', 'error'); return; }
+
+                if (mode !== 'cloud') {
+                    showTip('未连上服务端，无法删除云端留言', 'error');
+                    return;
+                }
+
+                try {
+                    const data = await api('/messages/' + encodeURIComponent(m.id), {
+                        method: 'DELETE',
+                        headers: { 'Content-Type': 'application/json', 'x-admin-token': token }
+                    });
+                    if (data && data.ok) {
+                        messages = messages.filter(x => x.id !== m.id);
+                        saveLocal();
+                        render(false);
+                        showTip('墨迹已抹去', 'ok');
+                    } else {
+                        showTip((data && data.msg) || '删除失败', 'error');
+                    }
+                } catch (e) {
+                    showTip('删除失败：连不上服务端', 'error');
+                }
+            }
+
+            /* ---------- 事件 ---------- */
+            formEl.addEventListener('submit', e => { e.preventDefault(); submit(); });
+            textEl.addEventListener('input', updateLen);
+            textEl.addEventListener('keydown', e => {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') { e.preventDefault(); submit(); }
+            });
+
+            /* ---------- 初始化 ---------- */
+            pending = readJSON(PENDING_KEY).filter(p => p && typeof p.text === 'string');
+            try {
+                const savedName = localStorage.getItem(NAME_KEY);
+                if (savedName && nameEl) nameEl.value = savedName;
+            } catch (e) {}
+            updateLen();
+            setState('local');
+            load();
+
+            // 云端模式下每 60 秒拉取一次；页面在后台时不打扰
+            setInterval(() => {
+                if (mode === 'cloud' && !document.hidden) load();
+            }, 60000);
+
+            // 网络恢复时自动重试
+            window.addEventListener('online', load);
+        })();
     </script>
 
     <!-- ============================================
